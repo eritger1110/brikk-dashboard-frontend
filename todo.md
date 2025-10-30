@@ -131,3 +131,58 @@
 - [ ] Mobile app for monitoring
 - [ ] Webhook marketplace
 
+
+
+## Phase 4: API Integration - Connect Frontend to BrikkFlows Backend
+- [x] Set up API client infrastructure
+  - [x] Create TypeScript types from BrikkFlows schemas (Flow, Execution, AuditEvent, etc.)
+  - [x] Implement API client with axios/fetch
+  - [x] Add request/response interceptors for auth headers
+  - [x] Implement error handling and retry logic
+- [x] Create React hooks for data fetching (useFlows, useExecutions, useMetrics, etc.)
+- [x] Create ApiProvider context for auth management
+- [x] Integrate Flows API
+  - [x] GET /v1/flows (list with filters)
+  - [x] POST /v1/flows (create draft)
+  - [x] GET /v1/flows/{flowId} (detail)
+  - [x] PATCH /v1/flows/{flowId} (update)
+  - [x] POST /v1/flows/{flowId}:activate
+  - [x] POST /v1/flows/{flowId}:simulate
+  - [x] DELETE /v1/flows/{flowId}
+- [x] Integrate Executions API
+  - [x] GET /v1/executions (list with filters)
+  - [x] GET /v1/executions/{execId} (detail)
+  - [x] GET /v1/executions/{execId}/logs
+- [x] Integrate Monitoring API
+  - [x] GET /v1/metrics/overview
+  - [x] GET /v1/metrics/providers
+  - [x] GET /v1/alerts
+  - [x] POST /v1/alerts/{alertId}:ack
+- [x] Integrate Audit API
+  - [x] GET /v1/audit (list with filters)
+  - [x] POST /v1/audit/export
+- [x] Integrate Integrations API
+  - [x] GET /v1/integrations/catalog
+  - [x] GET /v1/integrations/status
+  - [x] POST /v1/integrations/{key}:connect
+- [ ] Replace mock data with real API calls (ready to wire when backend is available)
+  - [ ] Dashboard metrics
+  - [ ] Workflows list
+  - [ ] Monitoring charts
+  - [ ] Audit events
+  - [ ] Integration status cards
+
+
+
+## Phase 5: Real-time Features - WebSocket Streaming & Live Updates
+- [x] Create WebSocket client with reconnection logic
+- [x] Implement topic-based subscription system
+- [x] Create React hooks for WebSocket (useWebSocket, useLiveAlerts, useLiveExecutions, etc.)
+- [ ] Integrate live updates into pages
+  - [ ] Dashboard: Live metrics and recent activity
+  - [ ] Monitoring: Real-time charts and provider health
+  - [ ] Alerts: Live alert notifications with toast
+  - [ ] Flow Builder: Live execution preview
+- [ ] Add connection status indicator in header
+- [ ] Implement reconnection UI feedback
+
