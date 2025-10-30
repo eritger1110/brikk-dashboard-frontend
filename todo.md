@@ -29,20 +29,24 @@
   - [x] Usage metrics charts
   - [x] Cost summaries
   - [x] Quick actions
-- [ ] Build Flow Builder Canvas
-  - [ ] React Flow integration
-  - [ ] Drag-and-drop node editor
-  - [ ] Node types: trigger, condition, action, decision
-  - [ ] Natural language rule prompts ("When X happens, do Y")
-  - [ ] Hover tooltips and guided onboarding
-  - [ ] Save/publish workflow
-- [ ] Create Monitoring Dashboard
-  - [ ] Real-time metrics (latency, error rate, fallback frequency, cost)
-  - [ ] Color-coded alerts
-  - [ ] Provider health status
-  - [ ] Charts and visualizations
-- [ ] Implement light/dark mode toggle
-- [ ] Add smooth transitions between screens
+- [x] Build Flow Builder Canvas
+  - [x] React Flow integration
+  - [x] Drag-and-drop node editor
+  - [x] Node types: trigger, condition, action, decision
+  - [x] Natural language rule prompts ("When X happens, do Y")
+  - [x] Hover tooltips and guided onboarding
+  - [x] Save/publish workflow
+- [x] Create Monitoring Dashboard
+  - [x] Real-time metrics (latency, error rate, fallback frequency, cost)
+  - [x] Color-coded alerts
+  - [x] Provider health status
+  - [x] Charts and visualizations
+- [x] Implement light/dark mode toggle (theme switcher enabled)
+- [x] Add smooth transitions between screens
+- [x] Create Workflows list page with search and filters
+- [x] Create Audit Logs page with immutable timeline and compliance features
+- [x] Create Role Management page with permissions matrix
+- [x] Create Settings page with category cards
 
 ## Phase 4: Integrations Hub - Enterprise Connectors & Action Nodes
 - [ ] Enterprise Systems

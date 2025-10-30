@@ -5,11 +5,23 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Dashboard from "./pages/Dashboard";
+import Workflows from "./pages/Workflows";
+import FlowBuilder from "./pages/FlowBuilder";
+import Monitoring from "./pages/Monitoring";
+import AuditLogs from "./pages/AuditLogs";
+import RoleManagement from "./pages/RoleManagement";
+import Settings from "./pages/Settings";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Dashboard} />
+      <Route path="/workflows" component={Workflows} />
+      <Route path="/flow-builder" component={FlowBuilder} />
+      <Route path="/monitoring" component={Monitoring} />
+      <Route path="/audit-logs" component={AuditLogs} />
+      <Route path="/roles" component={RoleManagement} />
+      <Route path="/settings" component={Settings} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
