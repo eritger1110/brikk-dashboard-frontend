@@ -186,3 +186,36 @@
 - [ ] Add connection status indicator in header
 - [ ] Implement reconnection UI feedback
 
+
+
+## Phase 6: Trinity Demo - Three Interactive Workflow Demonstrations
+- [x] Demo Infrastructure
+  - [x] Create Demo Gallery page with 3 selectable flows
+  - [x] Add Simulation Mode toggle (ON/OFF)
+  - [x] Build animated flow execution engine with sequential node highlighting
+  - [x] Create ROI metrics cards component
+  - [x] Add demo-specific audit log generator
+  - [x] Create success overlay with brand quote
+- [x] Demo 1: Revenue Rescue (Business/Sales)
+  - [x] Flow definition (inventory trigger → Mistral forecast → multi-channel actions)
+  - [x] Mock data handlers (Shopify, Mistral, Slack, Meta, Supplier, Snowflake)
+  - [x] ROI metrics: "$1,240 ad spend saved • 3h manual time avoided"
+  - [x] Visual execution with timing (45 seconds)
+- [x] Demo 2: Marketing Maestro (Marketing/Growth)
+  - [x] Flow definition (campaign performance → sentiment/CTR check → AI optimization)
+  - [x] Mock data handlers (Campaign API, OpenAI, Meta, Google Ads, Slack, Snowflake)
+  - [x] ROI metrics: "CTR ↑28% • CPA ↓12% • Response time –30min"
+  - [x] Visual execution with timing (50 seconds)
+- [x] Demo 3: Operations Genius (Logistics/Ops)
+  - [x] Flow definition (ERP batch → demand forecast → logistics optimization)
+  - [x] Mock data handlers (ERP, Forecast API, Route optimizer, Slack, Snowflake)
+  - [ ] Map widget for warehouse visualization (future enhancement)
+  - [x] ROI metrics: "Fulfillment speed ↑17% • Picker travel ↓23% • Stock risk ↓40%"
+  - [x] Visual execution with timing (55 seconds)
+- [x] Polish & Integration
+  - [x] Framer Motion animations for all transitions
+  - [x] MSW (Mock Service Worker) installed
+  - [x] Demo README documentation
+  - [x] Add "🎬 Demo Gallery" to navigation
+  - [x] Ensure modular code for standalone/chained execution
+

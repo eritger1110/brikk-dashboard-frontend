@@ -9,7 +9,8 @@ import {
   Settings,
   Bell,
   Search,
-  User
+  User,
+  Sparkles
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -25,6 +26,7 @@ interface NavItem {
 const navigation: NavItem[] = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard },
   { name: 'Workflows', href: '/workflows', icon: Workflow },
+  { name: '🎬 Demo Gallery', href: '/demo', icon: Sparkles },
   { name: 'Monitoring', href: '/monitoring', icon: Activity },
   { name: 'Audit Logs', href: '/audit-logs', icon: FileText },
   { name: 'Role Management', href: '/roles', icon: Users },

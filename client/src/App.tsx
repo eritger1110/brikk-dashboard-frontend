@@ -12,6 +12,7 @@ import Monitoring from "./pages/Monitoring";
 import AuditLogs from "./pages/AuditLogs";
 import RoleManagement from "./pages/RoleManagement";
 import Settings from "./pages/Settings";
+import DemoGallery from "./pages/DemoGallery";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/audit-logs" component={AuditLogs} />
       <Route path="/roles" component={RoleManagement} />
       <Route path="/settings" component={Settings} />
+      <Route path="/demo" component={DemoGallery} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
