@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ApiProvider } from "./contexts/ApiContext";
+import { SimulationProvider } from "./contexts/SimulationContext";
 import Dashboard from "./pages/Dashboard";
 import Workflows from "./pages/Workflows";
 import FlowBuilder from "./pages/FlowBuilder";
@@ -36,17 +37,19 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ApiProvider>
-        <ThemeProvider
-          defaultTheme="dark"
-          switchable
-        >
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </ThemeProvider>
-      </ApiProvider>
+      <SimulationProvider>
+        <ApiProvider>
+          <ThemeProvider
+            defaultTheme="dark"
+            switchable
+          >
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+            </TooltipProvider>
+          </ThemeProvider>
+        </ApiProvider>
+      </SimulationProvider>
     </ErrorBoundary>
   );
 }

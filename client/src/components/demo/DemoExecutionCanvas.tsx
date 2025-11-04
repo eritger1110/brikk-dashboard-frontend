@@ -4,21 +4,81 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Loader2, Zap } from 'lucide-react';
 import { DemoFlow, DemoNode } from '@/lib/demo-flows';
+import { useResultsPane } from '@/hooks/useResultsPane';
 
 interface DemoExecutionCanvasProps {
   flow: DemoFlow;
   isExecuting: boolean;
   executionComplete: boolean;
+  resultsPane: ReturnType<typeof useResultsPane>;
+  isLiveExecution: boolean;
 }
 
 export default function DemoExecutionCanvas({
   flow,
   isExecuting,
   executionComplete,
+  resultsPane,
+  isLiveExecution,
 }: DemoExecutionCanvasProps) {
   const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   const [completedNodeIds, setCompletedNodeIds] = useState<Set<string>>(new Set());
   const [nodeResponses, setNodeResponses] = useState<Map<string, any>>(new Map());
+
+  const addResultTile = (node: DemoNode, isLive: boolean) => {
+    const response = node.mockResponse;
+    if (!response) return;
+
+    // Map node labels to result pane methods
+    if (node.label.includes('Slack')) {
+      resultsPane.addSlack(
+        response.summary || response.message || 'Alert sent',
+        response.channel || '#general',
+        isLive
+      );
+    } else if (node.label.includes('Email') || node.label.includes('Reorder')) {
+      resultsPane.addEmail(
+        response.subject || 'Automated Email',
+        response.recipient || 'supplier@example.com',
+        response.preview || JSON.stringify(response, null, 2).slice(0, 100),
+        isLive
+      );
+    } else if (node.label.includes('Snowflake') || node.label.includes('Log')) {
+      resultsPane.addSheet(
+        'Snowflake Analytics',
+        { executionId: response.executionId, timestamp: response.timestamp },
+        isLive
+      );
+    } else if (node.label.includes('Rewrite') || node.label.includes('Headline')) {
+      resultsPane.addCreative(
+        { headline: response.originalHeadline || 'Old Headline', cta: 'Learn More' },
+        { headline: response.newHeadline || 'New Headline', cta: 'Get Started' }
+      );
+    } else if (node.label.includes('Budget') || node.label.includes('Rebalance')) {
+      resultsPane.addBudgetShift([
+        { platform: 'Google Ads', change: 15 },
+        { platform: 'Display', change: -15 },
+      ]);
+    } else if (node.label.includes('Route') || node.label.includes('Optimize')) {
+      resultsPane.addRoute(
+        response.totalDistance || 2.3,
+        response.reduction || 0.23,
+        response.estimatedPickTime || '1.8 hours'
+      );
+    } else if (node.label.includes('Rebalance Plan') || node.label.includes('Restock Plan')) {
+      resultsPane.addPlan(
+        response.planId || 'PLAN-001',
+        response.moves || [],
+        response.status || 'pending approval'
+      );
+    } else if (node.label.includes('Pause') || node.label.includes('Campaign')) {
+      resultsPane.addCampaign(
+        response.campaignId || 'Campaign',
+        response.status || 'paused',
+        response.adSpendSaved
+      );
+    }
+  };
 
   useEffect(() => {
     if (!isExecuting) {
@@ -40,6 +100,11 @@ export default function DemoExecutionCanvas({
         setCompletedNodeIds((prev) => new Set(Array.from(prev).concat(node.id)));
         setNodeResponses((prev) => new Map(prev).set(node.id, node.mockResponse));
         setActiveNodeId(null);
+
+        // Add results to pane for action nodes
+        if (node.type === 'action') {
+          addResultTile(node, isLiveExecution);
+        }
       }, node.delay + node.duration);
 
       return () => {

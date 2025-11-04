@@ -219,3 +219,47 @@
   - [x] Add "🎬 Demo Gallery" to navigation
   - [x] Ensure modular code for standalone/chained execution
 
+
+
+## Phase 7: Demo Polish - Realism, Storytelling, Live Integrations, Finale
+- [ ] Functional Simulation Mode Toggle
+  - [ ] Implement provider that routes API calls (Simulation ON → MSW, OFF → real API)
+  - [ ] Add label beside toggle ("Simulated (safe)" / "Live API")
+  - [ ] Add environment variables (VITE_API_BASE, VITE_WS_BASE, VITE_USE_MSW, VITE_LIVE_ALLOWED)
+  - [ ] Create useSimulationToggle hook with global state
+- [ ] Story Overlays & Info Panel
+  - [ ] Add 3-second overlay on demo open with scenario description
+  - [ ] Add "i" Info button (top-right) with side panel
+  - [ ] Info panel: Goal, How Brikk solves it (3 bullets), Business impact (3 metrics)
+  - [ ] Dismissible overlay with fade animation
+- [ ] Results Pane (Right Side)
+  - [ ] Collapsible panel that animates in after each action
+  - [ ] Revenue Rescue: Slack message preview, Campaign Paused tile, PO Draft tile
+  - [ ] Marketing Maestro: Before/After creative, Budget Shift bar, Slack summary
+  - [ ] Operations Genius: Pick Routes card, Restock Plan card, Slack update
+  - [ ] Add "✓ Sent live" badge for live executions
+  - [ ] Create useResultsPane hook (addSlack, addEmail, addSheet, addBadge)
+- [ ] Live Execution Integration
+  - [ ] Add "Live Execution" toggle per demo (visible when Simulation OFF)
+  - [ ] Show "⚡ LIVE" badge when Live Execution ON
+  - [ ] Slack integration (webhook URL, real message posting)
+  - [ ] Google Sheets integration (spreadsheet ID, range, write payload)
+  - [ ] SendGrid integration (API key, email sending)
+  - [ ] Safety: opt-in, secrets via env, never show in UI
+- [ ] Micro-animations & Transitions
+  - [ ] Signal traveling along step rail on Start Execution
+  - [ ] Glow → checkmark → slide-down on step resolution
+  - [ ] KPI numbers count up (0 → target in ~800ms)
+  - [ ] 1-second interstitial between demos
+- [ ] Finale Screen - "Coordinated Enterprise"
+  - [ ] Auto-transition after 3rd demo completion
+  - [ ] Combined canvas: Brikk Core (center, pulsing) + 3 spokes (Revenue/Marketing/Ops)
+  - [ ] Animated signals flowing among nodes (~4 seconds)
+  - [ ] Headline: "Brikk doesn't just automate each department — it unites them..."
+  - [ ] Footer: Brand tagline
+  - [ ] Add "Replay Trilogy" and "Back to Gallery" buttons
+- [ ] Documentation & QA
+  - [ ] Update README with Slack/Sheets/SendGrid configuration
+  - [ ] Add Simulation vs Live mode guide
+  - [ ] QA checklist: Simulation ON/OFF, Live Execution ON/OFF, Finale screen
+
