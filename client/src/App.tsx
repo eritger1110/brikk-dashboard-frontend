@@ -18,6 +18,9 @@ import Billing from "./pages/Billing";
 import Security from "./pages/Security";
 import Developer from "./pages/Developer";
 import Monitoring from "./pages/Monitoring";
+import Analytics from "./pages/Analytics";
+import Marketplace from "./pages/Marketplace";
+import Help from "./pages/Help";
 import AuditLogs from "./pages/AuditLogs";
 import RoleManagement from "./pages/RoleManagement";
 import Settings from "./pages/Settings";
@@ -33,11 +36,11 @@ function Router() {
       <Route path="/workflows" component={BrikkFlows} />
       <Route path="/flow-builder" component={FlowBuilder} />
       <Route path="/billing" component={Billing} />
-      <Route path="/marketplace" component={Overview} />
+      <Route path="/marketplace" component={Marketplace} />
       <Route path="/security" component={Security} />
       <Route path="/developer" component={Developer} />
-      <Route path="/analytics" component={Monitoring} />
-      <Route path="/help" component={Overview} />
+      <Route path="/analytics" component={Analytics} />
+      <Route path="/help" component={Help} />
       <Route path="/settings" component={Settings} />
       
       {/* Legacy routes */}

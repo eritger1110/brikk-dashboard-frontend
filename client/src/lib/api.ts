@@ -497,3 +497,27 @@ export async function createSupportTicket(data: SupportTicket, token?: string, o
   }, token, orgId);
 }
 
+
+
+// Chat message type for BrikkBot
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+}
+
+export async function chatWithBrikkBot(params: {
+  message: string;
+  context?: Record<string, any>;
+  token?: string;
+  orgId?: string;
+}): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>('/v1/help/chat', {
+    method: 'POST',
+    body: JSON.stringify({
+      message: params.message,
+      context: params.context,
+    }),
+  }, params.token, params.orgId);
+}
+
