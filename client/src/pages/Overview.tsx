@@ -5,88 +5,20 @@ import {
   TrendingUp,
   DollarSign,
   Bot,
-  ArrowUp,
-  ArrowDown,
   Clock,
   CheckCircle2,
   AlertCircle,
   Zap,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { brikkColors, chartColors } from "@/lib/palette";
-
-// Mock data for charts
-const requestsData = [
-  { time: "00:00", requests: 245 },
-  { time: "04:00", requests: 189 },
-  { time: "08:00", requests: 567 },
-  { time: "12:00", requests: 892 },
-  { time: "16:00", requests: 1024 },
-  { time: "20:00", requests: 678 },
-];
-
-const agentUsageData = [
-  { name: "GPT-4", requests: 3421 },
-  { name: "Claude", requests: 2847 },
-  { name: "Mistral", requests: 1923 },
-  { name: "Gemini", requests: 1456 },
-  { name: "Llama", requests: 892 },
-];
-
-const recentEvents = [
-  {
-    id: 1,
-    type: "success",
-    agent: "Revenue Optimizer",
-    message: "Workflow completed successfully",
-    time: "2 minutes ago",
-  },
-  {
-    id: 2,
-    type: "warning",
-    agent: "Inventory Monitor",
-    message: "Low stock alert triggered",
-    time: "5 minutes ago",
-  },
-  {
-    id: 3,
-    type: "success",
-    agent: "Campaign Manager",
-    message: "Ad budget optimized",
-    time: "12 minutes ago",
-  },
-  {
-    id: 4,
-    type: "error",
-    agent: "Data Sync",
-    message: "API rate limit exceeded",
-    time: "18 minutes ago",
-  },
-  {
-    id: 5,
-    type: "success",
-    agent: "Customer Support",
-    message: "Ticket auto-resolved",
-    time: "23 minutes ago",
-  },
-];
+import { brikkColors } from "@/lib/palette";
+import { getHealthStatus, type HealthStatus } from "@/lib/apiService";
 
 interface KPICardProps {
   title: string;
   value: string;
-  change: string;
-  changeType: "positive" | "negative";
+  loading?: boolean;
   icon: React.ElementType;
   iconColor: string;
 }
@@ -94,8 +26,7 @@ interface KPICardProps {
 function KPICard({
   title,
   value,
-  change,
-  changeType,
+  loading,
   icon: Icon,
   iconColor,
 }: KPICardProps) {
@@ -104,21 +35,19 @@ function KPICard({
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <p className="text-sm text-muted-foreground mb-1">{title}</p>
-          <h3 className="text-3xl font-bold gradient-text mb-2">{value}</h3>
-          <div className="flex items-center gap-1 text-sm">
-            {changeType === "positive" ? (
-              <>
-                <ArrowUp className="h-4 w-4 text-[#A3FF12]" />
-                <span className="text-[#A3FF12]">{change}</span>
-              </>
-            ) : (
-              <>
-                <ArrowDown className="h-4 w-4 text-[#FF6B6B]" />
-                <span className="text-[#FF6B6B]">{change}</span>
-              </>
-            )}
-            <span className="text-muted-foreground ml-1">vs last week</span>
-          </div>
+          {loading ? (
+            <div className="flex items-center gap-2 h-9">
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Loading...</span>
+            </div>
+          ) : (
+            <>
+              <h3 className="text-3xl font-bold gradient-text mb-2">{value}</h3>
+              <div className="text-xs text-muted-foreground">
+                Real-time data
+              </div>
+            </>
+          )}
         </div>
         <div
           className="flex h-12 w-12 items-center justify-center rounded-xl"
@@ -132,16 +61,21 @@ function KPICard({
 }
 
 export default function Overview() {
-  const [healthStatus, setHealthStatus] = useState<"healthy" | "checking">(
-    "checking"
-  );
+  const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
+  const [healthLoading, setHealthLoading] = useState(true);
+  const [healthError, setHealthError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check API health
-    fetch("https://api.getbrikk.com/health")
-      .then((res) => res.json())
-      .then(() => setHealthStatus("healthy"))
-      .catch(() => setHealthStatus("checking"));
+    getHealthStatus()
+      .then((status) => {
+        setHealthStatus(status);
+        setHealthLoading(false);
+      })
+      .catch((error) => {
+        setHealthError(error.message);
+        setHealthLoading(false);
+      });
   }, []);
 
   return (
@@ -158,7 +92,17 @@ export default function Overview() {
           <div className="flex items-center gap-3">
             {/* API Health Status */}
             <div className="flex items-center gap-2 rounded-lg border px-3 py-2">
-              {healthStatus === "healthy" ? (
+              {healthLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  <span className="text-sm font-medium">Checking...</span>
+                </>
+              ) : healthError ? (
+                <>
+                  <span className="status-dot status-dot-danger" />
+                  <span className="text-sm font-medium">API Error</span>
+                </>
+              ) : healthStatus?.status === "operational" ? (
                 <>
                   <span className="status-dot status-dot-success" />
                   <span className="text-sm font-medium">API Healthy</span>
@@ -166,7 +110,7 @@ export default function Overview() {
               ) : (
                 <>
                   <span className="status-dot status-dot-warning" />
-                  <span className="text-sm font-medium">Checking...</span>
+                  <span className="text-sm font-medium">API Degraded</span>
                 </>
               )}
             </div>
@@ -177,45 +121,86 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* KPI Cards */}
+        {/* KPI Cards - Awaiting Real Data */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <KPICard
             title="Requests Today"
-            value="12,847"
-            change="+23.4%"
-            changeType="positive"
+            value="—"
+            loading={true}
             icon={Activity}
             iconColor={brikkColors.blue}
           />
           <KPICard
             title="Success Rate"
-            value="98.7%"
-            change="+2.1%"
-            changeType="positive"
+            value="—"
+            loading={true}
             icon={CheckCircle2}
             iconColor={brikkColors.lime}
           />
           <KPICard
             title="Total Spend"
-            value="$284.50"
-            change="-12.3%"
-            changeType="positive"
+            value="—"
+            loading={true}
             icon={DollarSign}
             iconColor={brikkColors.cyan}
           />
           <KPICard
             title="Active Agents"
-            value="47"
-            change="+5"
-            changeType="positive"
+            value="—"
+            loading={true}
             icon={Bot}
             iconColor={brikkColors.violet}
           />
         </div>
 
-        {/* Charts Row */}
+        {/* API Configuration Notice */}
+        <div className="brikk-card border-2 border-dashed">
+          <div className="flex items-start gap-4">
+            <div
+              className="flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0"
+              style={{ backgroundColor: `${brikkColors.cyan}20` }}
+            >
+              <AlertCircle className="h-6 w-6" style={{ color: brikkColors.cyan }} />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg mb-2">
+                Dashboard Ready - API Configuration Needed
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                The dashboard UI is complete and ready to display real-time data. To populate the metrics, charts, and tables, we need the API endpoint documentation.
+              </p>
+              <div className="space-y-2 text-sm">
+                <p className="font-medium">✅ What's Working:</p>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-2">
+                  <li>API Health Check: <code className="text-xs bg-accent px-1 py-0.5 rounded">GET /health</code> ✓</li>
+                  <li>Auth0 Authentication ✓</li>
+                  <li>Complete UI with loading states ✓</li>
+                </ul>
+                <p className="font-medium mt-4">📋 What's Needed:</p>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-2">
+                  <li>API documentation or endpoint list</li>
+                  <li>Authentication method for API calls (Bearer token? API key?)</li>
+                  <li>Sample response payloads</li>
+                </ul>
+              </div>
+              <div className="mt-4 flex items-center gap-3">
+                <Button variant="outline" size="sm" asChild>
+                  <a href="/API_QUESTIONS.md" target="_blank" rel="noopener noreferrer">
+                    <AlertCircle className="h-4 w-4 mr-2" />
+                    View API Questions
+                  </a>
+                </Button>
+                <span className="text-xs text-muted-foreground">
+                  See API_QUESTIONS.md in project root for details
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Charts Placeholder */}
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Requests Chart */}
+          {/* Requests Chart Placeholder */}
           <div className="brikk-card">
             <div className="mb-4">
               <h3 className="text-lg font-semibold">Requests Over Time</h3>
@@ -223,44 +208,17 @@ export default function Overview() {
                 Last 24 hours activity
               </p>
             </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={requestsData}>
-                <defs>
-                  <linearGradient id="colorRequests" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor={brikkColors.blue} stopOpacity={0.3} />
-                    <stop offset="95%" stopColor={brikkColors.blue} stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis
-                  dataKey="time"
-                  stroke="var(--text-muted)"
-                  style={{ fontSize: "12px" }}
-                />
-                <YAxis
-                  stroke="var(--text-muted)"
-                  style={{ fontSize: "12px" }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--surface)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "0.75rem",
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="requests"
-                  stroke={brikkColors.blue}
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#colorRequests)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <div className="flex items-center justify-center h-64 border-2 border-dashed rounded-lg">
+              <div className="text-center">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-3 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Awaiting API endpoint for time-series data
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Agent Usage Chart */}
+          {/* Agent Usage Chart Placeholder */}
           <div className="brikk-card">
             <div className="mb-4">
               <h3 className="text-lg font-semibold">Usage by Agent</h3>
@@ -268,36 +226,18 @@ export default function Overview() {
                 Top 5 agents this week
               </p>
             </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={agentUsageData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis
-                  dataKey="name"
-                  stroke="var(--text-muted)"
-                  style={{ fontSize: "12px" }}
-                />
-                <YAxis
-                  stroke="var(--text-muted)"
-                  style={{ fontSize: "12px" }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--surface)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "0.75rem",
-                  }}
-                />
-                <Bar
-                  dataKey="requests"
-                  fill={brikkColors.cyan}
-                  radius={[8, 8, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="flex items-center justify-center h-64 border-2 border-dashed rounded-lg">
+              <div className="text-center">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-3 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  Awaiting API endpoint for agent usage data
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Recent Events Table */}
+        {/* Recent Events Placeholder */}
         <div className="brikk-card">
           <div className="mb-4 flex items-center justify-between">
             <div>
@@ -306,37 +246,20 @@ export default function Overview() {
                 Latest workflow executions and alerts
               </p>
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" disabled>
               View All
             </Button>
           </div>
-          <div className="space-y-3">
-            {recentEvents.map((event) => (
-              <div
-                key={event.id}
-                className="flex items-center gap-4 rounded-lg border border-border p-3 transition-colors hover:bg-accent"
-              >
-                {event.type === "success" && (
-                  <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-[#A3FF12]" />
-                )}
-                {event.type === "warning" && (
-                  <AlertCircle className="h-5 w-5 flex-shrink-0 text-[#FF6B6B]" />
-                )}
-                {event.type === "error" && (
-                  <AlertCircle className="h-5 w-5 flex-shrink-0 text-[#FF6B6B]" />
-                )}
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-sm">{event.agent}</p>
-                  <p className="text-sm text-muted-foreground truncate">
-                    {event.message}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  {event.time}
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-center py-12 border-2 border-dashed rounded-lg">
+            <div className="text-center">
+              <Clock className="h-8 w-8 mx-auto mb-3 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                No events to display yet
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Events will appear here once API is configured
+              </p>
+            </div>
           </div>
         </div>
 

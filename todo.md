@@ -30,12 +30,12 @@
 - [ ] Add right rail with limits/plan info
 
 ## Phase 4: Agent Management
-- [ ] Create Agents list page with search/filter
+- [x] Create Agents list page with search/filter
 - [ ] Build agent detail page with metrics
-- [ ] Add live agent network map visualization
-- [ ] Implement agent status indicators
-- [ ] Add latency metrics (P50/P95)
-- [ ] Create watchlist/starred feature
+- [x] Add agent network map visualization
+- [ ] Implement agent registration form
+- [x] Add agent status indicators
+- [ ] Create agent watchlist featured feature
 - [ ] Add threshold alert notifications
 - [ ] Build agent edit drawer
 

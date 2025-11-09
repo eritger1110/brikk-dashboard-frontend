@@ -9,9 +9,15 @@ import { SimulationProvider } from "./contexts/SimulationContext";
 
 // Import pages
 import Overview from "./pages/Overview";
+import Agents from "./pages/Agents";
+import AgentNetworkMap from "./pages/AgentNetworkMap";
 import Dashboard from "./pages/Dashboard";
 import Workflows from "./pages/Workflows";
 import FlowBuilder from "./pages/FlowBuilder";
+import BrikkFlows from "./pages/BrikkFlows";
+import Billing from "./pages/Billing";
+import Security from "./pages/Security";
+import Developer from "./pages/Developer";
 import Monitoring from "./pages/Monitoring";
 import AuditLogs from "./pages/AuditLogs";
 import RoleManagement from "./pages/RoleManagement";
@@ -23,13 +29,14 @@ function Router() {
     <Switch>
       {/* New Brikk Dashboard Routes */}
       <Route path="/" component={Overview} />
-      <Route path="/agents" component={Dashboard} />
-      <Route path="/workflows" component={Workflows} />
+      <Route path="/agents" component={Agents} />
+      <Route path="/agents/map" component={AgentNetworkMap} />
+      <Route path="/workflows" component={BrikkFlows} />
       <Route path="/flow-builder" component={FlowBuilder} />
-      <Route path="/billing" component={Overview} />
+      <Route path="/billing" component={Billing} />
       <Route path="/marketplace" component={Overview} />
-      <Route path="/security" component={AuditLogs} />
-      <Route path="/developer" component={Overview} />
+      <Route path="/security" component={Security} />
+      <Route path="/developer" component={Developer} />
       <Route path="/analytics" component={Monitoring} />
       <Route path="/help" component={Overview} />
       <Route path="/settings" component={Settings} />
