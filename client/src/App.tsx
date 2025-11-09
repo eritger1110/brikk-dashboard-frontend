@@ -4,8 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { ApiProvider } from "./contexts/ApiContext";
-import { SimulationProvider } from "./contexts/SimulationContext";
+// API Context removed - using direct API adapter imports now
 
 // Import pages
 import Overview from "./pages/Overview";
@@ -58,19 +57,15 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <SimulationProvider>
-        <ApiProvider>
-          <ThemeProvider
-            defaultTheme="dark"
-            switchable
-          >
-            <TooltipProvider>
-              <Toaster />
-              <Router />
-            </TooltipProvider>
-          </ThemeProvider>
-        </ApiProvider>
-      </SimulationProvider>
+      <ThemeProvider
+        defaultTheme="dark"
+        switchable
+      >
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

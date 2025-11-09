@@ -1,164 +1,288 @@
-// BrikkFlows API Types
-// Generated from brikkflows_schemas.json
+/**
+ * Brikk API TypeScript Types
+ * 
+ * Based on the official API contract for Railway backend:
+ * https://brikk-production-9913.up.railway.app
+ */
 
-export type FlowStatus = 'active' | 'paused' | 'draft';
+// ============================================================================
+// Core Types
+// ============================================================================
 
-export type ExecutionState = 'succeeded' | 'failed' | 'running' | 'canceled';
-
-export type AlertType = 'latency' | 'error' | 'cost' | 'other';
-
-export type AlertState = 'open' | 'acked' | 'resolved';
-
-export type ProviderStatus = 'operational' | 'degraded' | 'down';
-
-export type IntegrationState = 'connected' | 'needs_attention' | 'error' | 'disconnected';
-
-export interface Node {
-  type: string;
-  config: Record<string, any>;
-}
-
-export interface Flow {
+export type Org = {
   id: string;
   name: string;
-  status: FlowStatus;
-  version?: string;
-  triggers: Node[];
-  conditions?: Node[];
-  actions: Node[];
-  tags?: string[];
-  createdBy?: string;
-  updatedAt: string;
-}
+  plan: 'free' | 'starter' | 'pro' | 'enterprise';
+  limits: Record<string, number>;
+};
 
-export interface Execution {
+export type User = {
   id: string;
-  flowId: string;
-  state: ExecutionState;
-  startedAt: string;
-  endedAt?: string;
-  latencyMs?: number;
-  costUsd?: number;
-  providerBreakdown?: Record<string, number>;
-}
+  email: string;
+  roles: string[];
+};
 
-export interface AuditEvent {
+// ============================================================================
+// Agent Types
+// ============================================================================
+
+export type AgentStatus = 'active' | 'paused' | 'error';
+
+export type Agent = {
   id: string;
-  type: string;
-  actor: {
-    id: string;
-    ip?: string;
-  };
-  target?: Record<string, any>;
-  diff?: Record<string, any>;
-  hash?: string;
-  ts: string;
-}
+  name: string;
+  status: AgentStatus;
+  throughput_1h: number;
+  success_rate_24h: number;
+  owner: string;
+  tags: string[];
+  last_seen: string;
+};
 
-export interface MetricsOverview {
-  activeFlows?: number;
-  exec24h?: number;
-  successRate?: number;
-  cost24h?: number;
-  sparklines?: Record<string, any>;
-}
+export type AgentListResponse = {
+  data: Agent[];
+  has_more: boolean;
+  next_cursor?: string;
+};
 
-export interface ProviderHealth {
-  provider: string;
-  status: ProviderStatus;
-  avgLatencyMs?: number;
-  calls24h?: number;
-}
+// ============================================================================
+// Workflow (BrikkFlows) Types
+// ============================================================================
 
-export interface Alert {
-  id: string;
-  type: AlertType;
-  state: AlertState;
-  message?: string;
-  flowId?: string;
-  createdAt: string;
-}
-
-export interface IntegrationStatus {
-  key: string;
-  state: IntegrationState;
-  updatedAt?: string;
-}
-
-export interface GraphNode {
+export type FlowNode = {
   id: string;
   type: string;
-}
+  label: string;
+};
 
-export interface GraphEdge {
+export type FlowEdge = {
+  id: string;
   from: string;
   to: string;
-  latencyMs?: number;
-  tps?: number;
-  errorRate?: number;
-}
+};
 
-export interface Graph {
-  nodes?: GraphNode[];
-  edges?: GraphEdge[];
-}
-
-// Request/Response types
-
-export interface FlowsListParams {
-  status?: FlowStatus;
-  q?: string;
-  page?: number;
-  sort?: string;
-}
-
-export interface ExecutionsListParams {
-  flowId?: string;
-  state?: ExecutionState;
-  from?: string;
-  to?: string;
-  page?: number;
-}
-
-export interface AuditListParams {
-  type?: string;
-  actor?: string;
-  from?: string;
-  to?: string;
-  page?: number;
-}
-
-export interface AlertsListParams {
-  state?: AlertState;
-  type?: AlertType;
-}
-
-export interface SimulateRequest {
-  input: Record<string, any>;
-  trace?: boolean;
-}
-
-export interface SimulateResponse {
-  wouldTrigger: boolean;
-  path: string[];
-  estimatedCostUsd: number;
-  traceId: string;
-}
-
-export interface ApiError {
-  error: {
-    code: string;
-    message: string;
-    fields?: Record<string, string>;
+export type Flow = {
+  id: string;
+  name: string;
+  published: boolean;
+  graph: {
+    nodes: FlowNode[];
+    edges: FlowEdge[];
   };
-}
+};
 
-// Pagination wrapper
-export interface PaginatedResponse<T> {
+export type FlowListResponse = {
+  data: Flow[];
+  has_more: boolean;
+  next_cursor?: string;
+};
+
+// ============================================================================
+// Usage & Cost Types
+// ============================================================================
+
+export type SeriesPoint = [string, number]; // [ISO8601 timestamp, value]
+
+export type MetricSeries = {
+  metric: string;
+  points: SeriesPoint[];
+};
+
+export type UsageAggregate = {
+  series: MetricSeries[];
+};
+
+export type ProviderCostSeries = {
+  name: string;
+  currency: 'USD';
+  points: SeriesPoint[];
+};
+
+export type CostsByProvider = {
+  providers: ProviderCostSeries[];
+  forecast_30d: number;
+};
+
+// ============================================================================
+// Billing Types
+// ============================================================================
+
+export type InvoiceStatus = 'paid' | 'open' | 'void';
+
+export type Invoice = {
+  id: string;
+  period: string;
+  amount: number;
+  currency: 'USD' | 'EUR';
+  status: InvoiceStatus;
+  url?: string;
+};
+
+export type InvoiceListResponse = {
+  data: Invoice[];
+  has_more: boolean;
+  next_cursor?: string;
+};
+
+export type BillingPlan = {
+  plan: string;
+  limits: Record<string, number>;
+  overages?: Record<string, number>;
+};
+
+// ============================================================================
+// Security Types
+// ============================================================================
+
+export type ApiKey = {
+  id: string;
+  name?: string;
+  created_at: string;
+  last_used?: string;
+  scopes: string[];
+  masked: string;
+};
+
+export type ApiKeyCreate = {
+  id: string;
+  secret: string; // Only shown once
+};
+
+export type ApiKeyListResponse = {
+  data: ApiKey[];
+  has_more: boolean;
+  next_cursor?: string;
+};
+
+export type AuditEvent = {
+  ts: string;
+  actor: string;
+  action: string;
+  target?: string;
+  ip?: string;
+  meta?: Record<string, any>;
+};
+
+export type AuditLogResponse = {
+  data: AuditEvent[];
+  has_more: boolean;
+  next_cursor?: string;
+};
+
+// ============================================================================
+// Analytics Types
+// ============================================================================
+
+export type TopAgent = {
+  id: string;
+  name: string;
+  requests: number;
+  success_rate: number;
+};
+
+export type TopError = {
+  error_type: string;
+  count: number;
+  recent_samples: Array<{
+    timestamp: string;
+    message: string;
+    agent_id?: string;
+  }>;
+};
+
+export type LatencyMetrics = {
+  series: Array<{
+    metric: 'p50' | 'p95' | 'p99';
+    points: SeriesPoint[];
+  }>;
+};
+
+// ============================================================================
+// Marketplace Types
+// ============================================================================
+
+export type MarketplaceAgent = {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  pricing: {
+    type: 'free' | 'paid' | 'subscription';
+    amount?: number;
+  };
+  rating: number;
+  installs: number;
+  tags: string[];
+  icon_url?: string;
+};
+
+export type MarketplaceListResponse = {
+  data: MarketplaceAgent[];
+  has_more: boolean;
+  next_cursor?: string;
+};
+
+// ============================================================================
+// Help & Onboarding Types
+// ============================================================================
+
+export type ChecklistStep = {
+  id: string;
+  title: string;
+  description: string;
+  completed: boolean;
+  url?: string;
+};
+
+export type HelpChecklist = {
+  steps: ChecklistStep[];
+  completion_percentage: number;
+};
+
+export type SupportTicket = {
+  subject: string;
+  message: string;
+  priority?: 'low' | 'medium' | 'high';
+};
+
+// ============================================================================
+// System Types
+// ============================================================================
+
+export type HealthStatus = {
+  status: 'healthy' | 'degraded' | 'down';
+  timestamp: string;
+};
+
+export type GatewayInfo = {
+  service: string;
+  version: string;
+  status: 'operational' | 'maintenance';
+};
+
+// ============================================================================
+// Error Types
+// ============================================================================
+
+export type ApiError = {
+  error: string;
+  code: string;
+  hint?: string;
+  request_id?: string;
+};
+
+// ============================================================================
+// Pagination Types
+// ============================================================================
+
+export type PaginationParams = {
+  limit?: number;
+  cursor?: string;
+};
+
+export type PaginatedResponse<T> = {
   data: T[];
-  page: number;
-  pageSize: number;
-  total: number;
-  hasMore: boolean;
-}
+  has_more: boolean;
+  next_cursor?: string;
+};
 
