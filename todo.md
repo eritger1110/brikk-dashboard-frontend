@@ -11,8 +11,8 @@
 - [ ] Test /health and / endpoints
 
 ## Phase 2: Wire Existing Pages to Real API
-- [ ] Overview: Wire /v1/usage/aggregate and /v1/costs/by-provider
-- [ ] Agents: Wire /v1/agents with pause/resume actions
+- [x] Overview: Wire /v1/usage/aggregate and /v1/costs/by-provider
+- [x] Agents: Wire /v1/agents with pause/resume actions
 - [ ] BrikkFlows: Wire /v1/flows endpoints
 - [ ] Billing: Wire /v1/billing/invoices
 - [ ] Security: Wire /v1/api-keys and /v1/audit
