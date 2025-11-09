@@ -6,6 +6,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ApiProvider } from "./contexts/ApiContext";
 import { SimulationProvider } from "./contexts/SimulationContext";
+
+// Import pages
+import Overview from "./pages/Overview";
 import Dashboard from "./pages/Dashboard";
 import Workflows from "./pages/Workflows";
 import FlowBuilder from "./pages/FlowBuilder";
@@ -18,14 +21,25 @@ import DemoGallery from "./pages/DemoGallery";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
+      {/* New Brikk Dashboard Routes */}
+      <Route path="/" component={Overview} />
+      <Route path="/agents" component={Dashboard} />
       <Route path="/workflows" component={Workflows} />
       <Route path="/flow-builder" component={FlowBuilder} />
+      <Route path="/billing" component={Overview} />
+      <Route path="/marketplace" component={Overview} />
+      <Route path="/security" component={AuditLogs} />
+      <Route path="/developer" component={Overview} />
+      <Route path="/analytics" component={Monitoring} />
+      <Route path="/help" component={Overview} />
+      <Route path="/settings" component={Settings} />
+      
+      {/* Legacy routes */}
       <Route path="/monitoring" component={Monitoring} />
       <Route path="/audit-logs" component={AuditLogs} />
       <Route path="/roles" component={RoleManagement} />
-      <Route path="/settings" component={Settings} />
       <Route path="/demo" component={DemoGallery} />
+      
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
