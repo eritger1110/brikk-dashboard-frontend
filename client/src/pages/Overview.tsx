@@ -19,10 +19,12 @@ import {
   getUsageAggregate,
   getCostsByProvider,
   getAuditLogs,
-  type HealthStatus,
-  type UsageAggregate,
-  type CostsByProvider,
 } from "@/lib/api";
+import type {
+  HealthStatus,
+  UsageAggregate,
+  CostsByProvider,
+} from "@/types/api";
 import {
   Area,
   AreaChart,
@@ -142,20 +144,20 @@ export default function Overview() {
 
   // Calculate KPI values from real data
   const totalRequests24h = usageData?.series
-    .find((s) => s.metric === "requests")
-    ?.points.reduce((sum, [, value]) => sum + value, 0) || 0;
+    .find((s: any) => s.metric === "requests")
+    ?.points.reduce((sum: number, [, value]: [string, number]) => sum + value, 0) || 0;
 
   const totalErrors24h = usageData?.series
-    .find((s) => s.metric === "errors")
-    ?.points.reduce((sum, [, value]) => sum + value, 0) || 0;
+    .find((s: any) => s.metric === "errors")
+    ?.points.reduce((sum: number, [, value]: [string, number]) => sum + value, 0) || 0;
 
   const successRate =
     totalRequests24h > 0
       ? (((totalRequests24h - totalErrors24h) / totalRequests24h) * 100).toFixed(1)
       : "0.0";
 
-  const totalCost30d = costsData?.providers.reduce((sum, provider) => {
-    const providerTotal = provider.points.reduce((s, [, value]) => s + value, 0);
+  const totalCost30d = costsData?.providers.reduce((sum: number, provider: any) => {
+    const providerTotal = provider.points.reduce((s: number, [, value]: [string, number]) => s + value, 0);
     return sum + providerTotal;
   }, 0) || 0;
 
@@ -164,8 +166,8 @@ export default function Overview() {
   // Prepare chart data
   const requestsChartData =
     usageData?.series
-      .find((s) => s.metric === "requests")
-      ?.points.map(([timestamp, value]) => ({
+      .find((s: any) => s.metric === "requests")
+      ?.points.map(([timestamp, value]: [string, number]) => ({
         time: new Date(timestamp).toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
@@ -174,7 +176,7 @@ export default function Overview() {
       })) || [];
 
   const costsChartData =
-    costsData?.providers[0]?.points.slice(-7).map(([timestamp, value]) => ({
+    costsData?.providers[0]?.points.slice(-7).map(([timestamp, value]: [string, number]) => ({
       date: new Date(timestamp).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",

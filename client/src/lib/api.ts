@@ -171,11 +171,11 @@ export async function getGatewayInfo(): Promise<GatewayInfo> {
 // ============================================================================
 
 export async function getCurrentOrg(token?: string): Promise<Org> {
-  return apiFetch<Org>('/v1/orgs/current', {}, token);
+  return apiFetch<Org>('/api/org/me', {}, token);
 }
 
 export async function getCurrentUser(token?: string): Promise<User> {
-  return apiFetch<User>('/v1/users/me', {}, token);
+  return apiFetch<User>('/api/users/me', {}, token);
 }
 
 // ============================================================================
@@ -195,13 +195,13 @@ export async function getAgents(params?: {
   if (params?.cursor) searchParams.set('cursor', params.cursor);
 
   const query = searchParams.toString();
-  const endpoint = `/v1/agents${query ? `?${query}` : ''}`;
+  const endpoint = `/api/agents${query ? `?${query}` : ''}`;
 
   return apiFetch<AgentListResponse>(endpoint, {}, params?.token, params?.orgId);
 }
 
 export async function createAgent(data: Partial<Agent>, token?: string, orgId?: string): Promise<Agent> {
-  return apiFetch<Agent>('/v1/agents', {
+  return apiFetch<Agent>('/api/agents', {
     method: 'POST',
     body: JSON.stringify(data),
   }, token, orgId);
@@ -213,20 +213,20 @@ export async function updateAgent(
   token?: string,
   orgId?: string
 ): Promise<Agent> {
-  return apiFetch<Agent>(`/v1/agents/${agentId}`, {
+  return apiFetch<Agent>(`/api/agents/${agentId}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
   }, token, orgId);
 }
 
 export async function pauseAgent(agentId: string, token?: string, orgId?: string): Promise<void> {
-  return apiFetch<void>(`/v1/agents/${agentId}:pause`, {
+  return apiFetch<void>(`/api/agents/${agentId}/pause`, {
     method: 'POST',
   }, token, orgId);
 }
 
 export async function resumeAgent(agentId: string, token?: string, orgId?: string): Promise<void> {
-  return apiFetch<void>(`/v1/agents/${agentId}:resume`, {
+  return apiFetch<void>(`/api/agents/${agentId}/resume`, {
     method: 'POST',
   }, token, orgId);
 }
@@ -241,17 +241,17 @@ export async function getFlows(params?: PaginationParams & { token?: string; org
   if (params?.cursor) searchParams.set('cursor', params.cursor);
 
   const query = searchParams.toString();
-  const endpoint = `/v1/flows${query ? `?${query}` : ''}`;
+  const endpoint = `/api/workflows${query ? `?${query}` : ''}`;
 
   return apiFetch<FlowListResponse>(endpoint, {}, params?.token, params?.orgId);
 }
 
 export async function getFlow(flowId: string, token?: string, orgId?: string): Promise<Flow> {
-  return apiFetch<Flow>(`/v1/flows/${flowId}`, {}, token, orgId);
+  return apiFetch<Flow>(`/api/workflows/${flowId}`, {}, token, orgId);
 }
 
 export async function createFlow(data: Partial<Flow>, token?: string, orgId?: string): Promise<Flow> {
-  return apiFetch<Flow>('/v1/flows', {
+  return apiFetch<Flow>('/api/workflows', {
     method: 'POST',
     body: JSON.stringify(data),
   }, token, orgId);
@@ -263,8 +263,8 @@ export async function updateFlow(
   token?: string,
   orgId?: string
 ): Promise<Flow> {
-  return apiFetch<Flow>(`/v1/flows/${flowId}`, {
-    method: 'PATCH',
+  return apiFetch<Flow>(`/api/workflows/${flowId}`, {
+    method: 'PUT',
     body: JSON.stringify(data),
   }, token, orgId);
 }
@@ -291,7 +291,7 @@ export async function getUsageAggregate(params: {
   });
 
   return apiFetch<UsageAggregate>(
-    `/v1/usage/aggregate?${searchParams.toString()}`,
+    `/api/usage/aggregate?${searchParams.toString()}`,
     {},
     params.token,
     params.orgId
@@ -310,7 +310,7 @@ export async function getCostsByProvider(params: {
   });
 
   return apiFetch<CostsByProvider>(
-    `/v1/costs/by-provider?${searchParams.toString()}`,
+    `/api/costs/by-provider?${searchParams.toString()}`,
     {},
     params.token,
     params.orgId
@@ -322,7 +322,7 @@ export async function getCostsByProvider(params: {
 // ============================================================================
 
 export async function getBillingPlan(token?: string, orgId?: string): Promise<BillingPlan> {
-  return apiFetch<BillingPlan>('/v1/billing/plan', {}, token, orgId);
+  return apiFetch<BillingPlan>('/api/billing/plan', {}, token, orgId);
 }
 
 export async function getInvoices(params?: PaginationParams & { token?: string; orgId?: string }): Promise<InvoiceListResponse> {
@@ -331,7 +331,7 @@ export async function getInvoices(params?: PaginationParams & { token?: string; 
   if (params?.cursor) searchParams.set('cursor', params.cursor);
 
   const query = searchParams.toString();
-  const endpoint = `/v1/billing/invoices${query ? `?${query}` : ''}`;
+  const endpoint = `/api/billing/invoices${query ? `?${query}` : ''}`;
 
   return apiFetch<InvoiceListResponse>(endpoint, {}, params?.token, params?.orgId);
 }
@@ -346,20 +346,20 @@ export async function getApiKeys(params?: PaginationParams & { token?: string; o
   if (params?.cursor) searchParams.set('cursor', params.cursor);
 
   const query = searchParams.toString();
-  const endpoint = `/v1/api-keys${query ? `?${query}` : ''}`;
+  const endpoint = `/api/security/api-keys${query ? `?${query}` : ''}`;
 
   return apiFetch<ApiKeyListResponse>(endpoint, {}, params?.token, params?.orgId);
 }
 
 export async function createApiKey(data: { name?: string; scopes?: string[] }, token?: string, orgId?: string): Promise<ApiKeyCreate> {
-  return apiFetch<ApiKeyCreate>('/v1/api-keys', {
+  return apiFetch<ApiKeyCreate>('/api/security/api-keys', {
     method: 'POST',
     body: JSON.stringify(data),
   }, token, orgId);
 }
 
 export async function revokeApiKey(keyId: string, token?: string, orgId?: string): Promise<void> {
-  return apiFetch<void>(`/v1/api-keys/${keyId}:revoke`, {
+  return apiFetch<void>(`/api/security/api-keys/${keyId}`, {
     method: 'POST',
   }, token, orgId);
 }
@@ -381,7 +381,7 @@ export async function getAuditLogs(params: {
   if (params.cursor) searchParams.set('cursor', params.cursor);
 
   const query = searchParams.toString();
-  const endpoint = `/v1/audit${query ? `?${query}` : ''}`;
+  const endpoint = `/api/security/audit-logs${query ? `?${query}` : ''}`;
 
   return apiFetch<AuditLogResponse>(endpoint, {}, params.token, params.orgId);
 }
@@ -422,7 +422,7 @@ export async function getTopAgents(params: {
 }): Promise<{ data: TopAgent[] }> {
   const searchParams = new URLSearchParams({ range: params.range });
   return apiFetch<{ data: TopAgent[] }>(
-    `/v1/analytics/top-agents?${searchParams.toString()}`,
+    `/api/analytics/top-agents?${searchParams.toString()}`,
     {},
     params.token,
     params.orgId
@@ -436,7 +436,7 @@ export async function getTopErrors(params: {
 }): Promise<{ data: TopError[] }> {
   const searchParams = new URLSearchParams({ range: params.range });
   return apiFetch<{ data: TopError[] }>(
-    `/v1/analytics/top-errors?${searchParams.toString()}`,
+    `/api/analytics/errors?${searchParams.toString()}`,
     {},
     params.token,
     params.orgId
@@ -454,7 +454,7 @@ export async function getLatencyMetrics(params: {
     granularity: params.granularity,
   });
   return apiFetch<LatencyMetrics>(
-    `/v1/analytics/latency?${searchParams.toString()}`,
+    `/api/analytics/latency?${searchParams.toString()}`,
     {},
     params.token,
     params.orgId
@@ -471,13 +471,13 @@ export async function getMarketplaceAgents(params?: PaginationParams & { token?:
   if (params?.cursor) searchParams.set('cursor', params.cursor);
 
   const query = searchParams.toString();
-  const endpoint = `/v1/marketplace/agents${query ? `?${query}` : ''}`;
+  const endpoint = `/api/marketplace/agents${query ? `?${query}` : ''}`;
 
   return apiFetch<MarketplaceListResponse>(endpoint, {}, params?.token, params?.orgId);
 }
 
 export async function installMarketplaceAgent(agentId: string, token?: string, orgId?: string): Promise<void> {
-  return apiFetch<void>(`/v1/marketplace/agents/${agentId}:install`, {
+  return apiFetch<void>(`/api/marketplace/agents/${agentId}/install`, {
     method: 'POST',
   }, token, orgId);
 }

@@ -14,10 +14,12 @@ import {
   getTopAgents,
   getTopErrors,
   getLatencyMetrics,
-  type TopAgent,
-  type TopError,
-  type LatencyMetrics,
 } from "@/lib/api";
+import type {
+  TopAgent,
+  TopError,
+  LatencyMetrics,
+} from "@/types/api";
 import {
   Line,
   LineChart,
@@ -307,7 +309,7 @@ export default function Analytics() {
                       <div className="text-xs font-medium text-muted-foreground">
                         Recent Samples:
                       </div>
-                      {error.recent_samples.slice(0, 2).map((sample, sampleIndex) => (
+                      {error.recent_samples.slice(0, 2).map((sample: any, sampleIndex: number) => (
                         <div
                           key={sampleIndex}
                           className="p-2 rounded bg-accent/50 text-xs"

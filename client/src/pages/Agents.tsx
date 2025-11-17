@@ -28,8 +28,8 @@ import {
   getAgents,
   pauseAgent,
   resumeAgent,
-  type Agent,
 } from "@/lib/api";
+import type { Agent } from "@/types/api";
 import { toast } from "sonner";
 
 export default function Agents() {

@@ -22,8 +22,8 @@ import { brikkColors } from "@/lib/palette";
 import {
   getMarketplaceAgents,
   installMarketplaceAgent,
-  type MarketplaceAgent,
 } from "@/lib/api";
+import type { MarketplaceAgent } from "@/types/api";
 import { toast } from "sonner";
 
 export default function Marketplace() {
@@ -41,7 +41,6 @@ export default function Marketplace() {
     setLoading(true);
     try {
       const response = await getMarketplaceAgents({
-        category: categoryFilter === "all" ? undefined : categoryFilter,
         limit: 50,
       });
       setAgents(response.data);
@@ -127,10 +126,10 @@ export default function Marketplace() {
             ) : (
               <>
                 <div className="text-2xl font-bold gradient-text">
-                  {agents.filter((a) => a.installed).length}
+                  {agents.length}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  Active in your org
+                  Available agents
                 </div>
               </>
             )}
@@ -235,7 +234,7 @@ export default function Marketplace() {
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {agent.tags.map((tag) => (
+                    {agent.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="px-2 py-1 rounded-full text-xs font-medium"
@@ -256,14 +255,14 @@ export default function Marketplace() {
                       <span>{agent.installs.toLocaleString()} installs</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span>v{agent.version}</span>
+                      <span className="text-xs text-muted-foreground">{agent.category}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex items-center gap-2">
-                  {agent.installed ? (
+                  {installingIds.has(agent.id) ? (
                     <Button
                       variant="outline"
                       className="flex-1"
