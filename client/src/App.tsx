@@ -26,6 +26,8 @@ import RoleManagement from "./pages/RoleManagement";
 import Settings from "./pages/Settings";
 import DemoGallery from "./pages/DemoGallery";
 import SimulationMode from "./pages/SimulationMode";
+import MonitoringDashboard from "./pages/MonitoringDashboard";
+import TeamManagement from "./pages/TeamManagement";
 
 function Router() {
   return (
@@ -50,6 +52,8 @@ function Router() {
       <Route path="/roles" component={RoleManagement} />
       <Route path="/demo" component={DemoGallery} />
       <Route path="/simulation" component={SimulationMode} />
+      <Route path="/monitoring-dashboard" component={MonitoringDashboard} />
+      <Route path="/team" component={TeamManagement} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
