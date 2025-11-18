@@ -4,7 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-// API Context removed - using direct API adapter imports now
+import { BrikkAuth0Provider, ProtectedRoute } from "./contexts/Auth0Context";
 
 // Import pages
 import Overview from "./pages/Overview";
@@ -60,15 +60,19 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="dark"
-        switchable
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
+      <BrikkAuth0Provider>
+        <ThemeProvider
+          defaultTheme="dark"
+          switchable
+        >
+          <TooltipProvider>
+            <Toaster />
+            <ProtectedRoute>
+              <Router />
+            </ProtectedRoute>
+          </TooltipProvider>
+        </ThemeProvider>
+      </BrikkAuth0Provider>
     </ErrorBoundary>
   );
 }
