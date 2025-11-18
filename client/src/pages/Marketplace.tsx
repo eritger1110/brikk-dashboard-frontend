@@ -19,14 +19,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { brikkColors } from "@/lib/palette";
-import {
-  getMarketplaceAgents,
-  installMarketplaceAgent,
-} from "@/lib/api";
 import type { MarketplaceAgent } from "@/types/api";
 import { toast } from "sonner";
+import { useApi } from "@/hooks/useApi";
 
 export default function Marketplace() {
+  const api = useApi();
   const [agents, setAgents] = useState<MarketplaceAgent[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,7 +38,7 @@ export default function Marketplace() {
   async function loadMarketplace() {
     setLoading(true);
     try {
-      const response = await getMarketplaceAgents({
+      const response = await api.getMarketplaceAgents({
         limit: 50,
       });
       setAgents(response.data);
@@ -55,7 +53,7 @@ export default function Marketplace() {
   async function handleInstall(agentId: string) {
     setInstallingIds((prev) => new Set(prev).add(agentId));
     try {
-      await installMarketplaceAgent(agentId);
+      await api.installMarketplaceAgent(agentId);
       toast.success("Agent installed successfully!");
       loadMarketplace(); // Refresh to update installation status
     } catch (err) {
