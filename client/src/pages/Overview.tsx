@@ -14,12 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
-import {
-  getHealth,
-  getUsageAggregate,
-  getCostsByProvider,
-  getAuditLogs,
-} from "@/lib/api";
+import { useApi } from "@/hooks/useApi";
 import type {
   HealthStatus,
   UsageAggregate,
@@ -91,6 +86,7 @@ function KPICard({
 }
 
 export default function Overview() {
+  const api = useApi();
   const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [usageData, setUsageData] = useState<UsageAggregate | null>(null);
   const [costsData, setCostsData] = useState<CostsByProvider | null>(null);
@@ -107,7 +103,7 @@ export default function Overview() {
 
     // Load health status
     try {
-      const health = await getHealth();
+      const health = await api.getHealth();
       setHealthStatus(health);
     } catch (error) {
       console.error("Failed to load health status:", error);
@@ -116,7 +112,7 @@ export default function Overview() {
 
     // Load usage data
     try {
-      const usage = await getUsageAggregate({
+      const usage = await api.getUsageAggregate({
         range: "24h",
         granularity: "hour",
       });
@@ -128,7 +124,7 @@ export default function Overview() {
 
     // Load costs data
     try {
-      const costs = await getCostsByProvider({
+      const costs = await api.getCostsByProvider({
         range: "30d",
         granularity: "day",
       });

@@ -13,10 +13,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { brikkColors } from "@/lib/palette";
-import { chatWithBrikkBot, type ChatMessage } from "@/lib/api";
+import { useApi } from "@/hooks/useApi";
 import { toast } from "sonner";
 
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+}
+
+// Mock chatWithBrikkBot function (replace with real API call)
+async function chatWithBrikkBot(params: { message: string; context: any }) {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  return {
+    message: "I'm here to help! This is a placeholder response. The actual BrikkBot integration will be connected to your AI backend."
+  };
+}
+
 export default function Help() {
+  const api = useApi();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",

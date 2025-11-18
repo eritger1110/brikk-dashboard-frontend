@@ -10,11 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
-import {
-  getTopAgents,
-  getTopErrors,
-  getLatencyMetrics,
-} from "@/lib/api";
+import { useApi } from "@/hooks/useApi";
 import type {
   TopAgent,
   TopError,
@@ -33,6 +29,7 @@ import {
 import { toast } from "sonner";
 
 export default function Analytics() {
+  const api = useApi();
   const [topAgents, setTopAgents] = useState<TopAgent[]>([]);
   const [topErrors, setTopErrors] = useState<TopError[]>([]);
   const [latencyMetrics, setLatencyMetrics] = useState<LatencyMetrics | null>(null);
@@ -50,9 +47,9 @@ export default function Analytics() {
 
     try {
       const [agentsData, errorsData, latencyData] = await Promise.all([
-        getTopAgents({ range: timeRange }).catch(() => ({ data: [] })),
-        getTopErrors({ range: timeRange }).catch(() => ({ data: [] })),
-        getLatencyMetrics({ range: timeRange, granularity: "hour" }).catch(() => null),
+        api.getTopAgents({ range: timeRange }).catch(() => ({ data: [] })),
+        api.getTopErrors({ range: timeRange }).catch(() => ({ data: [] })),
+        api.getLatencyMetrics({ range: timeRange, granularity: "hour" }).catch(() => null),
       ]);
 
       setTopAgents(agentsData.data);

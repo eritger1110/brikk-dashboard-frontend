@@ -24,15 +24,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "wouter";
 import { brikkColors } from "@/lib/palette";
-import {
-  getAgents,
-  pauseAgent,
-  resumeAgent,
-} from "@/lib/api";
+import { useApi } from "@/hooks/useApi";
 import type { Agent } from "@/types/api";
 import { toast } from "sonner";
 
 export default function Agents() {
+  const api = useApi();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [agents, setAgents] = useState<Agent[]>([]);
@@ -47,7 +44,7 @@ export default function Agents() {
     setLoading(true);
     setError(null);
     try {
-      const response = await getAgents({
+      const response = await api.getAgents({
         status: statusFilter === "all" ? undefined : (statusFilter as "active" | "disabled"),
         limit: 50,
       });
@@ -63,7 +60,7 @@ export default function Agents() {
 
   async function handlePauseAgent(agentId: string) {
     try {
-      await pauseAgent(agentId);
+      await api.pauseAgent(agentId);
       toast.success("Agent paused successfully");
       loadAgents();
     } catch (err) {
@@ -74,7 +71,7 @@ export default function Agents() {
 
   async function handleResumeAgent(agentId: string) {
     try {
-      await resumeAgent(agentId);
+      await api.resumeAgent(agentId);
       toast.success("Agent resumed successfully");
       loadAgents();
     } catch (err) {
