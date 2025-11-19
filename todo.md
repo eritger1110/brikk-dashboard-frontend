@@ -175,6 +175,13 @@
 - [ ] Performance comparison charts
 
 ## Phase 17: Real-time Collaboration
+- [x] WebSocket infrastructure
+- [x] Live cursor tracking
+- [x] Presence indicators
+- [x] Collaborative comments
+- [x] Activity feed
+- [x] @mentions support
+- [x] Conflict detection
 - [ ] WebSocket server setup
 - [ ] Live cursor tracking
 - [ ] Real-time workflow editing
