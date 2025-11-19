@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { FlaskConical, LogIn, Sparkles, Zap, Users, BarChart3 } from 'lucide-react';
+import BrikkLogo from '@/components/BrikkLogo';
 
 export default function Landing() {
   const enableDemoMode = () => {
@@ -18,12 +19,9 @@ export default function Landing() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-6">
-            <Sparkles className="w-10 h-10 text-primary" />
+          <div className="mb-6">
+            <BrikkLogo className="h-16 mx-auto" />
           </div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-cyan-500 to-violet-500 bg-clip-text text-transparent">
-            Brikk Platform
-          </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Build and deploy autonomous AI agent teams that work together to solve complex business problems
           </p>
@@ -127,8 +125,9 @@ export default function Landing() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-16 text-sm text-muted-foreground">
-          <p>© 2025 Brikk Platform. Built with ❤️ for autonomous AI teams.</p>
+        <div className="text-center mt-16">
+          <BrikkLogo className="h-6 mx-auto mb-4 opacity-50" />
+          <p className="text-sm text-muted-foreground">© 2025 Brikk. Built with ❤️ for autonomous AI teams.</p>
         </div>
       </div>
     </div>

@@ -302,6 +302,9 @@
 # PHASE 29-31: PRODUCTION READINESS
 
 ## Phase 29: Button Audit & Interaction Polish
+- [x] Add theme-aware logo switching (dark/light)
+- [x] Update Sidebar with BrikkLogo component
+- [x] Update Landing page with BrikkLogo component
 - [ ] Audit all 32 pages for buttons without onClick
 - [ ] Add onClick handlers to all buttons
 - [ ] Ensure all forms have onSubmit handlers

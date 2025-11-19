@@ -24,9 +24,10 @@ import {
   ChevronDown,
   ChevronRight
 } from 'lucide-react';
-import { APP_LOGO, APP_TITLE } from '@/const';
+import { APP_TITLE } from '@/const';
 import NotificationCenter from './NotificationCenter';
 import ThemeToggle from './ThemeToggle';
+import BrikkLogo from './BrikkLogo';
 
 interface NavItem {
   title: string;
@@ -117,8 +118,7 @@ export default function Sidebar() {
       <div className="p-6 border-b border-border">
         <div className="flex items-center justify-between mb-4">
           <Link href="/" className="flex items-center gap-3">
-            <img src={APP_LOGO} alt={APP_TITLE} className="w-8 h-8" />
-            <span className="text-xl font-bold">{APP_TITLE}</span>
+            <BrikkLogo className="h-8" />
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
