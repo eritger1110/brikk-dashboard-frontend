@@ -499,3 +499,131 @@
 
 ## Known Issues (E2E Testing Phase 8)
 - [ ] Demo Mode button: Auth flow issue - page reload causes authentication check loop. Requires architectural refactoring. Users should sign in with Auth0 for now.
+
+
+---
+
+# PHASE 44-54: UNIVERSAL CONNECTOR SYSTEM (UCS) - INTEGRATION MARKETPLACE
+
+## Phase 44: Fix Demo Mode (PRIORITY)
+- [x] Remove window.location.reload() from DemoModeContext
+- [x] Make BrikkAuth0Provider reactive to demo mode state changes
+- [x] Use React state management instead of localStorage + reload
+- [x] Test demo mode button functionality
+- [x] Verify dashboard access in demo mode
+
+## Phase 45: UCS Architecture & Database Design
+- [ ] Design Integration Registry schema
+- [ ] Design Connector Definition File (CDF) format
+- [ ] Plan Connector Generation Service (CGS) architecture
+- [ ] Plan Integration Execution Engine (IEE) architecture
+- [ ] Design auto-repair service architecture
+- [ ] Create system architecture diagram
+
+## Phase 46: Integration Registry Database
+- [ ] Create `integrations` table (id, name, category, description, version, created_by_user_id, connector_definition, changelog, tags, status)
+- [ ] Create `integration_auth_methods` table (OAuth2, API key, custom auth)
+- [ ] Create `integration_logs` table (usage, errors, test results)
+- [ ] Create `integration_versions` table (version history)
+- [ ] Create `integration_installations` table (user installations)
+- [ ] Run database migrations
+
+## Phase 47: Universal Connector Builder UI
+- [ ] Create Developer → Integrations → New page
+- [ ] Add OpenAPI/Swagger file upload
+- [ ] Add Postman collection upload
+- [ ] Add API documentation URL input
+- [ ] Add raw API docs text input
+- [ ] Add CURL/JSON sample request input
+- [ ] Build connector generation wizard
+- [ ] Add progress indicators
+
+## Phase 48: Connector Generation Service (Backend)
+- [ ] Create CGS backend service
+- [ ] Implement OpenAPI parser
+- [ ] Implement Postman collection parser
+- [ ] Implement API docs URL scraper
+- [ ] Implement LLM-based schema extraction
+- [ ] Implement auth detection
+- [ ] Implement endpoint inference
+- [ ] Generate Connector Definition File (CDF)
+- [ ] Add test request generation
+
+## Phase 49: Authentication Builder
+- [ ] Support API Key (Header)
+- [ ] Support API Key (Query param)
+- [ ] Support OAuth 2.0 (Authorization code)
+- [ ] Support OAuth 2.0 (PKCE)
+- [ ] Support OAuth 2.0 (Client credentials)
+- [ ] Support Basic Auth
+- [ ] Support Custom auth (LLM inferred)
+- [ ] Add auth testing UI
+- [ ] Add auth validation
+- [ ] Save auth config to database
+
+## Phase 50: Integration Marketplace UI
+- [ ] Create Marketplace → Integrations page
+- [ ] Add searchable integration list
+- [ ] Add category filters (CRM, ERP, logistics, marketing, finance, warehouse, healthcare)
+- [ ] Add install/uninstall functionality
+- [ ] Show version numbers
+- [ ] Show developer attribution
+- [ ] Create Integration Detail page
+- [ ] Show capabilities (Triggers/Actions)
+- [ ] Show auth setup instructions
+- [ ] Show changelog
+- [ ] Show schema documentation
+
+## Phase 51: Agent Integration Support
+- [ ] Add "Attach Integration" to Agent Configuration page
+- [ ] Create integration selector UI
+- [ ] Add integration capabilities to agents
+- [ ] Implement trigger abilities
+- [ ] Implement action abilities
+- [ ] Implement API invocation abilities
+- [ ] Test agent integration workflows
+
+## Phase 52: Auto-Repair & Version Management
+- [ ] Implement endpoint health monitoring
+- [ ] Detect 404 errors
+- [ ] Detect 401 auth expired
+- [ ] Detect schema changes
+- [ ] Detect new required fields
+- [ ] Implement LLM-based fix suggestions
+- [ ] Auto-regenerate connectors
+- [ ] Implement auto-versioning (v1 → v1.1 → v2.0)
+- [ ] Add user notifications for changes
+- [ ] Ensure backward compatibility
+
+## Phase 53: Developer Portal
+- [ ] Create Developer → Integrations page
+- [ ] Add "My Integrations" list
+- [ ] Add "Create Connector" button
+- [ ] Build API Testing Console
+- [ ] Show request/response logs
+- [ ] Add "Publish to Marketplace" workflow
+- [ ] Link Integration Developer Terms
+- [ ] Link Marketplace Publisher Agreement
+- [ ] Require legal acceptance before publishing
+
+## Phase 54: Integration Execution Engine
+- [ ] Create Integration Execution Engine (IEE) backend service
+- [ ] Implement secure API request execution
+- [ ] Add rate limiting per integration
+- [ ] Add error handling and retries
+- [ ] Add request/response logging
+- [ ] Add webhook support
+- [ ] Add trigger event handling
+- [ ] Test integration execution
+
+## Phase 55: E2E Testing & Deployment
+- [ ] Test connector generation from OpenAPI
+- [ ] Test connector generation from Postman
+- [ ] Test connector generation from API docs
+- [ ] Test OAuth 2.0 authentication flow
+- [ ] Test API key authentication
+- [ ] Test agent integration attachment
+- [ ] Test marketplace install/uninstall
+- [ ] Test auto-repair functionality
+- [ ] Test version management
+- [ ] Deploy all services

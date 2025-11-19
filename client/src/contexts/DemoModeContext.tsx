@@ -31,8 +31,7 @@ export function DemoModeProvider({ children }: { children: ReactNode }) {
     setIsDemoMode(prev => {
       const newValue = !prev;
       localStorage.setItem('brikk_demo_mode', String(newValue));
-      // Reload to apply auth changes
-      window.location.reload();
+      // No reload needed - state change triggers re-render
       return newValue;
     });
   };

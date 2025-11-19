@@ -35,8 +35,32 @@ const BrikkAuthContext = createContext<BrikkAuthContextType | undefined>(undefin
  * Auth0 Provider Wrapper with Brikk-specific logic
  */
 export function BrikkAuth0Provider({ children }: { children: ReactNode }) {
-  // Check if demo mode is enabled
-  const isDemoMode = localStorage.getItem('brikk_demo_mode') === 'true';
+  // Check if demo mode is enabled with state to make it reactive
+  const [isDemoMode, setIsDemoMode] = useState(() => {
+    return localStorage.getItem('brikk_demo_mode') === 'true';
+  });
+  
+  // Listen for demo mode changes
+  useEffect(() => {
+    const checkDemoMode = () => {
+      const demoMode = localStorage.getItem('brikk_demo_mode') === 'true';
+      setIsDemoMode(demoMode);
+    };
+    
+    // Check immediately
+    checkDemoMode();
+    
+    // Listen for storage changes (from other tabs/windows)
+    window.addEventListener('storage', checkDemoMode);
+    
+    // Poll for changes in same tab (since storage event doesn't fire in same tab)
+    const interval = setInterval(checkDemoMode, 100);
+    
+    return () => {
+      window.removeEventListener('storage', checkDemoMode);
+      clearInterval(interval);
+    };
+  }, []);
   
   // Skip Auth0 in demo mode
   if (isDemoMode) {
