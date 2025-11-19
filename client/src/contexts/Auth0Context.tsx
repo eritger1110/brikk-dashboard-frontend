@@ -34,6 +34,14 @@ const BrikkAuthContext = createContext<BrikkAuthContextType | undefined>(undefin
  * Auth0 Provider Wrapper with Brikk-specific logic
  */
 export function BrikkAuth0Provider({ children }: { children: ReactNode }) {
+  // Check if demo mode is enabled
+  const isDemoMode = localStorage.getItem('brikk_demo_mode') === 'true';
+  
+  // Skip Auth0 in demo mode
+  if (isDemoMode) {
+    return <BrikkDemoAuthWrapper>{children}</BrikkDemoAuthWrapper>;
+  }
+  
   return (
     <Auth0Provider
       domain={AUTH0_DOMAIN}
@@ -49,6 +57,59 @@ export function BrikkAuth0Provider({ children }: { children: ReactNode }) {
     >
       <BrikkAuthWrapper>{children}</BrikkAuthWrapper>
     </Auth0Provider>
+  );
+}
+
+/**
+ * Demo mode wrapper that provides mock auth context
+ */
+function BrikkDemoAuthWrapper({ children }: { children: ReactNode }) {
+  const demoUser = {
+    sub: 'demo_user_123',
+    name: 'Demo User',
+    email: 'demo@getbrikk.com',
+    picture: 'https://ui-avatars.com/api/?name=Demo+User&background=0057FF&color=fff',
+  };
+
+  const [accessToken] = useState('demo_access_token');
+  const [orgId] = useState('org_demo');
+
+  // Set demo tokens in localStorage
+  useEffect(() => {
+    localStorage.setItem('auth0_access_token', 'demo_access_token');
+    localStorage.setItem('brikk_org_id', 'org_demo');
+  }, []);
+
+  const login = () => {
+    console.log('[Demo] Login called - already in demo mode');
+  };
+
+  const logout = () => {
+    localStorage.removeItem('brikk_demo_mode');
+    localStorage.removeItem('auth0_access_token');
+    localStorage.removeItem('brikk_org_id');
+    window.location.reload();
+  };
+
+  const getAccessToken = async (): Promise<string | null> => {
+    return 'demo_access_token';
+  };
+
+  const contextValue: BrikkAuthContextType = {
+    isAuthenticated: true,
+    isLoading: false,
+    user: demoUser,
+    accessToken,
+    orgId,
+    login,
+    logout,
+    getAccessToken,
+  };
+
+  return (
+    <BrikkAuthContext.Provider value={contextValue}>
+      {children}
+    </BrikkAuthContext.Provider>
   );
 }
 
@@ -219,27 +280,22 @@ export function useBrikkAuth() {
  * Protected Route Component
  */
 export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated, isLoading, login } = useBrikkAuth();
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      login();
-    }
-  }, [isLoading, isAuthenticated, login]);
+  const { isAuthenticated, isLoading } = useBrikkAuth();
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Authenticating...</p>
+          <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
   if (!isAuthenticated) {
-    return null; // Will redirect to login
+    // Show landing page instead of auto-redirecting
+    return null;
   }
 
   return <>{children}</>;

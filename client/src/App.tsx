@@ -4,7 +4,8 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { BrikkAuth0Provider, ProtectedRoute } from "./contexts/Auth0Context";
+import { BrikkAuth0Provider, ProtectedRoute, useBrikkAuth } from "./contexts/Auth0Context";
+import { DemoModeProvider } from "./contexts/DemoModeContext";
 
 // Import pages
 import Overview from "./pages/Overview";
@@ -29,6 +30,8 @@ import SimulationMode from "./pages/SimulationMode";
 import MonitoringDashboard from "./pages/MonitoringDashboard";
 import TeamManagement from "./pages/TeamManagement";
 import AgentVersioning from "./pages/AgentVersioning";
+import Landing from "./pages/Landing";
+import CustomAgentBuilder from "./pages/CustomAgentBuilder";
 
 function Router() {
   return (
@@ -56,6 +59,7 @@ function Router() {
       <Route path="/monitoring-dashboard" component={MonitoringDashboard} />
       <Route path="/team" component={TeamManagement} />
       <Route path="/versioning" component={AgentVersioning} />
+      <Route path="/builder" component={CustomAgentBuilder} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
@@ -68,21 +72,45 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <BrikkAuth0Provider>
-        <ThemeProvider
-          defaultTheme="dark"
-          switchable
-        >
-          <TooltipProvider>
-            <Toaster />
-            <ProtectedRoute>
-              <Router />
-            </ProtectedRoute>
-          </TooltipProvider>
-        </ThemeProvider>
-      </BrikkAuth0Provider>
+      <DemoModeProvider>
+        <BrikkAuth0Provider>
+          <ThemeProvider
+            defaultTheme="dark"
+            switchable
+          >
+            <TooltipProvider>
+              <Toaster />
+              <AuthWrapper>
+                <Router />
+              </AuthWrapper>
+            </TooltipProvider>
+          </ThemeProvider>
+        </BrikkAuth0Provider>
+      </DemoModeProvider>
     </ErrorBoundary>
   );
+}
+
+// Wrapper to show Landing or Router based on auth
+function AuthWrapper({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isLoading } = useBrikkAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Landing />;
+  }
+
+  return <>{children}</>;
 }
 
 export default App;
