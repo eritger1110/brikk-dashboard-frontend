@@ -38,10 +38,16 @@ import CostOptimization from "./pages/CostOptimization";
 import APIKeysWebhooks from "./pages/APIKeysWebhooks";
 import AdvancedABTesting from "./pages/AdvancedABTesting";
 import RealtimeCollaboration from "./pages/RealtimeCollaboration";
+import Sidebar from "./components/Sidebar";
+import OnboardingTutorial from "./components/OnboardingTutorial";
 
 function Router() {
   return (
-    <Switch>
+    <div className="flex">
+      <OnboardingTutorial />
+      <Sidebar />
+      <main className="flex-1 overflow-auto">
+        <Switch>
       {/* New Brikk Dashboard Routes */}
       <Route path="/" component={Overview} />
       <Route path="/agents" component={Agents} />
@@ -76,7 +82,9 @@ function Router() {
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
-    </Switch>
+        </Switch>
+      </main>
+    </div>
   );
 }
 

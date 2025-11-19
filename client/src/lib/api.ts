@@ -521,3 +521,333 @@ export async function chatWithBrikkBot(params: {
   }, params.token, params.orgId);
 }
 
+
+
+// ============================================================================
+// Custom Agent Builder Endpoints
+// ============================================================================
+
+export async function getAgentSkills(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/custom-agents/skills', {}, token, orgId);
+}
+
+export async function getAgentIntegrations(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/custom-agents/integrations', {}, token, orgId);
+}
+
+export async function createCustomAgent(data: any, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/custom-agents/create', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+export async function validateCustomAgent(data: any, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/custom-agents/validate', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+// ============================================================================
+// Workflow Templates Endpoints
+// ============================================================================
+
+export async function getWorkflowTemplates(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/workflow-templates', {}, token, orgId);
+}
+
+export async function installWorkflowTemplate(data: {
+  template_id: string;
+  customization: any;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>('/api/workflow-templates/install', {
+    method: 'POST',
+    body: JSON.stringify({
+      template_id: data.template_id,
+      customization: data.customization,
+    }),
+  }, data.token, data.orgId);
+}
+
+// ============================================================================
+// Agent Analytics Endpoints (Extended)
+// ============================================================================
+
+export async function getAgentPerformance(params: {
+  agent_id: string;
+  time_range: string;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  const searchParams = new URLSearchParams({
+    time_range: params.time_range,
+  });
+  return apiFetch<any>(
+    `/api/analytics/agent/${params.agent_id}?${searchParams.toString()}`,
+    {},
+    params.token,
+    params.orgId
+  );
+}
+
+export async function getROIMetrics(params: {
+  time_range: string;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  const searchParams = new URLSearchParams({
+    time_range: params.time_range,
+  });
+  return apiFetch<any>(
+    `/api/analytics/roi?${searchParams.toString()}`,
+    {},
+    params.token,
+    params.orgId
+  );
+}
+
+// ============================================================================
+// Cost Optimization Endpoints
+// ============================================================================
+
+export async function getBudgets(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/cost-optimization/budgets?org_id=${orgId || getOrgId()}`, {}, token, orgId);
+}
+
+export async function createBudget(data: any, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/cost-optimization/budgets', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+export async function getOptimizationRecommendations(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/cost-optimization/recommendations?org_id=${orgId || getOrgId()}`, {}, token, orgId);
+}
+
+export async function getCostForecast(params: {
+  days: number;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  const searchParams = new URLSearchParams({
+    org_id: params.orgId || getOrgId() || '',
+    days: params.days.toString(),
+  });
+  return apiFetch<any>(
+    `/api/cost-optimization/forecast?${searchParams.toString()}`,
+    {},
+    params.token,
+    params.orgId
+  );
+}
+
+// ============================================================================
+// API Keys & Webhooks Endpoints (Extended)
+// ============================================================================
+
+export async function getWebhooks(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/webhooks?org_id=${orgId || getOrgId()}`, {}, token, orgId);
+}
+
+export async function createWebhook(data: any, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/webhooks', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+export async function getWebhookDeliveries(params: {
+  webhook_id: string;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>(
+    `/api/webhooks/${params.webhook_id}/deliveries`,
+    {},
+    params.token,
+    params.orgId
+  );
+}
+
+// ============================================================================
+// A/B Testing Endpoints
+// ============================================================================
+
+export async function getABTests(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/ab-testing/tests?org_id=${orgId || getOrgId()}`, {}, token, orgId);
+}
+
+export async function createABTest(data: any, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/ab-testing/tests', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+export async function startABTest(testId: string, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/ab-testing/tests/${testId}/start`, {
+    method: 'POST',
+  }, token, orgId);
+}
+
+export async function stopABTest(testId: string, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/ab-testing/tests/${testId}/stop`, {
+    method: 'POST',
+  }, token, orgId);
+}
+
+export async function startGradualRollout(data: {
+  test_id: string;
+  schedule: any;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>(`/api/ab-testing/tests/${data.test_id}/rollout`, {
+    method: 'POST',
+    body: JSON.stringify({ schedule: data.schedule }),
+  }, data.token, data.orgId);
+}
+
+// ============================================================================
+// Agent Versioning Endpoints
+// ============================================================================
+
+export async function getAgentVersions(agentId: string, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/versioning/agents/${agentId}/versions`, {}, token, orgId);
+}
+
+export async function createAgentVersion(data: {
+  agent_id: string;
+  version: string;
+  changes: any;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>(`/api/versioning/agents/${data.agent_id}/versions`, {
+    method: 'POST',
+    body: JSON.stringify({
+      version: data.version,
+      changes: data.changes,
+    }),
+  }, data.token, data.orgId);
+}
+
+export async function rollbackAgentVersion(data: {
+  agent_id: string;
+  version_id: string;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>(`/api/versioning/agents/${data.agent_id}/rollback`, {
+    method: 'POST',
+    body: JSON.stringify({ version_id: data.version_id }),
+  }, data.token, data.orgId);
+}
+
+// ============================================================================
+// Simulation Endpoints
+// ============================================================================
+
+export async function runSimulation(data: {
+  workflow_id: string;
+  input: any;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>('/api/simulation/run', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow_id: data.workflow_id,
+      input: data.input,
+    }),
+  }, data.token, data.orgId);
+}
+
+export async function getSimulationResults(simulationId: string, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/simulation/${simulationId}/results`, {}, token, orgId);
+}
+
+// ============================================================================
+// Real-time Collaboration Endpoints
+// ============================================================================
+
+export async function joinCollaborationSession(data: {
+  workflow_id: string;
+  user_id: string;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>('/api/collaboration/join', {
+    method: 'POST',
+    body: JSON.stringify({
+      workflow_id: data.workflow_id,
+      user_id: data.user_id,
+    }),
+  }, data.token, data.orgId);
+}
+
+export async function getOnlineUsers(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/collaboration/online?org_id=${orgId || getOrgId()}`, {}, token, orgId);
+}
+
+export async function getCollaborationActivity(params: {
+  limit?: number;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  const searchParams = new URLSearchParams({
+    org_id: params.orgId || getOrgId() || '',
+    limit: (params.limit || 50).toString(),
+  });
+  return apiFetch<any>(
+    `/api/collaboration/activity?${searchParams.toString()}`,
+    {},
+    params.token,
+    params.orgId
+  );
+}
+
+export async function addComment(data: {
+  workflow_id: string;
+  content: string;
+  position?: any;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  return apiFetch<any>('/api/collaboration/comments', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, data.token, data.orgId);
+}
+
+export async function getComments(workflowId: string, token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>(`/api/collaboration/comments?workflow_id=${workflowId}`, {}, token, orgId);
+}
+
+// ============================================================================
+// Monitoring Endpoints (Extended)
+// ============================================================================
+
+export async function getAgentExecutionMetrics(params: {
+  time_range: string;
+  token?: string;
+  orgId?: string;
+}): Promise<any> {
+  const searchParams = new URLSearchParams({
+    time_range: params.time_range,
+  });
+  return apiFetch<any>(
+    `/api/monitoring/executions?${searchParams.toString()}`,
+    {},
+    params.token,
+    params.orgId
+  );
+}
+
+export async function getSystemMetrics(token?: string, orgId?: string): Promise<any> {
+  return apiFetch<any>('/api/monitoring/system', {}, token, orgId);
+}
