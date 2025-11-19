@@ -37,6 +37,7 @@ import AgentAnalytics from "./pages/AgentAnalytics";
 import CostOptimization from "./pages/CostOptimization";
 import APIKeysWebhooks from "./pages/APIKeysWebhooks";
 import AdvancedABTesting from "./pages/AdvancedABTesting";
+import RealtimeCollaboration from "./pages/RealtimeCollaboration";
 
 function Router() {
   return (
@@ -70,6 +71,7 @@ function Router() {
       <Route path="/cost-optimization" component={CostOptimization} />
       <Route path="/api-keys" component={APIKeysWebhooks} />
       <Route path="/ab-testing" component={AdvancedABTesting} />
+      <Route path="/collaboration" component={RealtimeCollaboration} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
