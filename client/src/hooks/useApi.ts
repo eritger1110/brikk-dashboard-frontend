@@ -167,6 +167,17 @@ export function useApi() {
       const token = await getAccessTokenSilently();
       return apiModule.getHelpChecklist(token);
     }, [getAccessTokenSilently]),
+
+    // Templates
+    getWorkflowTemplates: useCallback(async () => {
+      const token = await getAccessTokenSilently();
+      return apiModule.getWorkflowTemplates(token);
+    }, [getAccessTokenSilently]),
+
+    installWorkflowTemplate: useCallback(async (data: Omit<Parameters<typeof apiModule.installWorkflowTemplate>[0], 'token' | 'orgId'>) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.installWorkflowTemplate({ ...data, token });
+    }, [getAccessTokenSilently]),
   };
 
   return api;
