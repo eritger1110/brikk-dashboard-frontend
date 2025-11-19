@@ -521,12 +521,17 @@
 - [ ] Create system architecture diagram
 
 ## Phase 46: Integration Registry Database
-- [ ] Create `integrations` table (id, name, category, description, version, created_by_user_id, connector_definition, changelog, tags, status)
-- [ ] Create `integration_auth_methods` table (OAuth2, API key, custom auth)
-- [ ] Create `integration_logs` table (usage, errors, test results)
-- [ ] Create `integration_versions` table (version history)
-- [ ] Create `integration_installations` table (user installations)
-- [ ] Run database migrations
+- [x] Create `integrations` table (id, name, category, description, version, created_by_user_id, connector_definition, changelog, tags, status)
+- [x] Create `integration_auth_methods` table (OAuth2, API key, custom auth)
+- [x] Create `integration_logs` table (usage, errors, test results)
+- [x] Create `integration_versions` table (version history)
+- [x] Create `integration_installations` table (user installations)
+- [x] Create `integration_health_checks` table (auto-repair monitoring)
+- [x] Create `integration_endpoints` table (endpoint definitions)
+- [x] Create `integration_categories` table (category organization)
+- [x] Create `integration_ratings` table (user reviews)
+- [x] Add automatic triggers for stats updates
+- [ ] Run database migrations on Railway
 
 ## Phase 47: Universal Connector Builder UI
 - [ ] Create Developer → Integrations → New page

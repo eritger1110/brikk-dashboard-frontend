@@ -43,6 +43,9 @@ import RealtimeCollaboration from "./pages/RealtimeCollaboration";
 import Legal from "./pages/Legal";
 import EnterpriseLegal from "./pages/EnterpriseLegal";
 import Documentation from "./pages/Documentation";
+import IntegrationBuilder from "./pages/IntegrationBuilder";
+import IntegrationMarketplace from "./pages/IntegrationMarketplace";
+import DeveloperPortal from "./pages/DeveloperPortal";
 import Sidebar from "./components/Sidebar";
 import OnboardingTutorial from "./components/OnboardingTutorial";
 import GlobalSearch from "./components/GlobalSearch";
@@ -96,6 +99,9 @@ function Router() {
       <Route path="/legal" component={Legal} />
       <Route path="/enterprise/legal-package" component={EnterpriseLegal} />
       <Route path="/docs" component={Documentation} />
+      <Route path="/developer/integrations/new" component={IntegrationBuilder} />
+      <Route path="/marketplace/integrations" component={IntegrationMarketplace} />
+      <Route path="/developer/portal" component={DeveloperPortal} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
