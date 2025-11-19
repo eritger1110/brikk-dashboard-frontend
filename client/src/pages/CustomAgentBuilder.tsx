@@ -116,32 +116,61 @@ export default function CustomAgentBuilder() {
         }
       ]);
 
-      setIntegrations([
-        {
-          id: 'int_openai',
-          name: 'OpenAI',
-          description: 'GPT-4, GPT-3.5, and other OpenAI models',
-          category: 'llm',
-          icon: 'brain',
-          auth_type: 'api_key'
-        },
-        {
-          id: 'int_slack',
-          name: 'Slack',
-          description: 'Send messages and interact with Slack',
-          category: 'communication',
-          icon: 'message-square',
-          auth_type: 'oauth'
-        },
-        {
-          id: 'int_salesforce',
-          name: 'Salesforce',
-          description: 'Access and update Salesforce CRM data',
-          category: 'crm',
-          icon: 'users',
-          auth_type: 'oauth'
+      // Load integrations from UCS API
+      try {
+        const response = await fetch('https://8000-izm86p4nsuk8lkf8pus89-fe6db43a.manusvm.computer/api/v1/integrations', {
+          headers: {
+            'X-User-ID': 'demo_user'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          // Only show installed integrations
+          const installedIntegrations = data.filter((int: any) => int.installed);
+          setIntegrations(installedIntegrations.map((int: any) => ({
+            id: int.id,
+            name: int.name,
+            description: int.description,
+            category: int.category,
+            icon: int.icon,
+            auth_type: int.auth_methods?.[0]?.type || 'api_key'
+          })));
+        } else {
+          // Fallback to mock data if API fails
+          setIntegrations([
+            {
+              id: 'int_openai',
+              name: 'OpenAI',
+              description: 'GPT-4, GPT-3.5, and other OpenAI models',
+              category: 'llm',
+              icon: 'brain',
+              auth_type: 'api_key'
+            },
+            {
+              id: 'int_slack',
+              name: 'Slack',
+              description: 'Send messages and interact with Slack',
+              category: 'communication',
+              icon: 'message-square',
+              auth_type: 'oauth'
+            }
+          ]);
         }
-      ]);
+      } catch (error) {
+        console.error('Failed to load integrations:', error);
+        // Fallback to mock data
+        setIntegrations([
+          {
+            id: 'int_openai',
+            name: 'OpenAI',
+            description: 'GPT-4, GPT-3.5, and other OpenAI models',
+            category: 'llm',
+            icon: 'brain',
+            auth_type: 'api_key'
+          }
+        ]);
+      }
 
       setTemplates([
         {
