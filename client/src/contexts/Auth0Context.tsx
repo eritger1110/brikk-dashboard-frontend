@@ -10,6 +10,7 @@
 
 import { Auth0Provider, useAuth0 as useAuth0Hook } from '@auth0/auth0-react';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import SignupAgreementModal, { ConsentData } from '@/components/SignupAgreementModal';
 
 // Auth0 Configuration (from environment variables)
 const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN || 'brikk-dashboard.us.auth0.com';
@@ -128,10 +129,24 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [orgId, setOrgId] = useState<string | null>(null);
+  const [showAgreementModal, setShowAgreementModal] = useState(false);
+  const [hasAcceptedAgreements, setHasAcceptedAgreements] = useState(false);
+
+  // Check if user needs to accept agreements
+  useEffect(() => {
+    if (isAuthenticated && !isLoading && user && !hasAcceptedAgreements) {
+      const storedConsent = localStorage.getItem('brikk_legal_consent');
+      if (storedConsent) {
+        setHasAcceptedAgreements(true);
+      } else {
+        setShowAgreementModal(true);
+      }
+    }
+  }, [isAuthenticated, isLoading, user, hasAcceptedAgreements]);
 
   // Get access token on mount and when auth state changes
   useEffect(() => {
-    if (isAuthenticated && !isLoading && user) {
+    if (isAuthenticated && !isLoading && user && hasAcceptedAgreements) {
       getAccessTokenSilently()
         .then(async (token) => {
           setAccessToken(token);
@@ -217,9 +232,32 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
     });
   };
 
+  const handleAcceptAgreements = async (consents: ConsentData) => {
+    try {
+      localStorage.setItem('brikk_legal_consent', JSON.stringify(consents));
+      setHasAcceptedAgreements(true);
+      setShowAgreementModal(false);
+    } catch (error) {
+      console.error('Failed to save consent:', error);
+      setHasAcceptedAgreements(true);
+      setShowAgreementModal(false);
+    }
+  };
+
+  const handleDeclineAgreements = () => {
+    setShowAgreementModal(false);
+    auth0Logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
   const logout = () => {
     localStorage.removeItem('auth0_access_token');
     localStorage.removeItem('brikk_org_id');
+    localStorage.removeItem('brikk_legal_consent');
+    setHasAcceptedAgreements(false);
     
     console.log('[Auth] User logged out:', {
       userId: user?.sub,
@@ -260,6 +298,14 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
 
   return (
     <BrikkAuthContext.Provider value={contextValue}>
+      {showAgreementModal && (
+        <SignupAgreementModal
+          open={showAgreementModal}
+          onAccept={handleAcceptAgreements}
+          onDecline={handleDeclineAgreements}
+          userLocation="Other"
+        />
+      )}
       {children}
     </BrikkAuthContext.Provider>
   );

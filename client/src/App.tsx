@@ -38,6 +38,7 @@ import CostOptimization from "./pages/CostOptimization";
 import APIKeysWebhooks from "./pages/APIKeysWebhooks";
 import AdvancedABTesting from "./pages/AdvancedABTesting";
 import RealtimeCollaboration from "./pages/RealtimeCollaboration";
+import Legal from "./pages/Legal";
 import Sidebar from "./components/Sidebar";
 import OnboardingTutorial from "./components/OnboardingTutorial";
 import GlobalSearch from "./components/GlobalSearch";
@@ -80,6 +81,7 @@ function Router() {
       <Route path="/api-keys" component={APIKeysWebhooks} />
       <Route path="/ab-testing" component={AdvancedABTesting} />
       <Route path="/collaboration" component={RealtimeCollaboration} />
+      <Route path="/legal" component={Legal} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}

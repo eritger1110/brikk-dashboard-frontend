@@ -371,3 +371,84 @@
 - [ ] Test mobile responsiveness
 - [ ] Final Netlify deployment
 - [ ] Update Auth0 production URLs
+
+
+---
+
+# PHASE 36-43: LEGAL FRAMEWORK & DOCUMENTATION
+
+## Phase 36: Button Validation
+- [x] Test all buttons on Landing page
+- [x] Test all buttons on BrikkStore (Marketplace)
+- [x] Test all buttons on BrikkFlow Builder
+- [x] Test all buttons on BrikkTemplates
+- [x] Test all buttons on BrikkInsights
+- [x] Test all buttons on Cost Optimization
+- [x] Test all buttons on API Keys & Webhooks
+- [x] Test all buttons on all remaining pages
+- [x] Create validation report
+
+## Phase 37: Dashboard Legal Framework
+- [x] Convert all DOCX files to HTML/Markdown
+- [x] Create signup click-wrap agreement modal
+- [x] Add TOS, Privacy, AUP checkboxes
+- [x] Add DPA checkbox for EU/California users
+- [x] Add AI Liability disclaimer checkbox
+- [x] Block dashboard access until agreements accepted
+- [x] Create /legal page showing accepted agreements
+- [ ] Add backend API endpoint to store user consents
+- [ ] Test signup flow with agreement modal
+
+## Phase 38: Marketing Site Legal Pages
+- [ ] Add Terms of Service page
+- [ ] Add Privacy Policy page
+- [ ] Add Acceptable Use Policy page
+- [ ] Add Security & Compliance page
+- [ ] Add DPA link in Privacy Policy
+- [ ] Create Cookie Policy placeholder
+- [ ] Update footer with legal links
+
+## Phase 39: Enterprise Legal Package
+- [ ] Create /enterprise/legal-package page
+- [ ] Add MSA download
+- [ ] Add SLA download
+- [ ] Add Security Addendum download
+- [ ] Add AI Agent Liability Addendum download
+- [ ] Add DPA download
+- [ ] Add HIPAA BAA download
+
+## Phase 40: Documentation Site
+- [ ] Set up docs.getbrikk.com subdomain
+- [ ] Create documentation site structure
+- [ ] Add API reference section
+- [ ] Add BrikkAgent catalog
+- [ ] Add BrikkFlow examples
+- [ ] Add integration guides
+- [ ] Add Integration Developer Terms
+- [ ] Add Marketplace Publisher Agreement
+
+## Phase 41: Stripe Billing Integration
+- [ ] Add Stripe to dashboard dependencies
+- [ ] Create billing page UI
+- [ ] Add payment method management
+- [ ] Add subscription management
+- [ ] Add usage-based billing tracking
+- [ ] Add invoice history
+- [ ] Wire to Stripe API
+
+## Phase 42: Backend Consent Tracking
+- [ ] Add accepted_tos_at field
+- [ ] Add accepted_privacy_policy_at field
+- [ ] Add accepted_aup_at field
+- [ ] Add accepted_clickwrap_at field
+- [ ] Add accepted_dpa_at field
+- [ ] Add accepted_ai_liability_at field
+- [ ] Create consent tracking API endpoints
+
+## Phase 43: Final Testing
+- [ ] Test signup flow end-to-end
+- [ ] Test legal page rendering
+- [ ] Test enterprise package downloads
+- [ ] Test Stripe billing flow
+- [ ] Test consent tracking
+- [ ] Deploy all changes
