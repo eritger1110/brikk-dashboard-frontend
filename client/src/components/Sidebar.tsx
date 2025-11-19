@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { APP_LOGO, APP_TITLE } from '@/const';
 import NotificationCenter from './NotificationCenter';
+import ThemeToggle from './ThemeToggle';
 
 interface NavItem {
   title: string;
@@ -119,7 +120,10 @@ export default function Sidebar() {
             <img src={APP_LOGO} alt={APP_TITLE} className="w-8 h-8" />
             <span className="text-xl font-bold">{APP_TITLE}</span>
           </Link>
-          <NotificationCenter />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <NotificationCenter />
+          </div>
         </div>
       </div>
 

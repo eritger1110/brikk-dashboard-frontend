@@ -265,11 +265,11 @@
 - [x] Update route names where appropriate
 
 ## Phase 25: Theme System
-- [ ] Add theme toggle component
-- [ ] Implement light theme CSS variables
-- [ ] Test all pages in both themes
-- [ ] Ensure charts/visualizations work in both themes
-- [ ] Set default theme (dark recommended)
+- [x] Add theme toggle component
+- [x] Implement light theme CSS variables
+- [x] Test all pages in both themes
+- [x] Ensure charts/visualizations work in both themes
+- [x] Set default theme (dark recommended)
 
 ## Phase 26: Backend API Integration
 - [ ] Connect all pages to Railway backend
