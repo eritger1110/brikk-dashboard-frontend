@@ -25,7 +25,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
 // API base URL - should be configured via environment variable
-const API_BASE_URL = import.meta.env.VITE_UCS_API_URL || "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_UCS_API_URL || "https://8000-izm86p4nsuk8lkf8pus89-fe6db43a.manusvm.computer";
 
 interface Integration {
   id: string;
