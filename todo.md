@@ -340,7 +340,7 @@
 # PHASE 32-35: FINAL PRODUCTION READINESS
 
 ## Phase 32: Complete Backend Integration
-- [x] Wire BrikkTemplates to Railway API
+- [ ] Wire BrikkTemplates to Railway API
 - [ ] Connect BrikkInsights analytics to live data
 - [ ] Wire Cost Optimization to backend
 - [ ] Connect API Keys & Webhooks CRUD
@@ -375,260 +375,126 @@
 
 ---
 
-# PHASE 36-43: LEGAL FRAMEWORK & DOCUMENTATION
+# PHASE 55-62: COMPLETE THE CIRCUIT - Wire Everything
 
-## Phase 36: Button Validation
-- [x] Test all buttons on Landing page
-- [x] Test all buttons on BrikkStore (Marketplace)
-- [x] Test all buttons on BrikkFlow Builder
-- [x] Test all buttons on BrikkTemplates
-- [x] Test all buttons on BrikkInsights
-- [x] Test all buttons on Cost Optimization
-- [x] Test all buttons on API Keys & Webhooks
-- [x] Test all buttons on all remaining pages
-- [x] Create validation report
+## Phase 55: Move UCS Backend Services
+- [ ] Move ucs_connector_generation.py to /home/ubuntu/brikk-platform/apps/gateway/
+- [ ] Move ucs_auto_repair.py to /home/ubuntu/brikk-platform/apps/gateway/
+- [ ] Move user_consent_api.py to /home/ubuntu/brikk-platform/apps/gateway/
+- [ ] Move 002_create_ucs_tables.sql to /home/ubuntu/brikk-platform/migrations/
 
-## Phase 37: Dashboard Legal Framework
-- [x] Convert all DOCX files to HTML/Markdown
-- [x] Create signup click-wrap agreement modal
-- [x] Add TOS, Privacy, AUP checkboxes
-- [x] Add DPA checkbox for EU/California users
-- [x] Add AI Liability disclaimer checkbox
-- [x] Block dashboard access until agreements accepted
-- [x] Create /legal page showing accepted agreements
-- [ ] Add backend API endpoint to store user consents
-- [ ] Test signup flow with agreement modal
+## Phase 56: Create Integration Registry API
+- [ ] Create integration_registry_api.py with CRUD endpoints
+- [ ] GET /api/v1/integrations - List all integrations
+- [ ] GET /api/v1/integrations/{id} - Get integration details
+- [ ] POST /api/v1/integrations - Create integration
+- [ ] PUT /api/v1/integrations/{id} - Update integration
+- [ ] DELETE /api/v1/integrations/{id} - Delete integration
+- [ ] POST /api/v1/integrations/{id}/install - Install integration
+- [ ] DELETE /api/v1/integrations/{id}/install - Uninstall integration
+- [ ] GET /api/v1/integrations/categories - List categories
 
-## Phase 38: Marketing Site Legal Pages
-- [ ] Add Terms of Service page
-- [ ] Add Privacy Policy page
-- [ ] Add Acceptable Use Policy page
-- [ ] Add Security & Compliance page
-- [ ] Add DPA link in Privacy Policy
-- [ ] Create Cookie Policy placeholder
-- [ ] Update footer with legal links
+## Phase 57: Wire Integration Builder Frontend
+- [ ] Update IntegrationBuilder.tsx to call CGS API endpoints
+- [ ] Wire OpenAPI upload to POST /api/v1/ucs/generate/openapi
+- [ ] Wire Postman upload to POST /api/v1/ucs/generate/postman
+- [ ] Wire URL input to POST /api/v1/ucs/generate/url
+- [ ] Wire text input to POST /api/v1/ucs/generate/text
+- [ ] Wire samples input to POST /api/v1/ucs/generate/samples
+- [ ] Add loading states during generation
+- [ ] Show generated CDF preview
+- [ ] Save generated integration to registry
 
-## Phase 39: Enterprise Legal Package
-- [ ] Create /enterprise/legal-package page
-- [ ] Add MSA download
-- [ ] Add SLA download
-- [ ] Add Security Addendum download
-- [ ] Add AI Agent Liability Addendum download
-- [ ] Add DPA download
-- [ ] Add HIPAA BAA download
+## Phase 58: Wire Integration Marketplace Frontend
+- [ ] Update IntegrationMarketplace.tsx to call Registry API
+- [ ] Wire integration list to GET /api/v1/integrations
+- [ ] Wire install button to POST /api/v1/integrations/{id}/install
+- [ ] Wire uninstall button to DELETE /api/v1/integrations/{id}/install
+- [ ] Wire category filter to GET /api/v1/integrations?category=X
+- [ ] Wire search to GET /api/v1/integrations?search=X
+- [ ] Add real-time installation status updates
 
-## Phase 40: Documentation Site
-- [ ] Set up docs.getbrikk.com subdomain
-- [ ] Create documentation site structure
-- [ ] Add API reference section
-- [ ] Add BrikkAgent catalog
-- [ ] Add BrikkFlow examples
-- [ ] Add integration guides
-- [ ] Add Integration Developer Terms
-- [ ] Add Marketplace Publisher Agreement
+## Phase 59: Wire Developer Portal Frontend
+- [ ] Update DeveloperPortal.tsx to call Management API
+- [ ] Wire integration list to GET /api/v1/integrations?created_by=me
+- [ ] Wire health status to GET /api/v1/ucs/health/{id}
+- [ ] Wire publish button to PUT /api/v1/integrations/{id}/publish
+- [ ] Wire unpublish button to PUT /api/v1/integrations/{id}/unpublish
+- [ ] Wire delete button to DELETE /api/v1/integrations/{id}
+- [ ] Wire export button to download CDF
+- [ ] Add real-time health check updates
 
-## Phase 41: Stripe Billing Integration
-- [ ] Add Stripe to dashboard dependencies
-- [ ] Create billing page UI
-- [ ] Add payment method management
-- [ ] Add subscription management
-- [ ] Add usage-based billing tracking
-- [ ] Add invoice history
-- [ ] Wire to Stripe API
+## Phase 60: Wire Remaining Dashboard Pages
+- [ ] Wire BrikkFlows to GET/POST /v1/flows
+- [ ] Wire Billing to GET /v1/billing/invoices
+- [ ] Wire Security to GET/POST /v1/api-keys
+- [ ] Wire Security to GET /v1/audit
+- [ ] Wire Developer to POST /v1/dev/proxy
 
-## Phase 42: Backend Consent Tracking
-- [ ] Add accepted_tos_at field
-- [ ] Add accepted_privacy_policy_at field
-- [ ] Add accepted_aup_at field
-- [ ] Add accepted_clickwrap_at field
-- [ ] Add accepted_dpa_at field
-- [ ] Add accepted_ai_liability_at field
-- [ ] Create consent tracking API endpoints
+## Phase 61: Create FastAPI Main App
+- [ ] Create main.py with all route imports
+- [ ] Mount UCS routes (/api/v1/ucs/*)
+- [ ] Mount Integration Registry routes (/api/v1/integrations/*)
+- [ ] Mount existing routes (/v1/*)
+- [ ] Add CORS middleware
+- [ ] Add authentication middleware
+- [ ] Add error handling middleware
+- [ ] Add health check endpoint
 
-## Phase 43: Final Testing
-- [ ] Test signup flow end-to-end
-- [ ] Test legal page rendering
-- [ ] Test enterprise package downloads
-- [ ] Test Stripe billing flow
-- [ ] Test consent tracking
-- [ ] Deploy all changes
-
-
-## Phase 38: Marketing Site Legal Pages
-- [ ] Marketing site is separate - documentation provided for integration
-- [ ] Add Terms of Service page to marketing site
-- [ ] Add Privacy Policy page to marketing site
-- [ ] Add Acceptable Use Policy page to marketing site
-- [ ] Add Security & Compliance page to marketing site
-- [ ] Add DPA link in Privacy Policy
-- [ ] Create Cookie Policy placeholder
-- [ ] Update footer with legal links
-
-## Phase 39: Enterprise Legal Package
-- [x] Create /enterprise/legal-package page
-- [x] Add MSA download
-- [x] Add SLA download
-- [x] Add Security Addendum download
-- [x] Add AI Agent Liability Addendum download
-- [x] Add DPA download
-- [x] Add HIPAA BAA download
-- [x] Add download all functionality
-- [x] Add enterprise contact information
-
-## Phase 40: Documentation Site
-- [x] Create /docs documentation page
-- [x] Add API reference section
-- [x] Add BrikkAgent catalog
-- [x] Add BrikkFlow examples section
-- [x] Add integration guides
-- [x] Add Integration Developer Terms link
-- [x] Add Marketplace Publisher Agreement link
-- [x] Add search functionality
-- [x] Add section navigation
-
-## Phase 41: Stripe Billing Integration
-- [x] Install Stripe dependencies (@stripe/stripe-js, @stripe/react-stripe-js)
-- [x] Create BillingEnhanced page with Stripe integration
-- [x] Add payment method form with CardElement
-- [x] Add payment method management (add/delete/set default)
-- [x] Add invoice history display
-- [x] Add current usage tracking
-- [x] Add billing contact management
-- [x] Wire to /billing route
-
-
-## Known Issues (E2E Testing Phase 8)
-- [ ] Demo Mode button: Auth flow issue - page reload causes authentication check loop. Requires architectural refactoring. Users should sign in with Auth0 for now.
+## Phase 62: End-to-End Testing
+- [ ] Test: Upload OpenAPI file → Generate connector → Save to registry
+- [ ] Test: Browse marketplace → Install integration → Verify in Developer Portal
+- [ ] Test: Health check fails → Auto-repair triggers → New version created
+- [ ] Test: Attach integration to agent → Configure permissions → Save
+- [ ] Test: All dashboard pages load with real data
+- [ ] Fix any broken connections
+- [ ] Verify all API calls work
 
 
 ---
 
-# PHASE 44-54: UNIVERSAL CONNECTOR SYSTEM (UCS) - INTEGRATION MARKETPLACE
+# PHASE 63-67: DEPLOYMENT-READY UCS (CRITICAL PATH)
 
-## Phase 44: Fix Demo Mode (PRIORITY)
-- [x] Remove window.location.reload() from DemoModeContext
-- [x] Make BrikkAuth0Provider reactive to demo mode state changes
-- [x] Use React state management instead of localStorage + reload
-- [x] Test demo mode button functionality
-- [x] Verify dashboard access in demo mode
+## Phase 63: Integration Registry API
+- [x] Create integration_registry_api.py
+- [x] GET /api/v1/integrations - List all integrations
+- [x] GET /api/v1/integrations/{id} - Get integration details
+- [x] POST /api/v1/integrations - Create integration
+- [x] PUT /api/v1/integrations/{id} - Update integration
+- [x] DELETE /api/v1/integrations/{id} - Delete integration
+- [x] POST /api/v1/integrations/{id}/install - Install integration
+- [x] DELETE /api/v1/integrations/{id}/install - Uninstall integration
+- [x] GET /api/v1/integrations/categories - List categories
+- [x] In-memory storage (no DB required for MVP)
 
-## Phase 45: UCS Architecture & Database Design
-- [ ] Design Integration Registry schema
-- [ ] Design Connector Definition File (CDF) format
-- [ ] Plan Connector Generation Service (CGS) architecture
-- [ ] Plan Integration Execution Engine (IEE) architecture
-- [ ] Design auto-repair service architecture
-- [ ] Create system architecture diagram
+## Phase 64: FastAPI Main App
+- [x] Create ucs_main.py with FastAPI app
+- [x] Mount Integration Registry routes
+- [x] Mount Connector Generation routes
+- [x] Add CORS middleware
+- [x] Add error handling
+- [x] Add health check endpoint
+- [x] Create requirements.txt
 
-## Phase 46: Integration Registry Database
-- [x] Create `integrations` table (id, name, category, description, version, created_by_user_id, connector_definition, changelog, tags, status)
-- [x] Create `integration_auth_methods` table (OAuth2, API key, custom auth)
-- [x] Create `integration_logs` table (usage, errors, test results)
-- [x] Create `integration_versions` table (version history)
-- [x] Create `integration_installations` table (user installations)
-- [x] Create `integration_health_checks` table (auto-repair monitoring)
-- [x] Create `integration_endpoints` table (endpoint definitions)
-- [x] Create `integration_categories` table (category organization)
-- [x] Create `integration_ratings` table (user reviews)
-- [x] Add automatic triggers for stats updates
-- [ ] Run database migrations on Railway
+## Phase 65: Wire Marketplace Frontend
+- [x] Create IntegrationMarketplace.tsx with real API calls
+- [x] Replace mock data with API calls
+- [x] Wire install/uninstall buttons
+- [x] Wire search and filters
+- [x] Add loading states
+- [x] Add error handling
+- [x] Add route to App.tsx
 
-## Phase 47: Universal Connector Builder UI
-- [ ] Create Developer → Integrations → New page
-- [ ] Add OpenAPI/Swagger file upload
-- [ ] Add Postman collection upload
-- [ ] Add API documentation URL input
-- [ ] Add raw API docs text input
-- [ ] Add CURL/JSON sample request input
-- [ ] Build connector generation wizard
-- [ ] Add progress indicators
+## Phase 66: Wire Builder Frontend
+- [ ] Update IntegrationBuilder.tsx to call CGS API
+- [ ] Wire file upload to backend
+- [ ] Wire generation methods
+- [ ] Show generation progress
+- [ ] Display generated CDF
+- [ ] Save to registry
 
-## Phase 48: Connector Generation Service (Backend)
-- [ ] Create CGS backend service
-- [ ] Implement OpenAPI parser
-- [ ] Implement Postman collection parser
-- [ ] Implement API docs URL scraper
-- [ ] Implement LLM-based schema extraction
-- [ ] Implement auth detection
-- [ ] Implement endpoint inference
-- [ ] Generate Connector Definition File (CDF)
-- [ ] Add test request generation
-
-## Phase 49: Authentication Builder
-- [ ] Support API Key (Header)
-- [ ] Support API Key (Query param)
-- [ ] Support OAuth 2.0 (Authorization code)
-- [ ] Support OAuth 2.0 (PKCE)
-- [ ] Support OAuth 2.0 (Client credentials)
-- [ ] Support Basic Auth
-- [ ] Support Custom auth (LLM inferred)
-- [ ] Add auth testing UI
-- [ ] Add auth validation
-- [ ] Save auth config to database
-
-## Phase 50: Integration Marketplace UI
-- [ ] Create Marketplace → Integrations page
-- [ ] Add searchable integration list
-- [ ] Add category filters (CRM, ERP, logistics, marketing, finance, warehouse, healthcare)
-- [ ] Add install/uninstall functionality
-- [ ] Show version numbers
-- [ ] Show developer attribution
-- [ ] Create Integration Detail page
-- [ ] Show capabilities (Triggers/Actions)
-- [ ] Show auth setup instructions
-- [ ] Show changelog
-- [ ] Show schema documentation
-
-## Phase 51: Agent Integration Support
-- [ ] Add "Attach Integration" to Agent Configuration page
-- [ ] Create integration selector UI
-- [ ] Add integration capabilities to agents
-- [ ] Implement trigger abilities
-- [ ] Implement action abilities
-- [ ] Implement API invocation abilities
-- [ ] Test agent integration workflows
-
-## Phase 52: Auto-Repair & Version Management
-- [ ] Implement endpoint health monitoring
-- [ ] Detect 404 errors
-- [ ] Detect 401 auth expired
-- [ ] Detect schema changes
-- [ ] Detect new required fields
-- [ ] Implement LLM-based fix suggestions
-- [ ] Auto-regenerate connectors
-- [ ] Implement auto-versioning (v1 → v1.1 → v2.0)
-- [ ] Add user notifications for changes
-- [ ] Ensure backward compatibility
-
-## Phase 53: Developer Portal
-- [ ] Create Developer → Integrations page
-- [ ] Add "My Integrations" list
-- [ ] Add "Create Connector" button
-- [ ] Build API Testing Console
-- [ ] Show request/response logs
-- [ ] Add "Publish to Marketplace" workflow
-- [ ] Link Integration Developer Terms
-- [ ] Link Marketplace Publisher Agreement
-- [ ] Require legal acceptance before publishing
-
-## Phase 54: Integration Execution Engine
-- [ ] Create Integration Execution Engine (IEE) backend service
-- [ ] Implement secure API request execution
-- [ ] Add rate limiting per integration
-- [ ] Add error handling and retries
-- [ ] Add request/response logging
-- [ ] Add webhook support
-- [ ] Add trigger event handling
-- [ ] Test integration execution
-
-## Phase 55: E2E Testing & Deployment
-- [ ] Test connector generation from OpenAPI
-- [ ] Test connector generation from Postman
-- [ ] Test connector generation from API docs
-- [ ] Test OAuth 2.0 authentication flow
-- [ ] Test API key authentication
-- [ ] Test agent integration attachment
-- [ ] Test marketplace install/uninstall
-- [ ] Test auto-repair functionality
-- [ ] Test version management
-- [ ] Deploy all services
+## Phase 67: Deployment & Testing
+- [ ] Create Railway deployment guide
+- [ ] Test end-to-end: Upload OpenAPI → Generate → Save → Install
+- [ ] Create demo video/screenshots
+- [ ] Document API endpoints

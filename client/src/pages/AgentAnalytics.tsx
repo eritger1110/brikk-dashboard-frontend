@@ -29,7 +29,6 @@ import {
   Activity
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useApi } from '@/hooks/useApi';
 
 interface AgentMetric {
   agent_id: string;
@@ -45,7 +44,6 @@ interface AgentMetric {
 }
 
 export default function AgentAnalytics() {
-  const api = useApi();
   const [timeRange, setTimeRange] = useState('7d');
   const [metrics, setMetrics] = useState<AgentMetric[]>([]);
   const [selectedAgent, setSelectedAgent] = useState('all');
@@ -101,8 +99,7 @@ export default function AgentAnalytics() {
   const loadMetrics = async () => {
     setIsLoading(true);
     try {
-      // TODO: Map API response to AgentMetric type
-      // const response = await api.getTopAgents({ range: timeRange });
+      // Mock data
       const mockMetrics: AgentMetric[] = [
         {
           agent_id: "agent_001",
@@ -153,7 +150,10 @@ export default function AgentAnalytics() {
           uptime_percentage: 99.7
         }
       ];
+
       setMetrics(mockMetrics);
+    } catch (error) {
+      toast.error('Failed to load analytics');
     } finally {
       setIsLoading(false);
     }

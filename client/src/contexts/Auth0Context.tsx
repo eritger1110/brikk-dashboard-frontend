@@ -10,7 +10,6 @@
 
 import { Auth0Provider, useAuth0 as useAuth0Hook } from '@auth0/auth0-react';
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import SignupAgreementModal, { ConsentData } from '@/components/SignupAgreementModal';
 
 // Auth0 Configuration (from environment variables)
 const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN || 'brikk-dashboard.us.auth0.com';
@@ -35,32 +34,8 @@ const BrikkAuthContext = createContext<BrikkAuthContextType | undefined>(undefin
  * Auth0 Provider Wrapper with Brikk-specific logic
  */
 export function BrikkAuth0Provider({ children }: { children: ReactNode }) {
-  // Check if demo mode is enabled with state to make it reactive
-  const [isDemoMode, setIsDemoMode] = useState(() => {
-    return localStorage.getItem('brikk_demo_mode') === 'true';
-  });
-  
-  // Listen for demo mode changes
-  useEffect(() => {
-    const checkDemoMode = () => {
-      const demoMode = localStorage.getItem('brikk_demo_mode') === 'true';
-      setIsDemoMode(demoMode);
-    };
-    
-    // Check immediately
-    checkDemoMode();
-    
-    // Listen for storage changes (from other tabs/windows)
-    window.addEventListener('storage', checkDemoMode);
-    
-    // Poll for changes in same tab (since storage event doesn't fire in same tab)
-    const interval = setInterval(checkDemoMode, 100);
-    
-    return () => {
-      window.removeEventListener('storage', checkDemoMode);
-      clearInterval(interval);
-    };
-  }, []);
+  // Check if demo mode is enabled
+  const isDemoMode = localStorage.getItem('brikk_demo_mode') === 'true';
   
   // Skip Auth0 in demo mode
   if (isDemoMode) {
@@ -153,24 +128,10 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [orgId, setOrgId] = useState<string | null>(null);
-  const [showAgreementModal, setShowAgreementModal] = useState(false);
-  const [hasAcceptedAgreements, setHasAcceptedAgreements] = useState(false);
-
-  // Check if user needs to accept agreements
-  useEffect(() => {
-    if (isAuthenticated && !isLoading && user && !hasAcceptedAgreements) {
-      const storedConsent = localStorage.getItem('brikk_legal_consent');
-      if (storedConsent) {
-        setHasAcceptedAgreements(true);
-      } else {
-        setShowAgreementModal(true);
-      }
-    }
-  }, [isAuthenticated, isLoading, user, hasAcceptedAgreements]);
 
   // Get access token on mount and when auth state changes
   useEffect(() => {
-    if (isAuthenticated && !isLoading && user && hasAcceptedAgreements) {
+    if (isAuthenticated && !isLoading && user) {
       getAccessTokenSilently()
         .then(async (token) => {
           setAccessToken(token);
@@ -256,58 +217,9 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
     });
   };
 
-  const handleAcceptAgreements = async (consents: ConsentData) => {
-    try {
-      // Store consent in localStorage
-      localStorage.setItem('brikk_legal_consent', JSON.stringify(consents));
-      
-      // Send to backend API
-      try {
-        const token = await getAccessTokenSilently();
-        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://brikk-production-9913.up.railway.app';
-        
-        const response = await fetch(`${apiUrl}/api/users/me/consents`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(consents),
-        });
-        
-        if (!response.ok) {
-          console.error('Failed to save consents to backend:', response.statusText);
-        } else {
-          console.log('[Auth] Consents saved to backend successfully');
-        }
-      } catch (apiError) {
-        console.error('[Auth] Failed to send consents to backend:', apiError);
-        // Continue anyway - localStorage backup exists
-      }
-      
-      setHasAcceptedAgreements(true);
-      setShowAgreementModal(false);
-    } catch (error) {
-      console.error('Failed to save consent:', error);
-      setHasAcceptedAgreements(true);
-      setShowAgreementModal(false);
-    }
-  };
-
-  const handleDeclineAgreements = () => {
-    setShowAgreementModal(false);
-    auth0Logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
   const logout = () => {
     localStorage.removeItem('auth0_access_token');
     localStorage.removeItem('brikk_org_id');
-    localStorage.removeItem('brikk_legal_consent');
-    setHasAcceptedAgreements(false);
     
     console.log('[Auth] User logged out:', {
       userId: user?.sub,
@@ -348,14 +260,6 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
 
   return (
     <BrikkAuthContext.Provider value={contextValue}>
-      {showAgreementModal && (
-        <SignupAgreementModal
-          open={showAgreementModal}
-          onAccept={handleAcceptAgreements}
-          onDecline={handleDeclineAgreements}
-          userLocation="Other"
-        />
-      )}
       {children}
     </BrikkAuthContext.Provider>
   );
