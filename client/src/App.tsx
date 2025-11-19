@@ -5,7 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { BrikkAuth0Provider, ProtectedRoute, useBrikkAuth } from "./contexts/Auth0Context";
-import { DemoModeProvider } from "./contexts/DemoModeContext";
+import { DemoModeProvider, useDemoMode } from "./contexts/DemoModeContext";
 import { useState, useEffect } from "react";
 
 // Import pages
@@ -132,19 +132,7 @@ function App() {
 // Wrapper to show Landing or Router based on auth
 function AuthWrapper({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useBrikkAuth();
-  const [isDemoMode, setIsDemoMode] = useState(() => {
-    return localStorage.getItem('brikk_demo_mode') === 'true';
-  });
-  
-  // Listen for storage changes
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsDemoMode(localStorage.getItem('brikk_demo_mode') === 'true');
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  const { isDemoMode } = useDemoMode();
   
   // Public routes that don't require authentication
   const publicRoutes = ['/legal', '/enterprise/legal-package', '/docs'];
