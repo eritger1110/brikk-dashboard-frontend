@@ -34,6 +34,7 @@ import Landing from "./pages/Landing";
 import CustomAgentBuilder from "./pages/CustomAgentBuilder";
 import WorkflowTemplates from "./pages/WorkflowTemplates";
 import AgentAnalytics from "./pages/AgentAnalytics";
+import CostOptimization from "./pages/CostOptimization";
 
 function Router() {
   return (
@@ -64,6 +65,7 @@ function Router() {
       <Route path="/builder" component={CustomAgentBuilder} />
       <Route path="/templates" component={WorkflowTemplates} />
       <Route path="/analytics" component={AgentAnalytics} />
+      <Route path="/cost-optimization" component={CostOptimization} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}

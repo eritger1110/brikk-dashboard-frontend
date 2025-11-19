@@ -140,8 +140,12 @@
 - [x] Export reports
 
 ## Phase 14: Cost Optimization Engine
-- [ ] Budget tracking per agent
-- [ ] Cost forecasting
+- [x] Budget tracking per agent
+- [x] Cost forecasting
+- [x] Automated spend alerts
+- [x] Optimization recommendations
+- [x] Anomaly detection
+- [x] Budget allocation optimizer
 - [ ] Budget alerts and notifications
 - [ ] Agent cost comparison
 - [ ] Optimization recommendations
