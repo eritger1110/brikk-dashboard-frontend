@@ -452,3 +452,50 @@
 - [ ] Test Stripe billing flow
 - [ ] Test consent tracking
 - [ ] Deploy all changes
+
+
+## Phase 38: Marketing Site Legal Pages
+- [ ] Marketing site is separate - documentation provided for integration
+- [ ] Add Terms of Service page to marketing site
+- [ ] Add Privacy Policy page to marketing site
+- [ ] Add Acceptable Use Policy page to marketing site
+- [ ] Add Security & Compliance page to marketing site
+- [ ] Add DPA link in Privacy Policy
+- [ ] Create Cookie Policy placeholder
+- [ ] Update footer with legal links
+
+## Phase 39: Enterprise Legal Package
+- [x] Create /enterprise/legal-package page
+- [x] Add MSA download
+- [x] Add SLA download
+- [x] Add Security Addendum download
+- [x] Add AI Agent Liability Addendum download
+- [x] Add DPA download
+- [x] Add HIPAA BAA download
+- [x] Add download all functionality
+- [x] Add enterprise contact information
+
+## Phase 40: Documentation Site
+- [x] Create /docs documentation page
+- [x] Add API reference section
+- [x] Add BrikkAgent catalog
+- [x] Add BrikkFlow examples section
+- [x] Add integration guides
+- [x] Add Integration Developer Terms link
+- [x] Add Marketplace Publisher Agreement link
+- [x] Add search functionality
+- [x] Add section navigation
+
+## Phase 41: Stripe Billing Integration
+- [x] Install Stripe dependencies (@stripe/stripe-js, @stripe/react-stripe-js)
+- [x] Create BillingEnhanced page with Stripe integration
+- [x] Add payment method form with CardElement
+- [x] Add payment method management (add/delete/set default)
+- [x] Add invoice history display
+- [x] Add current usage tracking
+- [x] Add billing contact management
+- [x] Wire to /billing route
+
+
+## Known Issues (E2E Testing Phase 8)
+- [ ] Demo Mode button: Auth flow issue - page reload causes authentication check loop. Requires architectural refactoring. Users should sign in with Auth0 for now.

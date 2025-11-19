@@ -2,16 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { FlaskConical, LogIn, Sparkles, Zap, Users, BarChart3 } from 'lucide-react';
 import BrikkLogo from '@/components/BrikkLogo';
+import { useDemoMode } from '@/contexts/DemoModeContext';
+import { useBrikkAuth } from '@/contexts/Auth0Context';
 
 export default function Landing() {
+  const { toggleDemoMode } = useDemoMode();
+  const { login } = useBrikkAuth();
+
   const enableDemoMode = () => {
-    localStorage.setItem('brikk_demo_mode', 'true');
-    window.location.href = '/';
+    toggleDemoMode();
   };
 
   const loginWithAuth0 = () => {
-    localStorage.removeItem('brikk_demo_mode');
-    window.location.href = '/';
+    login();
   };
 
   return (

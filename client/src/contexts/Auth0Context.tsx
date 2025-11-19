@@ -234,7 +234,33 @@ function BrikkAuthWrapper({ children }: { children: ReactNode }) {
 
   const handleAcceptAgreements = async (consents: ConsentData) => {
     try {
+      // Store consent in localStorage
       localStorage.setItem('brikk_legal_consent', JSON.stringify(consents));
+      
+      // Send to backend API
+      try {
+        const token = await getAccessTokenSilently();
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'https://brikk-production-9913.up.railway.app';
+        
+        const response = await fetch(`${apiUrl}/api/users/me/consents`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(consents),
+        });
+        
+        if (!response.ok) {
+          console.error('Failed to save consents to backend:', response.statusText);
+        } else {
+          console.log('[Auth] Consents saved to backend successfully');
+        }
+      } catch (apiError) {
+        console.error('[Auth] Failed to send consents to backend:', apiError);
+        // Continue anyway - localStorage backup exists
+      }
+      
       setHasAcceptedAgreements(true);
       setShowAgreementModal(false);
     } catch (error) {

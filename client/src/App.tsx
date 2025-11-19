@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { BrikkAuth0Provider, ProtectedRoute, useBrikkAuth } from "./contexts/Auth0Context";
 import { DemoModeProvider } from "./contexts/DemoModeContext";
+import { useState, useEffect } from "react";
 
 // Import pages
 import Overview from "./pages/Overview";
@@ -16,6 +17,7 @@ import Workflows from "./pages/Workflows";
 import FlowBuilder from "./pages/FlowBuilder";
 import BrikkFlows from "./pages/BrikkFlows";
 import Billing from "./pages/Billing";
+import BillingEnhanced from "./pages/BillingEnhanced";
 import Security from "./pages/Security";
 import Developer from "./pages/Developer";
 import Monitoring from "./pages/Monitoring";
@@ -39,17 +41,27 @@ import APIKeysWebhooks from "./pages/APIKeysWebhooks";
 import AdvancedABTesting from "./pages/AdvancedABTesting";
 import RealtimeCollaboration from "./pages/RealtimeCollaboration";
 import Legal from "./pages/Legal";
+import EnterpriseLegal from "./pages/EnterpriseLegal";
+import Documentation from "./pages/Documentation";
 import Sidebar from "./components/Sidebar";
 import OnboardingTutorial from "./components/OnboardingTutorial";
 import GlobalSearch from "./components/GlobalSearch";
 
 function Router() {
+  const publicRoutes = ['/legal', '/enterprise/legal-package', '/docs'];
+  const currentPath = window.location.pathname;
+  const isPublicRoute = publicRoutes.some(route => currentPath.startsWith(route));
+  
   return (
     <div className="flex">
-      <GlobalSearch />
-      <OnboardingTutorial />
-      <Sidebar />
-      <main className="flex-1 overflow-auto">
+      {!isPublicRoute && (
+        <>
+          <GlobalSearch />
+          <OnboardingTutorial />
+          <Sidebar />
+        </>
+      )}
+      <main className={isPublicRoute ? "w-full" : "flex-1 overflow-auto"}>
         <Switch>
       {/* New Brikk Dashboard Routes */}
       <Route path="/" component={Overview} />
@@ -57,7 +69,7 @@ function Router() {
       <Route path="/agents/map" component={AgentNetworkMap} />
       <Route path="/workflows" component={BrikkFlows} />
       <Route path="/flow-builder" component={FlowBuilder} />
-      <Route path="/billing" component={Billing} />
+      <Route path="/billing" component={BillingEnhanced} />
       <Route path="/marketplace" component={Marketplace} />
       <Route path="/security" component={Security} />
       <Route path="/developer" component={Developer} />
@@ -82,6 +94,8 @@ function Router() {
       <Route path="/ab-testing" component={AdvancedABTesting} />
       <Route path="/collaboration" component={RealtimeCollaboration} />
       <Route path="/legal" component={Legal} />
+      <Route path="/enterprise/legal-package" component={EnterpriseLegal} />
+      <Route path="/docs" component={Documentation} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
@@ -118,8 +132,26 @@ function App() {
 // Wrapper to show Landing or Router based on auth
 function AuthWrapper({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useBrikkAuth();
+  const [isDemoMode, setIsDemoMode] = useState(() => {
+    return localStorage.getItem('brikk_demo_mode') === 'true';
+  });
+  
+  // Listen for storage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsDemoMode(localStorage.getItem('brikk_demo_mode') === 'true');
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+  
+  // Public routes that don't require authentication
+  const publicRoutes = ['/legal', '/enterprise/legal-package', '/docs'];
+  const currentPath = window.location.pathname;
+  const isPublicRoute = publicRoutes.some(route => currentPath.startsWith(route));
 
-  if (isLoading) {
+  if (isLoading && !isPublicRoute && !isDemoMode) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="text-center">
@@ -128,6 +160,16 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
         </div>
       </div>
     );
+  }
+
+  // Allow access to public routes without authentication
+  if (isPublicRoute) {
+    return <>{children}</>;
+  }
+  
+  // Allow access in demo mode
+  if (isDemoMode) {
+    return <>{children}</>;
   }
 
   if (!isAuthenticated) {
