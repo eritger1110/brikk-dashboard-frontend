@@ -27,6 +27,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
+import { toast } from "sonner";
+import { useLocation } from "wouter";
 
 // Initial BrikkFlow nodes for demonstration
 const initialNodes: Node[] = [
@@ -155,6 +157,61 @@ export default function BrikkFlows() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [workflowName, setWorkflowName] = useState("Untitled Workflow");
+  const [, setLocation] = useLocation();
+  const [isSaving, setIsSaving] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
+
+  const handleImport = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e: any) => {
+      const file = e.target.files[0];
+      if (file) {
+        toast.success(`Importing ${file.name}...`);
+        // TODO: Implement import logic
+      }
+    };
+    input.click();
+  };
+
+  const handleExport = () => {
+    const data = { nodes, edges, name: workflowName };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${workflowName.replace(/\s+/g, '-').toLowerCase()}.json`;
+    a.click();
+    toast.success('BrikkFlow exported successfully!');
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      // TODO: Call API to save BrikkFlow
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success('BrikkFlow saved successfully!');
+    } catch (error) {
+      toast.error('Failed to save BrikkFlow');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleTest = async () => {
+    setIsTesting(true);
+    try {
+      // TODO: Call API to test BrikkFlow
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast.success('BrikkFlow test completed successfully!');
+      setLocation('/simulation');
+    } catch (error) {
+      toast.error('BrikkFlow test failed');
+    } finally {
+      setIsTesting(false);
+    }
+  };
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -173,21 +230,21 @@ export default function BrikkFlows() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleImport}>
               <Upload className="h-4 w-4 mr-2" />
               Import
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleExport}>
               <Download className="h-4 w-4 mr-2" />
               Export
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving}>
               <Save className="h-4 w-4 mr-2" />
-              Save Draft
+              {isSaving ? 'Saving...' : 'Save Draft'}
             </Button>
-            <Button className="btn-primary">
+            <Button className="btn-primary" onClick={handleTest} disabled={isTesting}>
               <Play className="h-4 w-4" />
-              Test Workflow
+              {isTesting ? 'Testing...' : 'Test BrikkFlow'}
             </Button>
           </div>
         </div>

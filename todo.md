@@ -295,3 +295,38 @@
 - [ ] Deploy to Netlify
 - [ ] Verify all features in production
 - [ ] Update Auth0 production URLs
+
+
+---
+
+# PHASE 29-31: PRODUCTION READINESS
+
+## Phase 29: Button Audit & Interaction Polish
+- [ ] Audit all 32 pages for buttons without onClick
+- [ ] Add onClick handlers to all buttons
+- [ ] Ensure all forms have onSubmit handlers
+- [ ] Add loading states to all async actions
+- [ ] Add error handling to all API calls
+- [ ] Add success/error toasts to all actions
+- [ ] Verify all navigation links work
+- [ ] Test all modals and dialogs
+
+## Phase 30: Critical User Journey Wiring
+- [ ] BrikkFlow Builder: Create/edit/save BrikkFlows
+- [ ] BrikkFlow Builder: Connect to backend API
+- [ ] BrikkTemplates: Install BrikkTemplate functionality
+- [ ] BrikkTemplates: Connect to backend API
+- [ ] BrikkInsights: Live analytics data
+- [ ] BrikkInsights: Connect to backend API
+- [ ] Cost Optimization: Budget tracking
+- [ ] Custom Agent Builder: Save custom agents
+
+## Phase 31: Empty States
+- [ ] BrikkStore: "No agents installed" state
+- [ ] BrikkFlows: "Create your first BrikkFlow" state
+- [ ] BrikkTemplates: "Browse BrikkTemplates" state
+- [ ] BrikkInsights: "No data yet" state
+- [ ] BrikkTeam: "Invite team members" state
+- [ ] Notifications: "All caught up" state
+- [ ] Search: "No results found" state
+- [ ] Dashboard: Helpful getting started guide
