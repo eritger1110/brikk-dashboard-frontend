@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import { useApi } from "@/hooks/useApi";
 
 // Initial BrikkFlow nodes for demonstration
 const initialNodes: Node[] = [
@@ -154,12 +155,14 @@ const initialEdges: Edge[] = [
 ];
 
 export default function BrikkFlows() {
+  const api = useApi();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [workflowName, setWorkflowName] = useState("Untitled Workflow");
   const [, setLocation] = useLocation();
   const [isSaving, setIsSaving] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
+  const [flowId, setFlowId] = useState<string | null>(null);
 
   const handleImport = () => {
     const input = document.createElement('input');
@@ -189,10 +192,24 @@ export default function BrikkFlows() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // TODO: Call API to save BrikkFlow
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      toast.success('BrikkFlow saved successfully!');
+      const flowData = {
+        name: workflowName,
+        definition: { nodes, edges },
+        status: 'draft' as const,
+      };
+
+      if (flowId) {
+        // Update existing flow
+        await api.updateFlow(flowId, flowData);
+        toast.success('BrikkFlow updated successfully!');
+      } else {
+        // Create new flow
+        const newFlow = await api.createFlow(flowData);
+        setFlowId(newFlow.id);
+        toast.success('BrikkFlow created successfully!');
+      }
     } catch (error) {
+      console.error('Save error:', error);
       toast.error('Failed to save BrikkFlow');
     } finally {
       setIsSaving(false);
