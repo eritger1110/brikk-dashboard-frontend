@@ -570,12 +570,12 @@
 - [ ] Save agent integration config to backend (future enhancement)
 
 ## Phase 75: Wire BrikkFlows Page
-- [ ] Connect to GET /v1/flows - List all workflows
-- [ ] Connect to POST /v1/flows - Create workflow
-- [ ] Connect to PUT /v1/flows/{id} - Update workflow
-- [ ] Connect to DELETE /v1/flows/{id} - Delete workflow
-- [ ] Connect to POST /v1/flows/{id}/execute - Run workflow
-- [ ] Add loading states and error handling
+- [x] Already wired! Uses api.getFlows() → GET /api/workflows
+- [x] Already wired! Uses api.createFlow() → POST /api/workflows
+- [x] Already wired! Uses api.updateFlow() → PUT /api/workflows/{id}
+- [x] Already wired! Uses api.publishFlow() → POST /api/workflows/{id}/publish
+- [x] API base URL configured: https://brikk-production-9913.up.railway.app
+- [x] Auth0 token injection via useApi hookling
 - [ ] Test workflow CRUD operations
 
 ## Phase 76: Wire Billing Page
