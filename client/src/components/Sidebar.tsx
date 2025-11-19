@@ -51,10 +51,10 @@ export default function Sidebar() {
       title: 'Core Features',
       items: [
         { title: 'Dashboard', href: '/', icon: <Home className="w-4 h-4" /> },
-        { title: 'Agent Marketplace', href: '/marketplace', icon: <Store className="w-4 h-4" /> },
+        { title: 'BrikkStore', href: '/marketplace', icon: <Store className="w-4 h-4" /> },
         { title: 'Custom Agent Builder', href: '/builder', icon: <Wrench className="w-4 h-4" />, badge: 'New' },
-        { title: 'Workflow Builder', href: '/workflow', icon: <Workflow className="w-4 h-4" /> },
-        { title: 'Workflow Templates', href: '/templates', icon: <FileText className="w-4 h-4" />, badge: 'New' },
+        { title: 'BrikkFlow Builder', href: '/BrikkFlow', icon: <Workflow className="w-4 h-4" /> },
+        { title: 'BrikkTemplates', href: '/BrikkTemplates', icon: <FileText className="w-4 h-4" />, badge: 'New' },
         { title: 'Agent Configuration', href: '/config', icon: <Zap className="w-4 h-4" /> },
       ]
     },
@@ -69,7 +69,7 @@ export default function Sidebar() {
     {
       title: 'Analytics & Optimization',
       items: [
-        { title: 'Agent Analytics', href: '/analytics', icon: <BarChart3 className="w-4 h-4" />, badge: 'New' },
+        { title: 'BrikkInsights', href: '/analytics', icon: <BarChart3 className="w-4 h-4" />, badge: 'New' },
         { title: 'Monitoring Dashboard', href: '/monitoring', icon: <Activity className="w-4 h-4" /> },
         { title: 'Cost Optimization', href: '/cost-optimization', icon: <DollarSign className="w-4 h-4" />, badge: 'New' },
       ]
@@ -85,7 +85,7 @@ export default function Sidebar() {
     {
       title: 'Management',
       items: [
-        { title: 'Team Management', href: '/team', icon: <Users className="w-4 h-4" /> },
+        { title: 'BrikkTeam', href: '/team', icon: <Users className="w-4 h-4" /> },
         { title: 'API Keys & Webhooks', href: '/api-keys', icon: <Key className="w-4 h-4" />, badge: 'New' },
       ]
     }

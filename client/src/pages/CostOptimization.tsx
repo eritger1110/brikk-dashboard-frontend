@@ -89,7 +89,7 @@ export default function CostOptimization() {
     trend: "increasing",
     factors: [
       "Increasing agent usage (+15%)",
-      "New workflow deployments",
+      "New BrikkFlow deployments",
       "Seasonal demand patterns",
       "Model pricing changes"
     ]
@@ -175,7 +175,7 @@ export default function CostOptimization() {
       implementation_effort: "easy",
       affected_agents: ["Content Writer Agent", "Data Enrichment Agent"],
       steps: [
-        "Identify non-urgent workflows",
+        "Identify non-urgent BrikkFlows",
         "Configure scheduling for 2-6 AM",
         "Set up queue for delayed processing",
         "Add priority override for urgent requests"
@@ -207,7 +207,7 @@ export default function CostOptimization() {
       implementation_effort: "medium",
       affected_agents: ["All Agents"],
       steps: [
-        "Audit all prompt templates",
+        "Audit all prompt BrikkTemplates",
         "Remove redundant instructions",
         "Use more concise language",
         "A/B test compressed vs original prompts"

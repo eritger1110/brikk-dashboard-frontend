@@ -41,9 +41,9 @@ export default function Landing() {
 
           <Card className="p-6 border-primary/20 hover:border-primary/40 transition-colors">
             <Users className="w-8 h-8 text-cyan-500 mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Multi-Agent Workflows</h3>
+            <h3 className="text-lg font-semibold mb-2">Multi-Agent BrikkFlows</h3>
             <p className="text-sm text-muted-foreground">
-              Connect agents together for complex task automation
+              Connect BrikkAgents together for complex task automation
             </p>
           </Card>
 
@@ -74,7 +74,7 @@ export default function Landing() {
               </li>
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Sample agents and workflows
+                Sample agents and BrikkFlows
               </li>
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -98,7 +98,7 @@ export default function Landing() {
               <h2 className="text-2xl font-bold">Sign In</h2>
             </div>
             <p className="text-muted-foreground mb-6">
-              Log in with your Brikk account to access your organization's agents and workflows.
+              Log in with your Brikk account to access your organization's agents and BrikkFlows.
             </p>
             <ul className="space-y-2 mb-6 text-sm">
               <li className="flex items-center gap-2">

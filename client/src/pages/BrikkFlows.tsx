@@ -28,7 +28,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
 
-// Initial workflow nodes for demonstration
+// Initial BrikkFlow nodes for demonstration
 const initialNodes: Node[] = [
   {
     id: "trigger-1",
@@ -169,7 +169,7 @@ export default function BrikkFlows() {
           <div>
             <h1 className="text-3xl font-bold">BrikkFlows Builder</h1>
             <p className="text-muted-foreground mt-1">
-              Visual workflow automation with drag-and-drop
+              Visual BrikkFlow automation with drag-and-drop
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -248,7 +248,7 @@ export default function BrikkFlows() {
               </div>
               <div>
                 <h4 className="font-semibold">Triggers</h4>
-                <p className="text-xs text-muted-foreground">Start workflows</p>
+                <p className="text-xs text-muted-foreground">Start BrikkFlows</p>
               </div>
             </div>
             <Button variant="outline" size="sm" className="w-full" disabled>
@@ -306,9 +306,9 @@ export default function BrikkFlows() {
               <AlertCircle className="h-5 w-5" style={{ color: brikkColors.violet }} />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold mb-2">Visual Workflow Builder Ready</h4>
+              <h4 className="font-semibold mb-2">Visual BrikkFlow Builder Ready</h4>
               <p className="text-sm text-muted-foreground mb-3">
-                The workflow canvas is ready for drag-and-drop workflow creation. This example shows a basic workflow structure. Once API endpoints are configured, you'll be able to save, load, and execute real workflows.
+                The BrikkFlow canvas is ready for drag-and-drop BrikkFlow creation. This example shows a basic BrikkFlow structure. Once API endpoints are configured, you'll be able to save, load, and execute real BrikkFlows.
               </p>
               <div className="text-sm space-y-1">
                 <p className="font-medium">✅ Features Ready:</p>

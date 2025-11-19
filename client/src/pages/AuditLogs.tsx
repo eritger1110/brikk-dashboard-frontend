@@ -26,7 +26,7 @@ const auditEvents: AuditEvent[] = [
     action: 'Workflow Modified',
     user: { name: 'Angie Admin', email: 'angie@company.com' },
     timestamp: new Date(2025, 9, 30, 13, 44),
-    details: 'Condition threshold changed from "10 units" to "15 units" in workflow "Auto-Reorder Low Inventory"',
+    details: 'Condition threshold changed from "10 units" to "15 units" in BrikkFlow "Auto-Reorder Low Inventory"',
     metadata: {
       ip: '192.168.1.100',
       sessionId: 'c2f1f57a',
@@ -39,7 +39,7 @@ const auditEvents: AuditEvent[] = [
     action: 'Workflow Deployed',
     user: { name: 'Tom Martinez', email: 'tom@company.com' },
     timestamp: new Date(2025, 9, 30, 12, 30),
-    details: 'Deployed workflow "Customer Onboarding" to production (v2.3.0)',
+    details: 'Deployed BrikkFlow "Customer Onboarding" to production (v2.3.0)',
     metadata: {
       ip: '192.168.1.105',
       sessionId: '5a1191c7',

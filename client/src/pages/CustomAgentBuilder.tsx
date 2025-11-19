@@ -49,7 +49,7 @@ interface PromptTemplate {
   id: string;
   name: string;
   description: string;
-  template: string;
+  BrikkTemplate: string;
 }
 
 export default function CustomAgentBuilder() {
@@ -66,7 +66,7 @@ export default function CustomAgentBuilder() {
   
   const [skills, setSkills] = useState<Skill[]>([]);
   const [integrations, setIntegrations] = useState<Integration[]>([]);
-  const [templates, setTemplates] = useState<PromptTemplate[]>([]);
+  const [BrikkTemplates, setTemplates] = useState<PromptTemplate[]>([]);
   
   const [testInput, setTestInput] = useState('');
   const [testOutput, setTestOutput] = useState<any>(null);
@@ -148,13 +148,13 @@ export default function CustomAgentBuilder() {
           id: 'template_customer_service',
           name: 'Customer Service Agent',
           description: 'Handle customer inquiries professionally',
-          template: 'You are a helpful customer service agent. Answer the customer\'s question: {question}\n\nProvide a clear, professional response.'
+          BrikkTemplate: 'You are a helpful customer service agent. Answer the customer\'s question: {question}\n\nProvide a clear, professional response.'
         },
         {
           id: 'template_data_analyst',
           name: 'Data Analyst',
           description: 'Analyze data and provide insights',
-          template: 'You are a data analyst. Analyze the following data and provide insights:\n\n{data}\n\nProvide key findings and recommendations.'
+          BrikkTemplate: 'You are a data analyst. Analyze the following data and provide insights:\n\n{data}\n\nProvide key findings and recommendations.'
         }
       ]);
     } catch (error) {
@@ -193,10 +193,10 @@ export default function CustomAgentBuilder() {
   };
 
   const applyTemplate = (templateId: string) => {
-    const template = templates.find(t => t.id === templateId);
-    if (template) {
-      setPromptTemplate(template.template);
-      toast.success(`Applied template: ${template.name}`);
+    const BrikkTemplate = BrikkTemplates.find(t => t.id === templateId);
+    if (BrikkTemplate) {
+      setPromptTemplate(BrikkTemplate.BrikkTemplate);
+      toast.success(`Applied BrikkTemplate: ${BrikkTemplate.name}`);
     }
   };
 
@@ -217,7 +217,7 @@ export default function CustomAgentBuilder() {
     }
 
     if (!promptTemplate) {
-      result.errors.push('Prompt template is required');
+      result.errors.push('Prompt BrikkTemplate is required');
       result.valid = false;
     }
 
@@ -458,12 +458,12 @@ export default function CustomAgentBuilder() {
                   <Label>Use Template (Optional)</Label>
                   <Select onValueChange={applyTemplate}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a template..." />
+                      <SelectValue placeholder="Select a BrikkTemplate..." />
                     </SelectTrigger>
                     <SelectContent>
-                      {templates.map(template => (
-                        <SelectItem key={template.id} value={template.id}>
-                          {template.name}
+                      {BrikkTemplates.map(BrikkTemplate => (
+                        <SelectItem key={BrikkTemplate.id} value={BrikkTemplate.id}>
+                          {BrikkTemplate.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -476,7 +476,7 @@ export default function CustomAgentBuilder() {
                     id="prompt"
                     value={promptTemplate}
                     onChange={(e) => setPromptTemplate(e.target.value)}
-                    placeholder="Enter your prompt template. Use {variable} for dynamic values..."
+                    placeholder="Enter your prompt BrikkTemplate. Use {variable} for dynamic values..."
                     rows={8}
                     className="font-mono text-sm"
                   />

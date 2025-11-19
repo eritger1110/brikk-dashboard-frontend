@@ -75,7 +75,7 @@ function WorkflowCard({ name, description, status, executions, avgLatency, cost 
         </div>
       </div>
 
-      {/* Miniature workflow visualization */}
+      {/* Miniature BrikkFlow visualization */}
       <div className="my-4 flex items-center justify-center gap-2 py-4">
         <div className="flex h-8 w-8 items-center justify-center rounded border-2 border-blue-500 bg-blue-50 dark:bg-blue-950">
           <div className="h-3 w-3 rounded-sm bg-blue-500"></div>
@@ -117,7 +117,7 @@ export default function Dashboard() {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
           <p className="mt-2 text-muted-foreground">
-            Overview of your workflow automation platform
+            Overview of your BrikkFlow automation platform
           </p>
         </div>
 
@@ -233,11 +233,11 @@ export default function Dashboard() {
           <h2 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h2>
           <div className="space-y-3">
             {[
-              { workflow: 'Auto-Reorder Low Inventory', status: 'success', time: '2 minutes ago' },
-              { workflow: 'Customer Onboarding', status: 'success', time: '5 minutes ago' },
-              { workflow: 'Demand Forecasting', status: 'failed', time: '8 minutes ago' },
-              { workflow: 'Order Processing', status: 'success', time: '12 minutes ago' },
-              { workflow: 'Quality Control Alerts', status: 'success', time: '15 minutes ago' },
+              { BrikkFlow: 'Auto-Reorder Low Inventory', status: 'success', time: '2 minutes ago' },
+              { BrikkFlow: 'Customer Onboarding', status: 'success', time: '5 minutes ago' },
+              { BrikkFlow: 'Demand Forecasting', status: 'failed', time: '8 minutes ago' },
+              { BrikkFlow: 'Order Processing', status: 'success', time: '12 minutes ago' },
+              { BrikkFlow: 'Quality Control Alerts', status: 'success', time: '15 minutes ago' },
             ].map((activity, index) => (
               <div key={index} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                 <div className="flex items-center gap-3">
@@ -246,7 +246,7 @@ export default function Dashboard() {
                       activity.status === 'success' ? 'status-dot-success' : 'status-dot-danger'
                     }`}
                   ></span>
-                  <span className="text-sm font-medium text-foreground">{activity.workflow}</span>
+                  <span className="text-sm font-medium text-foreground">{activity.BrikkFlow}</span>
                 </div>
                 <span className="text-xs text-muted-foreground">{activity.time}</span>
               </div>

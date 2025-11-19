@@ -93,7 +93,7 @@ const availableWidgets: Omit<Widget, 'id'>[] = [
     size: 'medium',
     data: {
       actions: [
-        { label: 'Create Workflow', icon: <Plus className="w-4 h-4" />, href: '/workflow' },
+        { label: 'Create Workflow', icon: <Plus className="w-4 h-4" />, href: '/BrikkFlow' },
         { label: 'Install Agent', icon: <Plus className="w-4 h-4" />, href: '/marketplace' },
         { label: 'Run Simulation', icon: <Zap className="w-4 h-4" />, href: '/simulation' },
         { label: 'View Analytics', icon: <BarChart3 className="w-4 h-4" />, href: '/analytics' },

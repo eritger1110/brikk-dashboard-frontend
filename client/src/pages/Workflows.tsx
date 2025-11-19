@@ -12,7 +12,7 @@ interface Workflow {
   successRate: number;
 }
 
-const workflows: Workflow[] = [
+const BrikkFlows: Workflow[] = [
   {
     id: '1',
     name: 'Auto-Reorder Low Inventory',
@@ -75,35 +75,35 @@ const statusConfig = {
   },
 };
 
-function WorkflowRow({ workflow }: { workflow: Workflow }) {
-  const config = statusConfig[workflow.status];
+function WorkflowRow({ BrikkFlow }: { BrikkFlow: Workflow }) {
+  const config = statusConfig[BrikkFlow.status];
 
   return (
     <div className="flex items-center justify-between py-4 px-6 border-b border-border last:border-0 hover:bg-accent/50 transition-colors">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-3 mb-1">
           <h3 className="text-base font-semibold text-foreground truncate">
-            {workflow.name}
+            {BrikkFlow.name}
           </h3>
           <span className={config.badge}>{config.label}</span>
         </div>
         <p className="text-sm text-muted-foreground line-clamp-1">
-          {workflow.description}
+          {BrikkFlow.description}
         </p>
       </div>
 
       <div className="flex items-center gap-8 ml-6">
         <div className="text-right">
           <p className="text-xs text-muted-foreground">Last Run</p>
-          <p className="text-sm font-medium text-foreground">{workflow.lastRun}</p>
+          <p className="text-sm font-medium text-foreground">{BrikkFlow.lastRun}</p>
         </div>
         <div className="text-right">
           <p className="text-xs text-muted-foreground">Executions</p>
-          <p className="text-sm font-medium text-foreground">{workflow.executions}</p>
+          <p className="text-sm font-medium text-foreground">{BrikkFlow.executions}</p>
         </div>
         <div className="text-right">
           <p className="text-xs text-muted-foreground">Success Rate</p>
-          <p className="text-sm font-medium text-foreground">{workflow.successRate}%</p>
+          <p className="text-sm font-medium text-foreground">{BrikkFlow.successRate}%</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -133,7 +133,7 @@ export default function Workflows() {
           <div>
             <h1 className="text-3xl font-bold text-foreground">Workflows</h1>
             <p className="mt-2 text-muted-foreground">
-              Manage and monitor your automation workflows
+              Manage and monitor your automation BrikkFlows
             </p>
           </div>
           <Link href="/flow-builder">
@@ -150,7 +150,7 @@ export default function Workflows() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search workflows..."
+              placeholder="Search BrikkFlows..."
               className="w-full rounded-lg border border-input bg-background pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
@@ -170,21 +170,21 @@ export default function Workflows() {
 
         {/* Workflows Table */}
         <div className="rounded-lg border border-border bg-card overflow-hidden">
-          {workflows.map((workflow) => (
-            <WorkflowRow key={workflow.id} workflow={workflow} />
+          {BrikkFlows.map((BrikkFlow) => (
+            <WorkflowRow key={BrikkFlow.id} BrikkFlow={BrikkFlow} />
           ))}
         </div>
 
-        {/* Empty State (hidden when workflows exist) */}
+        {/* Empty State (hidden when BrikkFlows exist) */}
         {/* <div className="rounded-lg border border-dashed border-border bg-card p-12 text-center">
           <div className="flex flex-col items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
               <Play className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">No workflows yet</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-2">No BrikkFlows yet</h3>
               <p className="text-sm text-muted-foreground max-w-md">
-                Get started by creating your first workflow. Connect triggers, conditions, and actions to automate your business processes.
+                Get started by creating your first BrikkFlow. Connect triggers, conditions, and actions to automate your business processes.
               </p>
             </div>
             <Link href="/flow-builder">

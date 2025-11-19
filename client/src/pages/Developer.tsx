@@ -122,7 +122,7 @@ export default function Developer() {
                 >
                   <option value="GET /health">GET /health</option>
                   <option value="GET /api/v1/agents" disabled>GET /api/v1/agents (awaiting docs)</option>
-                  <option value="GET /api/v1/workflows" disabled>GET /api/v1/workflows (awaiting docs)</option>
+                  <option value="GET /api/v1/BrikkFlows" disabled>GET /api/v1/BrikkFlows (awaiting docs)</option>
                   <option value="GET /api/v1/metrics" disabled>GET /api/v1/metrics (awaiting docs)</option>
                 </select>
               </div>

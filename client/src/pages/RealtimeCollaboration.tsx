@@ -143,7 +143,7 @@ export default function RealtimeCollaboration() {
       id: 'activity_001',
       user_name: 'Sarah Chen',
       event_type: 'workflow_updated',
-      description: 'Updated "Customer Onboarding" workflow',
+      description: 'Updated "Customer Onboarding" BrikkFlow',
       timestamp: '2025-01-18T15:30:00Z'
     },
     {
@@ -164,14 +164,14 @@ export default function RealtimeCollaboration() {
       id: 'activity_004',
       user_name: 'David Kim',
       event_type: 'comment_added',
-      description: 'Commented on "Lead Qualification" workflow',
+      description: 'Commented on "Lead Qualification" BrikkFlow',
       timestamp: '2025-01-18T15:15:00Z'
     },
     {
       id: 'activity_005',
       user_name: 'Sarah Chen',
       event_type: 'workflow_created',
-      description: 'Created new workflow "Data Processing Pipeline"',
+      description: 'Created new BrikkFlow "Data Processing Pipeline"',
       timestamp: '2025-01-18T15:10:00Z'
     }
   ]);
@@ -259,7 +259,7 @@ export default function RealtimeCollaboration() {
               <Eye className="w-5 h-5 text-violet-500" />
             </div>
             <p className="text-3xl font-bold">3</p>
-            <p className="text-xs text-muted-foreground mt-1">workflows</p>
+            <p className="text-xs text-muted-foreground mt-1">BrikkFlows</p>
           </Card>
         </div>
 

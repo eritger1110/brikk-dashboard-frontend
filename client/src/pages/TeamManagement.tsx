@@ -189,7 +189,7 @@ export default function TeamManagement() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Team Management</h1>
+          <h1 className="text-3xl font-bold">BrikkTeam</h1>
           <p className="text-muted-foreground mt-2">
             Manage team members, roles, and permissions
           </p>

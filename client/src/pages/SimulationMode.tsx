@@ -36,13 +36,13 @@ interface TimelineItem {
 export default function SimulationMode() {
   const api = useApi();
   const [selectedWorkflow, setSelectedWorkflow] = useState<string>('');
-  const [workflows, setWorkflows] = useState<any[]>([]);
+  const [BrikkFlows, setWorkflows] = useState<any[]>([]);
   const [simulationState, setSimulationState] = useState<SimulationState | null>(null);
   const [messageFlow, setMessageFlow] = useState<MessageFlowItem[]>([]);
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load workflows
+  // Load BrikkFlows
   useEffect(() => {
     loadWorkflows();
   }, []);
@@ -52,13 +52,13 @@ export default function SimulationMode() {
       const response = await api.getFlows();
       setWorkflows(response.data || []);
     } catch (error) {
-      console.error('Failed to load workflows:', error);
+      console.error('Failed to load BrikkFlows:', error);
     }
   };
 
   const startSimulation = async () => {
     if (!selectedWorkflow) {
-      toast.error('Please select a workflow first');
+      toast.error('Please select a BrikkFlow first');
       return;
     }
 
@@ -179,7 +179,7 @@ export default function SimulationMode() {
       <div>
         <h1 className="text-3xl font-bold">Simulation Mode</h1>
         <p className="text-muted-foreground mt-2">
-          Test workflows step-by-step with visual debugging and time-travel capabilities
+          Test BrikkFlows step-by-step with visual debugging and time-travel capabilities
         </p>
       </div>
 
@@ -193,10 +193,10 @@ export default function SimulationMode() {
               onChange={(e) => setSelectedWorkflow(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg bg-background"
             >
-              <option value="">Choose a workflow...</option>
-              {workflows.map((workflow) => (
-                <option key={workflow.id} value={workflow.id}>
-                  {workflow.name}
+              <option value="">Choose a BrikkFlow...</option>
+              {BrikkFlows.map((BrikkFlow) => (
+                <option key={BrikkFlow.id} value={BrikkFlow.id}>
+                  {BrikkFlow.name}
                 </option>
               ))}
             </select>

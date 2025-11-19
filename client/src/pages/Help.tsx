@@ -37,7 +37,7 @@ export default function Help() {
     {
       role: "assistant",
       content:
-        "👋 Hi! I'm BrikkBot, your AI assistant for the Brikk platform. I can help you with agent management, workflow creation, billing questions, and more. How can I assist you today?",
+        "👋 Hi! I'm BrikkBot, your AI assistant for the Brikk platform. I can help you with agent management, BrikkFlow creation, billing questions, and more. How can I assist you today?",
       timestamp: new Date().toISOString(),
     },
   ]);
@@ -346,7 +346,7 @@ export default function Help() {
               <h4 className="font-semibold mb-2">BrikkBot AI Assistant Active</h4>
               <p className="text-sm text-muted-foreground mb-3">
                 BrikkBot is powered by the Railway backend and provides context-aware assistance
-                for all Brikk platform features. Ask questions about agents, workflows, billing,
+                for all Brikk platform features. Ask questions about agents, BrikkFlows, billing,
                 security, and more.
               </p>
               <div className="text-sm space-y-1">

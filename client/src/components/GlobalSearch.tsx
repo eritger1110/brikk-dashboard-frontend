@@ -23,7 +23,7 @@ interface SearchResult {
   id: string;
   title: string;
   description: string;
-  category: 'agent' | 'workflow' | 'template' | 'page' | 'user';
+  category: 'agent' | 'BrikkFlow' | 'BrikkTemplate' | 'page' | 'user';
   path: string;
   icon: React.ReactNode;
   badge?: string;
@@ -41,13 +41,13 @@ export default function GlobalSearch() {
   const searchableItems: SearchResult[] = [
     // Pages
     { id: 'page_home', title: 'Dashboard', description: 'Overview and quick actions', category: 'page', path: '/', icon: <BarChart3 className="w-4 h-4" /> },
-    { id: 'page_marketplace', title: 'Agent Marketplace', description: 'Browse and install pre-built agents', category: 'page', path: '/marketplace', icon: <Store className="w-4 h-4" /> },
+    { id: 'page_marketplace', title: 'BrikkStore', description: 'Browse and install pre-built BrikkAgents', category: 'page', path: '/marketplace', icon: <Store className="w-4 h-4" /> },
     { id: 'page_builder', title: 'Custom Agent Builder', description: 'Create custom agents with no-code interface', category: 'page', path: '/builder', icon: <Store className="w-4 h-4" />, badge: 'New' },
-    { id: 'page_workflow', title: 'Workflow Builder', description: 'Design multi-agent workflows', category: 'page', path: '/workflow', icon: <Workflow className="w-4 h-4" /> },
-    { id: 'page_templates', title: 'Workflow Templates', description: 'Pre-built workflow templates', category: 'page', path: '/templates', icon: <FileText className="w-4 h-4" />, badge: 'New' },
-    { id: 'page_simulation', title: 'Simulation Mode', description: 'Test workflows with visual debugging', category: 'page', path: '/simulation', icon: <Workflow className="w-4 h-4" /> },
+    { id: 'page_workflow', title: 'BrikkFlow Builder', description: 'Design multi-agent BrikkFlows', category: 'page', path: '/BrikkFlow', icon: <Workflow className="w-4 h-4" /> },
+    { id: 'page_templates', title: 'BrikkTemplates', description: 'Pre-built BrikkFlow BrikkTemplates', category: 'page', path: '/BrikkTemplates', icon: <FileText className="w-4 h-4" />, badge: 'New' },
+    { id: 'page_simulation', title: 'Simulation Mode', description: 'Test BrikkFlows with visual debugging', category: 'page', path: '/simulation', icon: <Workflow className="w-4 h-4" /> },
     { id: 'page_ab_testing', title: 'A/B Testing', description: 'Multi-variate testing with auto winner selection', category: 'page', path: '/ab-testing', icon: <BarChart3 className="w-4 h-4" />, badge: 'New' },
-    { id: 'page_analytics', title: 'Agent Analytics', description: 'Performance tracking and ROI insights', category: 'page', path: '/analytics', icon: <BarChart3 className="w-4 h-4" />, badge: 'New' },
+    { id: 'page_analytics', title: 'BrikkInsights', description: 'Performance tracking and ROI insights', category: 'page', path: '/analytics', icon: <BarChart3 className="w-4 h-4" />, badge: 'New' },
     { id: 'page_cost', title: 'Cost Optimization', description: 'Budget tracking and optimization recommendations', category: 'page', path: '/cost-optimization', icon: <BarChart3 className="w-4 h-4" />, badge: 'New' },
     { id: 'page_collaboration', title: 'Real-time Collaboration', description: 'Live cursors and team comments', category: 'page', path: '/collaboration', icon: <Users className="w-4 h-4" />, badge: 'New' },
     { id: 'page_api_keys', title: 'API Keys & Webhooks', description: 'Manage API credentials and webhooks', category: 'page', path: '/api-keys', icon: <Store className="w-4 h-4" />, badge: 'New' },
@@ -58,12 +58,12 @@ export default function GlobalSearch() {
     { id: 'agent_gemini', title: 'Gemini Pro', description: 'Google Gemini Pro agent', category: 'agent', path: '/marketplace', icon: <Store className="w-4 h-4" /> },
     
     // Workflows (mock data)
-    { id: 'workflow_onboarding', title: 'Customer Onboarding', description: 'Automated customer onboarding workflow', category: 'workflow', path: '/workflow', icon: <Workflow className="w-4 h-4" /> },
-    { id: 'workflow_lead', title: 'Lead Qualification', description: 'Automated lead scoring and qualification', category: 'workflow', path: '/workflow', icon: <Workflow className="w-4 h-4" /> },
+    { id: 'workflow_onboarding', title: 'Customer Onboarding', description: 'Automated customer onboarding BrikkFlow', category: 'BrikkFlow', path: '/BrikkFlow', icon: <Workflow className="w-4 h-4" /> },
+    { id: 'workflow_lead', title: 'Lead Qualification', description: 'Automated lead scoring BrikkFlow', category: 'BrikkFlow', path: '/BrikkFlow', icon: <Workflow className="w-4 h-4" /> },
     
     // Templates
-    { id: 'template_onboarding', title: 'Customer Onboarding Template', description: 'Pre-built customer onboarding workflow', category: 'template', path: '/templates', icon: <FileText className="w-4 h-4" /> },
-    { id: 'template_support', title: 'Customer Support Template', description: 'Automated customer support workflow', category: 'template', path: '/templates', icon: <FileText className="w-4 h-4" /> },
+    { id: 'template_onboarding', title: 'Customer Onboarding Template', description: 'Pre-built customer onboarding BrikkFlow', category: 'BrikkTemplate', path: '/BrikkTemplates', icon: <FileText className="w-4 h-4" /> },
+    { id: 'template_support', title: 'Customer Support Template', description: 'Automated customer support BrikkFlow', category: 'BrikkTemplate', path: '/BrikkTemplates', icon: <FileText className="w-4 h-4" /> },
   ];
 
   // Keyboard shortcut handler
@@ -160,8 +160,8 @@ export default function GlobalSearch() {
 
   const categoryColors = {
     agent: 'bg-cyan-500/10 text-cyan-500',
-    workflow: 'bg-green-500/10 text-green-500',
-    template: 'bg-violet-500/10 text-violet-500',
+    BrikkFlow: 'bg-green-500/10 text-green-500',
+    BrikkTemplate: 'bg-violet-500/10 text-violet-500',
     page: 'bg-blue-500/10 text-blue-500',
     user: 'bg-yellow-500/10 text-yellow-500',
   };
@@ -175,7 +175,7 @@ export default function GlobalSearch() {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search agents, workflows, templates, pages..."
+            placeholder="Search agents, BrikkFlows, BrikkTemplates, pages..."
             className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
             autoFocus
           />

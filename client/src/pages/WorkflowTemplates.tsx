@@ -72,7 +72,7 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 };
 
 export default function WorkflowTemplates() {
-  const [templates, setTemplates] = useState<WorkflowTemplate[]>([]);
+  const [BrikkTemplates, setTemplates] = useState<WorkflowTemplate[]>([]);
   const [filteredTemplates, setFilteredTemplates] = useState<WorkflowTemplate[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -87,7 +87,7 @@ export default function WorkflowTemplates() {
 
   useEffect(() => {
     filterTemplates();
-  }, [templates, searchQuery, selectedCategory, selectedDifficulty]);
+  }, [BrikkTemplates, searchQuery, selectedCategory, selectedDifficulty]);
 
   const loadTemplates = async () => {
     // Mock data for demo
@@ -141,7 +141,7 @@ export default function WorkflowTemplates() {
       {
         id: 'template_content_creation',
         name: 'Content Creation Pipeline',
-        description: 'Automated content ideation, creation, review, and publishing workflow',
+        description: 'Automated content ideation, creation, review, and publishing BrikkFlow',
         category: 'marketing',
         difficulty: 'intermediate',
         estimated_time: '2-3 hours',
@@ -236,7 +236,7 @@ export default function WorkflowTemplates() {
   };
 
   const filterTemplates = () => {
-    let filtered = templates;
+    let filtered = BrikkTemplates;
 
     if (searchQuery) {
       filtered = filtered.filter(t =>
@@ -257,20 +257,20 @@ export default function WorkflowTemplates() {
     setFilteredTemplates(filtered);
   };
 
-  const viewDetails = (template: WorkflowTemplate) => {
-    setSelectedTemplate(template);
+  const viewDetails = (BrikkTemplate: WorkflowTemplate) => {
+    setSelectedTemplate(BrikkTemplate);
     setShowDetails(true);
   };
 
-  const installTemplate = async (template: WorkflowTemplate) => {
+  const installTemplate = async (BrikkTemplate: WorkflowTemplate) => {
     setIsInstalling(true);
     try {
       // Simulate installation
       await new Promise(resolve => setTimeout(resolve, 1500));
-      toast.success(`${template.name} installed successfully!`);
+      toast.success(`${BrikkTemplate.name} installed successfully!`);
       setShowDetails(false);
     } catch (error) {
-      toast.error('Failed to install template');
+      toast.error('Failed to install BrikkTemplate');
     } finally {
       setIsInstalling(false);
     }
@@ -302,10 +302,10 @@ export default function WorkflowTemplates() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <Library className="w-8 h-8 text-primary" />
-            <h1 className="text-3xl font-bold">Workflow Templates Library</h1>
+            <h1 className="text-3xl font-bold">BrikkTemplates Library</h1>
           </div>
           <p className="text-muted-foreground">
-            Pre-built workflow templates for common use cases. Install with one click.
+            Pre-built BrikkTemplates for common use cases. Install with one click.
           </p>
         </div>
 
@@ -317,7 +317,7 @@ export default function WorkflowTemplates() {
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search templates..."
+                placeholder="Search BrikkTemplates..."
                 className="pl-10"
               />
             </div>
@@ -356,7 +356,7 @@ export default function WorkflowTemplates() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Templates</p>
-                <p className="text-2xl font-bold">{templates.length}</p>
+                <p className="text-2xl font-bold">{BrikkTemplates.length}</p>
               </div>
               <Library className="w-8 h-8 text-primary opacity-50" />
             </div>
@@ -395,27 +395,27 @@ export default function WorkflowTemplates() {
 
         {/* Templates Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTemplates.map(template => {
-            const IconComponent = ICON_MAP[template.icon] || Library;
+          {filteredTemplates.map(BrikkTemplate => {
+            const IconComponent = ICON_MAP[BrikkTemplate.icon] || Library;
             
             return (
-              <Card key={template.id} className="p-6 hover:border-primary/50 transition-colors">
+              <Card key={BrikkTemplate.id} className="p-6 hover:border-primary/50 transition-colors">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                     <IconComponent className="w-6 h-6 text-primary" />
                   </div>
-                  <Badge className={DIFFICULTY_COLORS[template.difficulty]}>
-                    {template.difficulty}
+                  <Badge className={DIFFICULTY_COLORS[BrikkTemplate.difficulty]}>
+                    {BrikkTemplate.difficulty}
                   </Badge>
                 </div>
 
-                <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
+                <h3 className="text-lg font-semibold mb-2">{BrikkTemplate.name}</h3>
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {template.description}
+                  {BrikkTemplate.description}
                 </p>
 
                 <div className="flex flex-wrap gap-1 mb-4">
-                  {template.tags.slice(0, 3).map(tag => (
+                  {BrikkTemplate.tags.slice(0, 3).map(tag => (
                     <Badge key={tag} variant="outline" className="text-xs">
                       {tag}
                     </Badge>
@@ -425,11 +425,11 @@ export default function WorkflowTemplates() {
                 <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
                   <div className="flex items-center gap-1">
                     <Users className="w-3 h-3" />
-                    <span>{template.agents.length} agents</span>
+                    <span>{BrikkTemplate.agents.length} agents</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    <span>{template.estimated_time}</span>
+                    <span>{BrikkTemplate.estimated_time}</span>
                   </div>
                 </div>
 
@@ -438,7 +438,7 @@ export default function WorkflowTemplates() {
                     variant="outline"
                     size="sm"
                     className="flex-1 gap-2"
-                    onClick={() => viewDetails(template)}
+                    onClick={() => viewDetails(BrikkTemplate)}
                   >
                     <Eye className="w-4 h-4" />
                     Details
@@ -446,7 +446,7 @@ export default function WorkflowTemplates() {
                   <Button
                     size="sm"
                     className="flex-1 gap-2"
-                    onClick={() => installTemplate(template)}
+                    onClick={() => installTemplate(BrikkTemplate)}
                   >
                     <Download className="w-4 h-4" />
                     Install
@@ -460,7 +460,7 @@ export default function WorkflowTemplates() {
         {filteredTemplates.length === 0 && (
           <Card className="p-12 text-center">
             <Library className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-            <h3 className="text-lg font-semibold mb-2">No templates found</h3>
+            <h3 className="text-lg font-semibold mb-2">No BrikkTemplates found</h3>
             <p className="text-muted-foreground">
               Try adjusting your filters or search query
             </p>

@@ -114,7 +114,7 @@ export default function APIKeysWebhooks() {
       id: 'webhook_001',
       name: 'Slack Notifications',
       url: 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXX',
-      events: ['workflow.completed', 'workflow.failed', 'agent.failed'],
+      events: ['BrikkFlow.completed', 'BrikkFlow.failed', 'agent.failed'],
       is_active: true,
       created_at: '2025-01-10T10:00:00Z',
       success_count: 1234,
@@ -124,7 +124,7 @@ export default function APIKeysWebhooks() {
       id: 'webhook_002',
       name: 'CRM Integration',
       url: 'https://api.crm.example.com/webhooks/brikk',
-      events: ['workflow.completed'],
+      events: ['BrikkFlow.completed'],
       is_active: true,
       created_at: '2025-01-12T14:30:00Z',
       success_count: 856,
@@ -134,7 +134,7 @@ export default function APIKeysWebhooks() {
       id: 'webhook_003',
       name: 'Analytics Pipeline',
       url: 'https://analytics.example.com/events',
-      events: ['workflow.started', 'workflow.completed', 'agent.started', 'agent.completed'],
+      events: ['BrikkFlow.started', 'BrikkFlow.completed', 'agent.started', 'agent.completed'],
       is_active: false,
       created_at: '2025-01-08T09:15:00Z',
       success_count: 432,
@@ -143,9 +143,9 @@ export default function APIKeysWebhooks() {
   ]);
 
   const availableEvents = [
-    { value: 'workflow.started', label: 'Workflow Started', description: 'When a workflow execution starts' },
-    { value: 'workflow.completed', label: 'Workflow Completed', description: 'When a workflow completes successfully' },
-    { value: 'workflow.failed', label: 'Workflow Failed', description: 'When a workflow execution fails' },
+    { value: 'BrikkFlow.started', label: 'Workflow Started', description: 'When a BrikkFlow execution starts' },
+    { value: 'BrikkFlow.completed', label: 'Workflow Completed', description: 'When a BrikkFlow completes successfully' },
+    { value: 'BrikkFlow.failed', label: 'Workflow Failed', description: 'When a BrikkFlow execution fails' },
     { value: 'agent.started', label: 'Agent Started', description: 'When an agent starts executing' },
     { value: 'agent.completed', label: 'Agent Completed', description: 'When an agent completes' },
     { value: 'agent.failed', label: 'Agent Failed', description: 'When an agent execution fails' },
@@ -421,7 +421,7 @@ export default function APIKeysWebhooks() {
           <DialogHeader>
             <DialogTitle>Create API Key</DialogTitle>
             <DialogDescription>
-              Generate a new API key for programmatic access to your workflows
+              Generate a new API key for programmatic access to your BrikkFlows
             </DialogDescription>
           </DialogHeader>
 

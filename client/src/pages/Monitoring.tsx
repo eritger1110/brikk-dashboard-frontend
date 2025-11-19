@@ -298,7 +298,7 @@ export default function Monitoring() {
             />
             <AlertCard
               title="New Integration Added"
-              message="BigQuery connector successfully configured and ready for use in workflows."
+              message="BigQuery connector successfully configured and ready for use in BrikkFlows."
               severity="info"
               time="1h ago"
             />

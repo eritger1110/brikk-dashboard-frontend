@@ -180,7 +180,7 @@ export default function AgentAnalytics() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <BarChart3 className="w-8 h-8 text-primary" />
-              <h1 className="text-3xl font-bold">Agent Analytics</h1>
+              <h1 className="text-3xl font-bold">BrikkInsights</h1>
             </div>
             <p className="text-muted-foreground">
               Deep performance insights, ROI tracking, and predictive analytics

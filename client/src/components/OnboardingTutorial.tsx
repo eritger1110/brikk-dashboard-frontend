@@ -43,7 +43,7 @@ const tutorialSteps: TutorialStep[] = [
   },
   {
     id: 'marketplace',
-    title: 'Agent Marketplace',
+    title: 'BrikkStore',
     description: 'Browse and install pre-built AI agents. Choose from 9 specialized agents including GPT-4, Claude 3, and custom agents for specific tasks.',
     icon: <Store className="w-12 h-12 text-cyan-500" />,
     targetPage: '/marketplace',
@@ -58,17 +58,17 @@ const tutorialSteps: TutorialStep[] = [
     action: 'Try Builder'
   },
   {
-    id: 'workflow',
+    id: 'BrikkFlow',
     title: 'Workflow Builder',
-    description: 'Connect multiple agents together to create powerful automated workflows. Design complex multi-agent systems with visual connections and coordination rules.',
+    description: 'Connect multiple agents together to create powerful automated BrikkFlows. Design complex multi-agent systems with visual connections and coordination rules.',
     icon: <Workflow className="w-12 h-12 text-green-500" />,
-    targetPage: '/workflow',
+    targetPage: '/BrikkFlow',
     action: 'Build Workflow'
   },
   {
     id: 'analytics',
     title: 'Analytics & Insights',
-    description: 'Track performance, costs, and ROI with deep analytics. Monitor agent success rates, execution times, and get predictive insights to optimize your workflows.',
+    description: 'Track performance, costs, and ROI with deep analytics. Monitor agent success rates, execution times, and get predictive insights to optimize your BrikkFlows.',
     icon: <BarChart3 className="w-12 h-12 text-yellow-500" />,
     targetPage: '/analytics',
     action: 'View Analytics'

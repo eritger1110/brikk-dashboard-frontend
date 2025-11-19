@@ -40,10 +40,10 @@ export default function NotificationCenter() {
         id: '1',
         type: 'success',
         title: 'Workflow Completed',
-        message: 'Customer Onboarding workflow finished successfully',
+        message: 'Customer Onboarding BrikkFlow finished successfully',
         timestamp: new Date(Date.now() - 5 * 60 * 1000),
         read: false,
-        actionUrl: '/workflow'
+        actionUrl: '/BrikkFlow'
       },
       {
         id: '2',
@@ -58,7 +58,7 @@ export default function NotificationCenter() {
         id: '3',
         type: 'mention',
         title: 'Team Mention',
-        message: '@you mentioned you in Lead Qualification workflow',
+        message: '@you mentioned you in Lead Qualification BrikkFlow',
         timestamp: new Date(Date.now() - 30 * 60 * 1000),
         read: false,
         actionUrl: '/collaboration'

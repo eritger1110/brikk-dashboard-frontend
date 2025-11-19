@@ -81,7 +81,7 @@ export default function Marketplace() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Agent Marketplace</h1>
+            <h1 className="text-3xl font-bold">BrikkStore</h1>
             <p className="text-muted-foreground mt-1">
               Discover, install, and manage pre-built AI agents
             </p>

@@ -188,7 +188,7 @@ export default function RoleManagement() {
               Can view resources but cannot make any changes. Ideal for stakeholders who need visibility.
             </p>
             <ul className="space-y-1 text-xs text-muted-foreground">
-              <li>• View workflows</li>
+              <li>• View BrikkFlows</li>
               <li>• View monitoring dashboards</li>
               <li>• View audit logs (own actions)</li>
             </ul>
@@ -201,12 +201,12 @@ export default function RoleManagement() {
               </span>
             </div>
             <p className="text-sm text-muted-foreground mb-3">
-              Can create and modify workflows but cannot deploy to production. Ideal for workflow builders.
+              Can create and modify BrikkFlows but cannot deploy to production. Ideal for BrikkFlow builders.
             </p>
             <ul className="space-y-1 text-xs text-muted-foreground">
               <li>• All Viewer permissions</li>
-              <li>• Create workflows</li>
-              <li>• Edit workflows</li>
+              <li>• Create BrikkFlows</li>
+              <li>• Edit BrikkFlows</li>
               <li>• Run simulations</li>
             </ul>
           </div>
