@@ -35,6 +35,7 @@ import CustomAgentBuilder from "./pages/CustomAgentBuilder";
 import WorkflowTemplates from "./pages/WorkflowTemplates";
 import AgentAnalytics from "./pages/AgentAnalytics";
 import CostOptimization from "./pages/CostOptimization";
+import APIKeysWebhooks from "./pages/APIKeysWebhooks";
 
 function Router() {
   return (
@@ -66,6 +67,7 @@ function Router() {
       <Route path="/templates" component={WorkflowTemplates} />
       <Route path="/analytics" component={AgentAnalytics} />
       <Route path="/cost-optimization" component={CostOptimization} />
+      <Route path="/api-keys" component={APIKeysWebhooks} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
