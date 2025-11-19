@@ -40,6 +40,7 @@ import AdvancedABTesting from "./pages/AdvancedABTesting";
 import RealtimeCollaboration from "./pages/RealtimeCollaboration";
 import IntegrationMarketplace from "./pages/IntegrationMarketplace";
 import IntegrationBuilder from "./pages/IntegrationBuilder";
+import DeveloperPortal from "./pages/DeveloperPortal";
 import Sidebar from "./components/Sidebar";
 import OnboardingTutorial from "./components/OnboardingTutorial";
 import GlobalSearch from "./components/GlobalSearch";
@@ -62,6 +63,7 @@ function Router() {
       <Route path="/marketplace" component={Marketplace} />
       <Route path="/marketplace/integrations" component={IntegrationMarketplace} />
       <Route path="/integrations/builder" component={IntegrationBuilder} />
+      <Route path="/developer/portal" component={DeveloperPortal} />
       <Route path="/security" component={Security} />
       <Route path="/developer" component={Developer} />
       <Route path="/analytics" component={Analytics} />
