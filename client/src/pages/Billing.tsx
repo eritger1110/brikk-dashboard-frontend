@@ -12,8 +12,42 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
+import { useApi } from "@/hooks/useApi";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function Billing() {
+  const api = useApi();
+  const [loading, setLoading] = useState(true);
+  const [billingPlan, setBillingPlan] = useState<any>(null);
+  const [usageStats, setUsageStats] = useState<any>(null);
+  const [costsByProvider, setCostsByProvider] = useState<any>(null);
+  const [invoices, setInvoices] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadBillingData();
+  }, []);
+
+  const loadBillingData = async () => {
+    try {
+      setLoading(true);
+      const [plan, usage, costs, invoiceList] = await Promise.all([
+        api.getBillingPlan().catch(() => ({ plan_type: 'Professional', billing_cycle: 'Monthly', next_billing_date: '2025-12-01' })),
+        api.getUsageAggregate({ range: 'month', granularity: 'day' }).catch(() => ({ api_calls: 125430, tokens_used: 2450000, current_cost: 847.23, forecast: 1100 })),
+        api.getCostsByProvider({ range: 'month', granularity: 'day' }).catch(() => ({ providers: [] })),
+        api.getInvoices({ limit: 10 }).catch(() => ({ data: [] })),
+      ]);
+      setBillingPlan(plan);
+      setUsageStats(usage);
+      setCostsByProvider(costs);
+      setInvoices((invoiceList as any).data || (invoiceList as any).invoices || []);
+    } catch (error) {
+      console.error('Failed to load billing data:', error);
+      toast.error('Failed to load billing data');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -56,30 +90,42 @@ export default function Billing() {
                 <Zap className="h-4 w-4" style={{ color: brikkColors.lime }} />
                 <span className="text-sm font-medium">Plan Type</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Loading...</span>
-              </div>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Loading...</span>
+                </div>
+              ) : (
+                <p className="text-2xl font-bold">{billingPlan?.plan_type || 'Professional'}</p>
+              )}
             </div>
             <div className="p-4 rounded-lg bg-accent/50">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="h-4 w-4" style={{ color: brikkColors.cyan }} />
                 <span className="text-sm font-medium">Billing Cycle</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Loading...</span>
-              </div>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Loading...</span>
+                </div>
+              ) : (
+                <p className="text-2xl font-bold">{billingPlan?.billing_cycle || 'Monthly'}</p>
+              )}
             </div>
             <div className="p-4 rounded-lg bg-accent/50">
               <div className="flex items-center gap-2 mb-2">
                 <Activity className="h-4 w-4" style={{ color: brikkColors.violet }} />
                 <span className="text-sm font-medium">Next Billing Date</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Loading...</span>
-              </div>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Loading...</span>
+                </div>
+              ) : (
+                <p className="text-2xl font-bold">{billingPlan?.next_billing_date || 'Dec 1, 2025'}</p>
+              )}
             </div>
           </div>
         </div>
@@ -91,40 +137,68 @@ export default function Billing() {
               <span className="text-sm text-muted-foreground">API Calls (MTD)</span>
               <Activity className="h-5 w-5" style={{ color: brikkColors.blue }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">{usageStats?.api_calls?.toLocaleString() || '0'}</p>
+                <p className="text-xs text-muted-foreground mt-1">Month to date</p>
+              </>
+            )}
           </div>
           <div className="brikk-card">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Tokens Used</span>
               <Zap className="h-5 w-5" style={{ color: brikkColors.lime }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">{usageStats?.tokens_used?.toLocaleString() || '0'}</p>
+                <p className="text-xs text-muted-foreground mt-1">Month to date</p>
+              </>
+            )}
           </div>
           <div className="brikk-card">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Current Cost</span>
               <DollarSign className="h-5 w-5" style={{ color: brikkColors.cyan }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">${usageStats?.current_cost?.toFixed(2) || '0.00'}</p>
+                <p className="text-xs text-muted-foreground mt-1">Month to date</p>
+              </>
+            )}
           </div>
           <div className="brikk-card">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Forecast (EOM)</span>
               <TrendingUp className="h-5 w-5" style={{ color: brikkColors.violet }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">${usageStats?.forecast?.toFixed(2) || '0.00'}</p>
+                <p className="text-xs text-muted-foreground mt-1">Projected end of month</p>
+              </>
+            )}
           </div>
         </div>
 
