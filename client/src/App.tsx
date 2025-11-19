@@ -40,10 +40,12 @@ import AdvancedABTesting from "./pages/AdvancedABTesting";
 import RealtimeCollaboration from "./pages/RealtimeCollaboration";
 import Sidebar from "./components/Sidebar";
 import OnboardingTutorial from "./components/OnboardingTutorial";
+import GlobalSearch from "./components/GlobalSearch";
 
 function Router() {
   return (
     <div className="flex">
+      <GlobalSearch />
       <OnboardingTutorial />
       <Sidebar />
       <main className="flex-1 overflow-auto">
