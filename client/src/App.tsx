@@ -32,6 +32,8 @@ import TeamManagement from "./pages/TeamManagement";
 import AgentVersioning from "./pages/AgentVersioning";
 import Landing from "./pages/Landing";
 import CustomAgentBuilder from "./pages/CustomAgentBuilder";
+import WorkflowTemplates from "./pages/WorkflowTemplates";
+import AgentAnalytics from "./pages/AgentAnalytics";
 
 function Router() {
   return (
@@ -60,6 +62,8 @@ function Router() {
       <Route path="/team" component={TeamManagement} />
       <Route path="/versioning" component={AgentVersioning} />
       <Route path="/builder" component={CustomAgentBuilder} />
+      <Route path="/templates" component={WorkflowTemplates} />
+      <Route path="/analytics" component={AgentAnalytics} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
