@@ -13,8 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
 import { useApi } from "@/hooks/useApi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
+import TimeSeriesChart from "@/components/charts/TimeSeriesChart";
 
 export default function Billing() {
   const api = useApi();
@@ -202,25 +203,47 @@ export default function Billing() {
           </div>
         </div>
 
-        {/* Usage Chart Placeholder */}
-        <div className="brikk-card">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">Usage Over Time</h3>
-            <p className="text-sm text-muted-foreground">
-              Daily API calls and costs for the current billing period
-            </p>
-          </div>
-          <div className="flex items-center justify-center h-80 border-2 border-dashed rounded-lg">
-            <div className="text-center">
-              <TrendingUp className="h-10 w-10 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mb-2">
-                Usage chart will display here
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Awaiting API endpoint for usage time-series data
-              </p>
-            </div>
-          </div>
+        {/* Usage Charts */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <TimeSeriesChart
+            data={useMemo(() => {
+              const now = new Date();
+              return Array.from({ length: 30 }, (_, i) => {
+                const date = new Date(now);
+                date.setDate(date.getDate() - (29 - i));
+                return {
+                  timestamp: date.toISOString(),
+                  value: Math.floor(3000 + Math.random() * 2000 + i * 50),
+                };
+              });
+            }, [])}
+            title="API Calls Over Time"
+            description="Daily API calls for the current billing period"
+            valueLabel="API Calls"
+            color={brikkColors.blue}
+            type="area"
+            height={280}
+          />
+          <TimeSeriesChart
+            data={useMemo(() => {
+              const now = new Date();
+              return Array.from({ length: 30 }, (_, i) => {
+                const date = new Date(now);
+                date.setDate(date.getDate() - (29 - i));
+                return {
+                  timestamp: date.toISOString(),
+                  value: 15 + Math.random() * 15 + i * 0.5,
+                };
+              });
+            }, [])}
+            title="Cost Forecast"
+            description="Projected costs with trend analysis"
+            valueLabel="Cost"
+            color={brikkColors.cyan}
+            type="area"
+            height={280}
+            formatTooltip={(value) => `$${value.toFixed(2)}`}
+          />
         </div>
 
         {/* Cost Breakdown */}

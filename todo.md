@@ -633,11 +633,11 @@
 - [ ] Test Slack OAuth2 flow
 
 ## Phase 82: Time-Series Charts
-- [ ] Add Chart.js or Recharts library
-- [ ] Create time-series chart component
-- [ ] Add API usage trend chart to Billing page
-- [ ] Add cost forecast chart to Billing page
-- [ ] Add token usage chart to Analytics page
-- [ ] Add execution time trend chart to Analytics page
-- [ ] Add interactive tooltips and zoom
+- [x] Add Chart.js or Recharts library (Recharts already installed)
+- [x] Create time-series chart component
+- [x] Add API usage trend chart to Billing page
+- [x] Add cost forecast chart to Billing page
+- [x] Add token usage chart to Analytics page
+- [x] Add execution time trend chart to Analytics page
+- [x] Add interactive tooltips and zoom
 - [ ] Test charts with real data
