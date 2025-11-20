@@ -616,3 +616,28 @@
 - [ ] Create user guide for integration marketplace
 - [ ] Create developer guide for building integrations
 - [ ] Final production deployment
+
+## Phase 81: OAuth2 Consent Flow
+- [x] Create OAuth2ConsentModal component
+- [x] Add OAuth2 provider configurations (Google, Salesforce, Slack, Microsoft, HubSpot)
+- [x] Implement authorization URL generation
+- [x] Create callback handler for OAuth2 redirects
+- [x] Add token storage and refresh logic
+- [x] Add CSRF protection with state parameter
+- [x] Add automatic token refresh logic
+- [x] Create OAuthCallback page
+- [x] Add /oauth/callback route to App.tsx
+- [ ] Wire OAuth2 flow to Integration Marketplace
+- [ ] Test Google OAuth2 flow
+- [ ] Test Salesforce OAuth2 flow
+- [ ] Test Slack OAuth2 flow
+
+## Phase 82: Time-Series Charts
+- [ ] Add Chart.js or Recharts library
+- [ ] Create time-series chart component
+- [ ] Add API usage trend chart to Billing page
+- [ ] Add cost forecast chart to Billing page
+- [ ] Add token usage chart to Analytics page
+- [ ] Add execution time trend chart to Analytics page
+- [ ] Add interactive tooltips and zoom
+- [ ] Test charts with real data

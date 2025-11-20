@@ -41,6 +41,7 @@ import RealtimeCollaboration from "./pages/RealtimeCollaboration";
 import IntegrationMarketplace from "./pages/IntegrationMarketplace";
 import IntegrationBuilder from "./pages/IntegrationBuilder";
 import DeveloperPortal from "./pages/DeveloperPortal";
+import OAuthCallback from "./pages/OAuthCallback";
 import Sidebar from "./components/Sidebar";
 import OnboardingTutorial from "./components/OnboardingTutorial";
 import GlobalSearch from "./components/GlobalSearch";
@@ -86,6 +87,7 @@ function Router() {
       <Route path="/api-keys" component={APIKeysWebhooks} />
       <Route path="/ab-testing" component={AdvancedABTesting} />
       <Route path="/collaboration" component={RealtimeCollaboration} />
+      <Route path="/oauth/callback" component={OAuthCallback} />
       
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
