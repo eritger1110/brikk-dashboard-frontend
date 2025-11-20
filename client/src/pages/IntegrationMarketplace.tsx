@@ -23,6 +23,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import OAuth2ConsentModal from "@/components/OAuth2ConsentModal";
+import { OAUTH2_PROVIDERS, generateAuthUrl, storeOAuthState, generateState } from "@/lib/oauth2";
 
 // API base URL - should be configured via environment variable
 const API_BASE_URL = import.meta.env.VITE_UCS_API_URL || "https://8000-izm86p4nsuk8lkf8pus89-fe6db43a.manusvm.computer";
@@ -62,6 +64,8 @@ export default function IntegrationMarketplace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [installingIds, setInstallingIds] = useState<Set<string>>(new Set());
+  const [oauthModalOpen, setOauthModalOpen] = useState(false);
+  const [selectedOAuthProvider, setSelectedOAuthProvider] = useState<any>(null);
 
   useEffect(() => {
     loadMarketplace();
@@ -107,7 +111,21 @@ export default function IntegrationMarketplace() {
     }
   }
 
+  // OAuth2 integrations that require user authorization
+  const OAUTH_INTEGRATIONS = ['google', 'salesforce', 'slack', 'microsoft', 'hubspot'];
+
   async function handleInstall(integrationId: string) {
+    // Check if this integration requires OAuth2
+    if (OAUTH_INTEGRATIONS.includes(integrationId.toLowerCase())) {
+      const provider = OAUTH2_PROVIDERS[integrationId.toLowerCase()];
+      if (provider) {
+        setSelectedOAuthProvider(provider);
+        setOauthModalOpen(true);
+        return;
+      }
+    }
+
+    // Regular API key-based installation
     setInstallingIds((prev) => new Set(prev).add(integrationId));
     try {
       const response = await fetch(
@@ -136,6 +154,23 @@ export default function IntegrationMarketplace() {
         next.delete(integrationId);
         return next;
       });
+    }
+  }
+
+  async function handleOAuthAuthorize(provider: any) {
+    try {
+      // Generate state for CSRF protection
+      const state = generateState();
+      storeOAuthState(state, provider.id);
+
+      // Generate authorization URL
+      const authUrl = generateAuthUrl(provider.id, state);
+
+      // Redirect to OAuth provider
+      window.location.href = authUrl;
+    } catch (err) {
+      console.error("OAuth authorization failed:", err);
+      toast.error("Failed to start authorization");
     }
   }
 
@@ -374,6 +409,17 @@ export default function IntegrationMarketplace() {
           </div>
         )}
       </div>
+
+      {/* OAuth2 Consent Modal */}
+      <OAuth2ConsentModal
+        isOpen={oauthModalOpen}
+        onClose={() => {
+          setOauthModalOpen(false);
+          setSelectedOAuthProvider(null);
+        }}
+        provider={selectedOAuthProvider}
+        onAuthorize={handleOAuthAuthorize}
+      />
     </DashboardLayout>
   );
 }

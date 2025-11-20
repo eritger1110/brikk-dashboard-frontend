@@ -627,7 +627,7 @@
 - [x] Add automatic token refresh logic
 - [x] Create OAuthCallback page
 - [x] Add /oauth/callback route to App.tsx
-- [ ] Wire OAuth2 flow to Integration Marketplace
+- [x] Wire OAuth2 flow to Integration Marketplace
 - [ ] Test Google OAuth2 flow
 - [ ] Test Salesforce OAuth2 flow
 - [ ] Test Slack OAuth2 flow
