@@ -17,6 +17,10 @@ import BrikkFlows from "./pages/BrikkFlows";
 import Billing from "./pages/Billing";
 import Plans from "./pages/Plans";
 import Team from "./pages/Team";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import DPA from "./pages/DPA";
+import HIPAA from "./pages/HIPAA";
 import Security from "./pages/Security";
 import Developer from "./pages/Developer";
 
@@ -82,6 +86,12 @@ function Router() {
       <Route path="/team" component={TeamManagement} />
       <Route path="/settings" component={Settings} />
       <Route path="/help" component={Help} />
+      
+      {/* Legal Pages */}
+      <Route path="/terms" component={Terms} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/dpa" component={DPA} />
+      <Route path="/hipaa" component={HIPAA} />
       <Route path="/oauth/callback" component={OAuthCallback} />
       
       <Route path="/404" component={NotFound} />
