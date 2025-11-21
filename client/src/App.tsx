@@ -11,33 +11,27 @@ import { DemoModeProvider } from "./contexts/DemoModeContext";
 import Overview from "./pages/Overview";
 import Agents from "./pages/Agents";
 import AgentNetworkMap from "./pages/AgentNetworkMap";
-import Dashboard from "./pages/Dashboard";
-import Workflows from "./pages/Workflows";
+
 import FlowBuilder from "./pages/FlowBuilder";
 import BrikkFlows from "./pages/BrikkFlows";
 import Billing from "./pages/Billing";
 import Security from "./pages/Security";
 import Developer from "./pages/Developer";
-import Monitoring from "./pages/Monitoring";
+
 import Analytics from "./pages/Analytics";
-import Marketplace from "./pages/Marketplace";
+
 import Help from "./pages/Help";
 import AuditLogs from "./pages/AuditLogs";
 import RoleManagement from "./pages/RoleManagement";
 import Settings from "./pages/Settings";
-import DemoGallery from "./pages/DemoGallery";
-import SimulationMode from "./pages/SimulationMode";
+
 import MonitoringDashboard from "./pages/MonitoringDashboard";
 import TeamManagement from "./pages/TeamManagement";
-import AgentVersioning from "./pages/AgentVersioning";
+
 import Landing from "./pages/Landing";
 import CustomAgentBuilder from "./pages/CustomAgentBuilder";
 import WorkflowTemplates from "./pages/WorkflowTemplates";
-import AgentAnalytics from "./pages/AgentAnalytics";
-import CostOptimization from "./pages/CostOptimization";
-import APIKeysWebhooks from "./pages/APIKeysWebhooks";
-import AdvancedABTesting from "./pages/AdvancedABTesting";
-import RealtimeCollaboration from "./pages/RealtimeCollaboration";
+
 import IntegrationMarketplace from "./pages/IntegrationMarketplace";
 import IntegrationBuilder from "./pages/IntegrationBuilder";
 import DeveloperPortal from "./pages/DeveloperPortal";
@@ -54,39 +48,37 @@ function Router() {
       <Sidebar />
       <main className="flex-1 overflow-auto">
         <Switch>
-      {/* New Brikk Dashboard Routes */}
-      <Route path="/" component={Overview} />
+      {/* Dashboard */}
+      <Route path="/dashboard" component={Overview} />
       <Route path="/agents" component={Agents} />
       <Route path="/agents/map" component={AgentNetworkMap} />
       <Route path="/workflows" component={BrikkFlows} />
-      <Route path="/flow-builder" component={FlowBuilder} />
-      <Route path="/billing" component={Billing} />
-      <Route path="/marketplace" component={Marketplace} />
-      <Route path="/marketplace/integrations" component={IntegrationMarketplace} />
-      <Route path="/integrations/builder" component={IntegrationBuilder} />
-      <Route path="/developer/portal" component={DeveloperPortal} />
-      <Route path="/security" component={Security} />
-      <Route path="/developer" component={Developer} />
-      <Route path="/analytics" component={Analytics} />
-      <Route path="/help" component={Help} />
-      <Route path="/settings" component={Settings} />
+      <Route path="/agents/builder" component={CustomAgentBuilder} />
       
-      {/* Legacy routes */}
-      <Route path="/monitoring" component={Monitoring} />
-      <Route path="/audit-logs" component={AuditLogs} />
-      <Route path="/roles" component={RoleManagement} />
-      <Route path="/demo" component={DemoGallery} />
-      <Route path="/simulation" component={SimulationMode} />
-      <Route path="/monitoring-dashboard" component={MonitoringDashboard} />
+      {/* Workflows */}
+      <Route path="/workflows" component={BrikkFlows} />
+      <Route path="/workflows/builder" component={FlowBuilder} />
+      <Route path="/workflows/templates" component={WorkflowTemplates} />
+      <Route path="/billing" component={Billing} />
+      {/* Marketplace */}
+      <Route path="/marketplace" component={IntegrationMarketplace} />
+      <Route path="/marketplace/builder" component={IntegrationBuilder} />
+      {/* Security */}
+      <Route path="/security" component={Security} />
+      <Route path="/security/audit-logs" component={AuditLogs} />
+      <Route path="/security/roles" component={RoleManagement} />
+      
+      {/* Developer */}
+      <Route path="/developer" component={Developer} />
+      <Route path="/developer/portal" component={DeveloperPortal} />
+      {/* Analytics & Monitoring */}
+      <Route path="/analytics" component={Analytics} />
+      <Route path="/monitoring" component={MonitoringDashboard} />
+      
+      {/* Team & Settings */}
       <Route path="/team" component={TeamManagement} />
-      <Route path="/versioning" component={AgentVersioning} />
-      <Route path="/builder" component={CustomAgentBuilder} />
-      <Route path="/templates" component={WorkflowTemplates} />
-      <Route path="/analytics" component={AgentAnalytics} />
-      <Route path="/cost-optimization" component={CostOptimization} />
-      <Route path="/api-keys" component={APIKeysWebhooks} />
-      <Route path="/ab-testing" component={AdvancedABTesting} />
-      <Route path="/collaboration" component={RealtimeCollaboration} />
+      <Route path="/settings" component={Settings} />
+      <Route path="/help" component={Help} />
       <Route path="/oauth/callback" component={OAuthCallback} />
       
       <Route path="/404" component={NotFound} />
@@ -137,7 +129,13 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    return <Landing />;
+    return (
+      <Switch>
+        <Route path="/" component={Landing} />
+        <Route path="/oauth/callback" component={OAuthCallback} />
+        <Route component={Landing} />
+      </Switch>
+    );
   }
 
   return <>{children}</>;
