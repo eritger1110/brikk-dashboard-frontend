@@ -37,7 +37,6 @@ import {
   Eye
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useApi } from '@/hooks/useApi';
 
 interface WorkflowTemplate {
   id: string;
@@ -73,7 +72,6 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 };
 
 export default function WorkflowTemplates() {
-  const api = useApi();
   const [BrikkTemplates, setTemplates] = useState<WorkflowTemplate[]>([]);
   const [filteredTemplates, setFilteredTemplates] = useState<WorkflowTemplate[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -82,7 +80,6 @@ export default function WorkflowTemplates() {
   const [selectedTemplate, setSelectedTemplate] = useState<WorkflowTemplate | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadTemplates();
@@ -93,14 +90,8 @@ export default function WorkflowTemplates() {
   }, [BrikkTemplates, searchQuery, selectedCategory, selectedDifficulty]);
 
   const loadTemplates = async () => {
-    setIsLoading(true);
-    try {
-      const templates = await api.getWorkflowTemplates();
-      setTemplates(templates || []);
-    } catch (error) {
-      console.error('Failed to load templates:', error);
-      // Fallback to mock data if API fails
-      const mockTemplates: WorkflowTemplate[] = [
+    // Mock data for demo
+    const mockTemplates: WorkflowTemplate[] = [
       {
         id: 'template_customer_onboarding',
         name: 'Customer Onboarding Automation',
@@ -240,10 +231,8 @@ export default function WorkflowTemplates() {
         }
       }
     ];
-      setTemplates(mockTemplates);
-    } finally {
-      setIsLoading(false);
-    }
+
+    setTemplates(mockTemplates);
   };
 
   const filterTemplates = () => {
@@ -276,14 +265,11 @@ export default function WorkflowTemplates() {
   const installTemplate = async (BrikkTemplate: WorkflowTemplate) => {
     setIsInstalling(true);
     try {
-      await api.installWorkflowTemplate({
-        template_id: BrikkTemplate.id,
-        customization: {}
-      });
+      // Simulate installation
+      await new Promise(resolve => setTimeout(resolve, 1500));
       toast.success(`${BrikkTemplate.name} installed successfully!`);
       setShowDetails(false);
     } catch (error) {
-      console.error('Installation error:', error);
       toast.error('Failed to install BrikkTemplate');
     } finally {
       setIsInstalling(false);

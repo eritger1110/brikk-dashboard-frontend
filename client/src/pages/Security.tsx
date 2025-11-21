@@ -15,10 +15,51 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brikkColors } from "@/lib/palette";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useApi } from "@/hooks/useApi";
+import { toast } from "sonner";
 
 export default function Security() {
+  const api = useApi();
   const [showKey, setShowKey] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [apiKeys, setApiKeys] = useState<any[]>([]);
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [stats, setStats] = useState({ activeKeys: 0, auditEvents24h: 0, securityAlerts: 0 });
+
+  useEffect(() => {
+    loadSecurityData();
+  }, []);
+
+  const loadSecurityData = async () => {
+    try {
+      setLoading(true);
+      const [keysData, auditData] = await Promise.all([
+        api.getApiKeys().catch(() => ({ keys: [] })),
+        api.getAuditLogs({ limit: 50 }).catch(() => ({ logs: [] })),
+      ]);
+      
+      const keys = (keysData as any).keys || (keysData as any).data || [];
+      const logs = (auditData as any).logs || (auditData as any).data || [];
+      
+      setApiKeys(keys);
+      setAuditLogs(logs);
+      setStats({
+        activeKeys: keys.filter((k: any) => k.status === 'active').length,
+        auditEvents24h: logs.filter((l: any) => {
+          const logDate = new Date(l.timestamp || l.created_at);
+          const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+          return logDate > dayAgo;
+        }).length,
+        securityAlerts: logs.filter((l: any) => l.severity === 'high' || l.severity === 'critical').length,
+      });
+    } catch (error) {
+      console.error('Failed to load security data:', error);
+      toast.error('Failed to load security data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -50,30 +91,51 @@ export default function Security() {
               <span className="text-sm text-muted-foreground">Active API Keys</span>
               <Key className="h-5 w-5" style={{ color: brikkColors.blue }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">{stats.activeKeys}</p>
+                <p className="text-xs text-muted-foreground mt-1">Currently active</p>
+              </>
+            )}
           </div>
           <div className="brikk-card">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Audit Events (24h)</span>
               <FileText className="h-5 w-5" style={{ color: brikkColors.cyan }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">{stats.auditEvents24h}</p>
+                <p className="text-xs text-muted-foreground mt-1">Last 24 hours</p>
+              </>
+            )}
           </div>
           <div className="brikk-card">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Security Alerts</span>
               <AlertCircle className="h-5 w-5" style={{ color: brikkColors.coral }} />
             </div>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Loading...</span>
-            </div>
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <p className="text-2xl font-bold">{stats.securityAlerts}</p>
+                <p className="text-xs text-muted-foreground mt-1">Requires attention</p>
+              </>
+            )}
           </div>
           <div className="brikk-card">
             <div className="flex items-center justify-between mb-2">

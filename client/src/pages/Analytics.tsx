@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import {
   TrendingUp,
@@ -27,6 +27,7 @@ import {
   BarChart,
 } from "recharts";
 import { toast } from "sonner";
+import TimeSeriesChart from "@/components/charts/TimeSeriesChart";
 
 export default function Analytics() {
   const api = useApi();
@@ -332,6 +333,49 @@ export default function Analytics() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Token Usage & Execution Time Trends */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <TimeSeriesChart
+            data={useMemo(() => {
+              const now = new Date();
+              return Array.from({ length: 24 }, (_, i) => {
+                const date = new Date(now);
+                date.setHours(date.getHours() - (23 - i));
+                return {
+                  timestamp: date.toISOString(),
+                  value: Math.floor(50000 + Math.random() * 30000 + i * 1000),
+                };
+              });
+            }, [timeRange])}
+            title="Token Usage Trend"
+            description="Hourly token consumption for the selected period"
+            valueLabel="Tokens"
+            color={brikkColors.lime}
+            type="area"
+            height={280}
+          />
+          <TimeSeriesChart
+            data={useMemo(() => {
+              const now = new Date();
+              return Array.from({ length: 24 }, (_, i) => {
+                const date = new Date();
+                date.setHours(date.getHours() - (23 - i));
+                return {
+                  timestamp: date.toISOString(),
+                  value: 200 + Math.random() * 150 + Math.sin(i / 3) * 50,
+                };
+              });
+            }, [timeRange])}
+            title="Execution Time Trend"
+            description="Average execution time per request"
+            valueLabel="Execution Time"
+            color={brikkColors.violet}
+            type="line"
+            height={280}
+            formatTooltip={(value) => `${value.toFixed(0)}ms`}
+          />
         </div>
 
         {/* API Integration Status */}

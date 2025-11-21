@@ -340,7 +340,7 @@
 # PHASE 32-35: FINAL PRODUCTION READINESS
 
 ## Phase 32: Complete Backend Integration
-- [x] Wire BrikkTemplates to Railway API
+- [ ] Wire BrikkTemplates to Railway API
 - [ ] Connect BrikkInsights analytics to live data
 - [ ] Wire Cost Optimization to backend
 - [ ] Connect API Keys & Webhooks CRUD
@@ -371,3 +371,273 @@
 - [ ] Test mobile responsiveness
 - [ ] Final Netlify deployment
 - [ ] Update Auth0 production URLs
+
+
+---
+
+# PHASE 55-62: COMPLETE THE CIRCUIT - Wire Everything
+
+## Phase 55: Move UCS Backend Services
+- [ ] Move ucs_connector_generation.py to /home/ubuntu/brikk-platform/apps/gateway/
+- [ ] Move ucs_auto_repair.py to /home/ubuntu/brikk-platform/apps/gateway/
+- [ ] Move user_consent_api.py to /home/ubuntu/brikk-platform/apps/gateway/
+- [ ] Move 002_create_ucs_tables.sql to /home/ubuntu/brikk-platform/migrations/
+
+## Phase 56: Create Integration Registry API
+- [ ] Create integration_registry_api.py with CRUD endpoints
+- [ ] GET /api/v1/integrations - List all integrations
+- [ ] GET /api/v1/integrations/{id} - Get integration details
+- [ ] POST /api/v1/integrations - Create integration
+- [ ] PUT /api/v1/integrations/{id} - Update integration
+- [ ] DELETE /api/v1/integrations/{id} - Delete integration
+- [ ] POST /api/v1/integrations/{id}/install - Install integration
+- [ ] DELETE /api/v1/integrations/{id}/install - Uninstall integration
+- [ ] GET /api/v1/integrations/categories - List categories
+
+## Phase 57: Wire Integration Builder Frontend
+- [ ] Update IntegrationBuilder.tsx to call CGS API endpoints
+- [ ] Wire OpenAPI upload to POST /api/v1/ucs/generate/openapi
+- [ ] Wire Postman upload to POST /api/v1/ucs/generate/postman
+- [ ] Wire URL input to POST /api/v1/ucs/generate/url
+- [ ] Wire text input to POST /api/v1/ucs/generate/text
+- [ ] Wire samples input to POST /api/v1/ucs/generate/samples
+- [ ] Add loading states during generation
+- [ ] Show generated CDF preview
+- [ ] Save generated integration to registry
+
+## Phase 58: Wire Integration Marketplace Frontend
+- [ ] Update IntegrationMarketplace.tsx to call Registry API
+- [ ] Wire integration list to GET /api/v1/integrations
+- [ ] Wire install button to POST /api/v1/integrations/{id}/install
+- [ ] Wire uninstall button to DELETE /api/v1/integrations/{id}/install
+- [ ] Wire category filter to GET /api/v1/integrations?category=X
+- [ ] Wire search to GET /api/v1/integrations?search=X
+- [ ] Add real-time installation status updates
+
+## Phase 59: Wire Developer Portal Frontend
+- [ ] Update DeveloperPortal.tsx to call Management API
+- [ ] Wire integration list to GET /api/v1/integrations?created_by=me
+- [ ] Wire health status to GET /api/v1/ucs/health/{id}
+- [ ] Wire publish button to PUT /api/v1/integrations/{id}/publish
+- [ ] Wire unpublish button to PUT /api/v1/integrations/{id}/unpublish
+- [ ] Wire delete button to DELETE /api/v1/integrations/{id}
+- [ ] Wire export button to download CDF
+- [ ] Add real-time health check updates
+
+## Phase 60: Wire Remaining Dashboard Pages
+- [ ] Wire BrikkFlows to GET/POST /v1/flows
+- [ ] Wire Billing to GET /v1/billing/invoices
+- [ ] Wire Security to GET/POST /v1/api-keys
+- [ ] Wire Security to GET /v1/audit
+- [ ] Wire Developer to POST /v1/dev/proxy
+
+## Phase 61: Create FastAPI Main App
+- [ ] Create main.py with all route imports
+- [ ] Mount UCS routes (/api/v1/ucs/*)
+- [ ] Mount Integration Registry routes (/api/v1/integrations/*)
+- [ ] Mount existing routes (/v1/*)
+- [ ] Add CORS middleware
+- [ ] Add authentication middleware
+- [ ] Add error handling middleware
+- [ ] Add health check endpoint
+
+## Phase 62: End-to-End Testing
+- [ ] Test: Upload OpenAPI file → Generate connector → Save to registry
+- [ ] Test: Browse marketplace → Install integration → Verify in Developer Portal
+- [ ] Test: Health check fails → Auto-repair triggers → New version created
+- [ ] Test: Attach integration to agent → Configure permissions → Save
+- [ ] Test: All dashboard pages load with real data
+- [ ] Fix any broken connections
+- [ ] Verify all API calls work
+
+
+---
+
+# PHASE 63-67: DEPLOYMENT-READY UCS (CRITICAL PATH)
+
+## Phase 63: Integration Registry API
+- [x] Create integration_registry_api.py
+- [x] GET /api/v1/integrations - List all integrations
+- [x] GET /api/v1/integrations/{id} - Get integration details
+- [x] POST /api/v1/integrations - Create integration
+- [x] PUT /api/v1/integrations/{id} - Update integration
+- [x] DELETE /api/v1/integrations/{id} - Delete integration
+- [x] POST /api/v1/integrations/{id}/install - Install integration
+- [x] DELETE /api/v1/integrations/{id}/install - Uninstall integration
+- [x] GET /api/v1/integrations/categories - List categories
+- [x] In-memory storage (no DB required for MVP)
+
+## Phase 64: FastAPI Main App
+- [x] Create ucs_main.py with FastAPI app
+- [x] Mount Integration Registry routes
+- [x] Mount Connector Generation routes
+- [x] Add CORS middleware
+- [x] Add error handling
+- [x] Add health check endpoint
+- [x] Create requirements.txt
+
+## Phase 65: Wire Marketplace Frontend
+- [x] Create IntegrationMarketplace.tsx with real API calls
+- [x] Replace mock data with API calls
+- [x] Wire install/uninstall buttons
+- [x] Wire search and filters
+- [x] Add loading states
+- [x] Add error handling
+- [x] Add route to App.tsx
+
+## Phase 66: Wire Builder Frontend
+- [ ] Update IntegrationBuilder.tsx to call CGS API
+- [ ] Wire file upload to backend
+- [ ] Wire generation methods
+- [ ] Show generation progress
+- [ ] Display generated CDF
+- [ ] Save to registry
+
+## Phase 67: Deployment & Testing
+- [ ] Create Railway deployment guide
+- [ ] Test end-to-end: Upload OpenAPI → Generate → Save → Install
+- [ ] Create demo video/screenshots
+- [ ] Document API endpoints
+
+
+---
+
+# PHASE 68-72: PRODUCTION DEPLOYMENT & LLM INTEGRATION
+
+## Phase 68: Railway Deployment Prep
+- [ ] Create Procfile for Railway
+- [ ] Add runtime.txt for Python version
+- [ ] Create railway.json config
+- [ ] Test local deployment
+- [ ] Prepare environment variables
+
+## Phase 69: OpenAI Integration
+- [ ] Install OpenAI SDK
+- [ ] Create LLM service module
+- [ ] Replace text parser with GPT-4
+- [ ] Replace URL parser with GPT-4
+- [ ] Add prompt engineering for connector generation
+- [ ] Add error handling and retries
+- [ ] Test LLM-powered generation
+
+## Phase 70: Seed Marketplace
+- [ ] Create 50+ pre-built integration definitions
+- [ ] Categories: CRM (10), E-commerce (10), Finance (10), Communication (10), Marketing (5), HR (5)
+- [ ] Add connector definitions for each
+- [ ] Add authentication configs
+- [ ] Add endpoint definitions
+- [ ] Test all integrations
+
+## Phase 71: LLM Testing
+- [ ] Test OpenAPI generation with real specs
+- [ ] Test Postman generation with real collections
+- [ ] Test URL scraping with real docs
+- [ ] Test text parsing with real documentation
+- [ ] Validate generated connectors
+
+## Phase 72: Final Deployment
+- [ ] Deploy backend to Railway
+- [ ] Update frontend environment variables
+- [ ] Test production deployment
+- [ ] Monitor logs and errors
+- [ ] Create deployment checklist
+
+
+---
+
+# PHASE 73-80: INTEGRATION EXECUTION ENGINE & FINAL WIRING
+
+## Phase 73: Integration Execution Engine (IEE)
+- [x] Create integration_execution_engine.py
+- [x] POST /api/v1/integrations/{id}/execute - Execute integration endpoint
+- [x] Implement authentication handling (OAuth2, API keys, custom)
+- [x] Implement request transformation (params, headers, body)
+- [x] Implement response transformation and error handling
+- [x] Add rate limiting per integration (100 req/min)
+- [x] Add execution logging and metrics
+- [x] Add timeout handling
+- [x] Add IEE routes to UCS main app
+- [x] Test IEE backend startup
+
+## Phase 74: Agent Integration Configuration
+- [x] Update CustomAgentBuilder to show installed integrations
+- [x] Wire CustomAgentBuilder to load integrations from UCS API
+- [x] Integration selector shows only installed integrations
+- [x] Test integration loading in browser
+- [ ] Add endpoint permissions configuration UI (future enhancement)
+- [ ] Add authentication configuration UI (future enhancement)
+- [ ] Add parameter mapping UI (future enhancement)
+- [ ] Save agent integration config to backend (future enhancement)
+
+## Phase 75: Wire BrikkFlows Page
+- [x] Already wired! Uses api.getFlows() → GET /api/workflows
+- [x] Already wired! Uses api.createFlow() → POST /api/workflows
+- [x] Already wired! Uses api.updateFlow() → PUT /api/workflows/{id}
+- [x] Already wired! Uses api.publishFlow() → POST /api/workflows/{id}/publish
+- [x] API base URL configured: https://brikk-production-9913.up.railway.app
+- [x] Auth0 token injection via useApi hookling
+- [ ] Test workflow CRUD operations
+
+## Phase 76: Wire Billing Page
+- [ ] Connect to GET /v1/billing/invoices - List invoices
+- [ ] Connect to GET /v1/billing/usage - Get usage data
+- [ ] Connect to POST /v1/billing/payment-method - Update payment
+- [ ] Add loading states and error handling
+- [ ] Test billing data display
+
+## Phase 77: Wire Security Page
+- [ ] Connect to GET /v1/api-keys - List API keys
+- [ ] Connect to POST /v1/api-keys - Create API key
+- [ ] Connect to DELETE /v1/api-keys/{id} - Revoke API key
+- [ ] Connect to GET /v1/audit - Get audit logs
+- [ ] Add loading states and error handling
+- [ ] Test API key management
+
+## Phase 78: Wire Developer Page
+- [ ] Connect to POST /v1/dev/proxy - API explorer
+- [ ] Add request builder UI
+- [ ] Add response viewer
+- [ ] Add loading states and error handling
+- [ ] Test API explorer functionality
+
+## Phase 79: End-to-End Testing
+- [ ] Test: Create agent → Attach integration → Execute API call
+- [ ] Test: Create BrikkFlow → Add integration step → Run workflow
+- [ ] Test: Browse marketplace → Install → Configure → Use
+- [ ] Test: Generate connector → Publish → Install → Execute
+- [ ] Test: All dashboard pages load with real data
+- [ ] Fix any broken functionality
+
+## Phase 80: Railway Deployment & Documentation
+- [ ] Create Railway deployment guide
+- [ ] Document environment variables needed
+- [ ] Document database setup (if needed)
+- [ ] Create API documentation
+- [ ] Create user guide for integration marketplace
+- [ ] Create developer guide for building integrations
+- [ ] Final production deployment
+
+## Phase 81: OAuth2 Consent Flow
+- [x] Create OAuth2ConsentModal component
+- [x] Add OAuth2 provider configurations (Google, Salesforce, Slack, Microsoft, HubSpot)
+- [x] Implement authorization URL generation
+- [x] Create callback handler for OAuth2 redirects
+- [x] Add token storage and refresh logic
+- [x] Add CSRF protection with state parameter
+- [x] Add automatic token refresh logic
+- [x] Create OAuthCallback page
+- [x] Add /oauth/callback route to App.tsx
+- [x] Wire OAuth2 flow to Integration Marketplace
+- [ ] Test Google OAuth2 flow
+- [ ] Test Salesforce OAuth2 flow
+- [ ] Test Slack OAuth2 flow
+
+## Phase 82: Time-Series Charts
+- [x] Add Chart.js or Recharts library (Recharts already installed)
+- [x] Create time-series chart component
+- [x] Add API usage trend chart to Billing page
+- [x] Add cost forecast chart to Billing page
+- [x] Add token usage chart to Analytics page
+- [x] Add execution time trend chart to Analytics page
+- [x] Add interactive tooltips and zoom
+- [ ] Test charts with real data
