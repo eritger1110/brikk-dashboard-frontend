@@ -9,17 +9,50 @@
 // Core Types
 // ============================================================================
 
+export type OrgType = 'demo' | 'standard';
+export type PlanTier = 'demo_only' | 'trial' | 'free' | 'starter' | 'pro' | 'enterprise';
+export type OrgStatus = 'active' | 'suspended' | 'cancelled';
+
 export type Org = {
   id: string;
   name: string;
-  plan: 'free' | 'starter' | 'pro' | 'enterprise';
+  type: OrgType;
+  plan: PlanTier;
+  status: OrgStatus;
   limits: Record<string, number>;
+  created_at: string;
+  stripe_customer_id?: string;
+  stripe_subscription_id?: string;
 };
+
+export type UserRole = 'owner' | 'admin' | 'builder' | 'viewer';
+export type UserStatus = 'active' | 'invited' | 'suspended';
 
 export type User = {
   id: string;
   email: string;
-  roles: string[];
+  name?: string;
+  role: UserRole;
+  status: UserStatus;
+  org_id: string;
+  created_at: string;
+  last_seen?: string;
+};
+
+export type UserInvite = {
+  id: string;
+  email: string;
+  role: UserRole;
+  invited_by: string;
+  created_at: string;
+  expires_at: string;
+  status: 'pending' | 'accepted' | 'expired';
+};
+
+export type UserListResponse = {
+  data: User[];
+  has_more: boolean;
+  next_cursor?: string;
 };
 
 // ============================================================================
@@ -286,3 +319,43 @@ export type PaginatedResponse<T> = {
   next_cursor?: string;
 };
 
+
+// ============================================================================
+// Plan & Billing Types
+// ============================================================================
+
+export type PlanFeature = {
+  name: string;
+  included: boolean;
+  limit?: number;
+  unit?: string;
+};
+
+export type PlanDetails = {
+  id: PlanTier;
+  name: string;
+  price_monthly: number;
+  price_yearly: number;
+  currency: 'USD';
+  features: PlanFeature[];
+  limits: {
+    agents: number;
+    workflows: number;
+    executions_per_month: number;
+    team_members: number;
+  };
+};
+
+export type StripeCheckoutSession = {
+  session_id: string;
+  url: string;
+};
+
+export type BillingSubscription = {
+  id: string;
+  plan: PlanTier;
+  status: 'active' | 'past_due' | 'canceled' | 'trialing';
+  current_period_start: string;
+  current_period_end: string;
+  cancel_at_period_end: boolean;
+};

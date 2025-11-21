@@ -10,6 +10,9 @@
 import type {
   Org,
   User,
+  UserRole,
+  UserInvite,
+  UserListResponse,
   Agent,
   AgentListResponse,
   Flow,
@@ -35,6 +38,9 @@ import type {
   GatewayInfo,
   ApiError,
   PaginationParams,
+  PlanDetails,
+  StripeCheckoutSession,
+  BillingSubscription,
 } from '@/types/api';
 
 // ============================================================================
@@ -176,6 +182,44 @@ export async function getCurrentOrg(token?: string): Promise<Org> {
 
 export async function getCurrentUser(token?: string): Promise<User> {
   return apiFetch<User>('/api/users/me', {}, token);
+}
+
+export async function getOrgUsers(params?: PaginationParams & { token?: string; orgId?: string }): Promise<UserListResponse> {
+  const searchParams = new URLSearchParams();
+  if (params?.limit) searchParams.set('limit', params.limit.toString());
+  if (params?.cursor) searchParams.set('cursor', params.cursor);
+
+  const query = searchParams.toString();
+  const endpoint = `/api/org/users${query ? `?${query}` : ''}`;
+
+  return apiFetch<UserListResponse>(endpoint, {}, params?.token, params?.orgId);
+}
+
+export async function inviteUser(data: { email: string; role: UserRole }, token?: string, orgId?: string): Promise<UserInvite> {
+  return apiFetch<UserInvite>('/api/org/users/invite', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+export async function updateUserRole(userId: string, role: UserRole, token?: string, orgId?: string): Promise<User> {
+  return apiFetch<User>(`/api/org/users/${userId}/role`, {
+    method: 'PATCH',
+    body: JSON.stringify({ role }),
+  }, token, orgId);
+}
+
+export async function removeUser(userId: string, token?: string, orgId?: string): Promise<void> {
+  return apiFetch<void>(`/api/org/users/${userId}`, {
+    method: 'DELETE',
+  }, token, orgId);
+}
+
+export async function updateOrgSettings(data: Partial<Org>, token?: string, orgId?: string): Promise<Org> {
+  return apiFetch<Org>('/api/org/settings', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  }, token, orgId);
 }
 
 // ============================================================================
@@ -850,4 +894,38 @@ export async function getAgentExecutionMetrics(params: {
 
 export async function getSystemMetrics(token?: string, orgId?: string): Promise<any> {
   return apiFetch<any>('/api/monitoring/system', {}, token, orgId);
+}
+
+// ============================================================================
+// Billing & Plans Endpoints
+// ============================================================================
+
+export async function getPlans(token?: string): Promise<{ data: PlanDetails[] }> {
+  return apiFetch<{ data: PlanDetails[] }>('/api/billing/plans', {}, token);
+}
+
+export async function getSubscription(token?: string, orgId?: string): Promise<BillingSubscription> {
+  return apiFetch<BillingSubscription>('/api/billing/subscription', {}, token, orgId);
+}
+
+export async function createCheckoutSession(data: {
+  plan: string;
+  billing_cycle: 'monthly' | 'yearly';
+}, token?: string, orgId?: string): Promise<StripeCheckoutSession> {
+  return apiFetch<StripeCheckoutSession>('/api/billing/checkout', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }, token, orgId);
+}
+
+export async function cancelSubscription(token?: string, orgId?: string): Promise<void> {
+  return apiFetch<void>('/api/billing/subscription/cancel', {
+    method: 'POST',
+  }, token, orgId);
+}
+
+export async function updatePaymentMethod(token?: string, orgId?: string): Promise<{ url: string }> {
+  return apiFetch<{ url: string }>('/api/billing/payment-method', {
+    method: 'POST',
+  }, token, orgId);
 }

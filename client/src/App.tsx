@@ -15,6 +15,8 @@ import AgentNetworkMap from "./pages/AgentNetworkMap";
 import FlowBuilder from "./pages/FlowBuilder";
 import BrikkFlows from "./pages/BrikkFlows";
 import Billing from "./pages/Billing";
+import Plans from "./pages/Plans";
+import Team from "./pages/Team";
 import Security from "./pages/Security";
 import Developer from "./pages/Developer";
 
@@ -60,6 +62,7 @@ function Router() {
       <Route path="/workflows/builder" component={FlowBuilder} />
       <Route path="/workflows/templates" component={WorkflowTemplates} />
       <Route path="/billing" component={Billing} />
+      <Route path="/plans" component={Plans} />
       {/* Marketplace */}
       <Route path="/marketplace" component={IntegrationMarketplace} />
       <Route path="/marketplace/builder" component={IntegrationBuilder} />

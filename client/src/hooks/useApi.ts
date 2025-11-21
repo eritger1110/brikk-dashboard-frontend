@@ -29,6 +29,32 @@ export function useApi() {
       return apiModule.getCurrentUser(token);
     }, [getAccessTokenSilently]),
 
+    // User Management
+    getOrgUsers: useCallback(async (params?: Parameters<typeof apiModule.getOrgUsers>[0]) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.getOrgUsers({ ...params, token });
+    }, [getAccessTokenSilently]),
+
+    inviteUser: useCallback(async (data: Parameters<typeof apiModule.inviteUser>[0]) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.inviteUser(data, token);
+    }, [getAccessTokenSilently]),
+
+    updateUserRole: useCallback(async (userId: string, role: Parameters<typeof apiModule.updateUserRole>[1]) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.updateUserRole(userId, role, token);
+    }, [getAccessTokenSilently]),
+
+    removeUser: useCallback(async (userId: string) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.removeUser(userId, token);
+    }, [getAccessTokenSilently]),
+
+    updateOrgSettings: useCallback(async (data: Parameters<typeof apiModule.updateOrgSettings>[0]) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.updateOrgSettings(data, token);
+    }, [getAccessTokenSilently]),
+
     // Agents
     getAgents: useCallback(async (params?: Parameters<typeof apiModule.getAgents>[0]) => {
       const token = await getAccessTokenSilently();
@@ -166,6 +192,32 @@ export function useApi() {
     getHelpChecklist: useCallback(async () => {
       const token = await getAccessTokenSilently();
       return apiModule.getHelpChecklist(token);
+    }, [getAccessTokenSilently]),
+
+    // Billing & Plans
+    getPlans: useCallback(async () => {
+      const token = await getAccessTokenSilently();
+      return apiModule.getPlans(token);
+    }, [getAccessTokenSilently]),
+
+    getSubscription: useCallback(async () => {
+      const token = await getAccessTokenSilently();
+      return apiModule.getSubscription(token);
+    }, [getAccessTokenSilently]),
+
+    createCheckoutSession: useCallback(async (data: Parameters<typeof apiModule.createCheckoutSession>[0]) => {
+      const token = await getAccessTokenSilently();
+      return apiModule.createCheckoutSession(data, token);
+    }, [getAccessTokenSilently]),
+
+    cancelSubscription: useCallback(async () => {
+      const token = await getAccessTokenSilently();
+      return apiModule.cancelSubscription(token);
+    }, [getAccessTokenSilently]),
+
+    updatePaymentMethod: useCallback(async () => {
+      const token = await getAccessTokenSilently();
+      return apiModule.updatePaymentMethod(token);
     }, [getAccessTokenSilently]),
   };
 
