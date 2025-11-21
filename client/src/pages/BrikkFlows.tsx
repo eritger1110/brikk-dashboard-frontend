@@ -1,403 +1,340 @@
-import { useState, useCallback } from "react";
-import DashboardLayout from "@/components/layout/DashboardLayout";
-import ReactFlow, {
-  Node,
-  Edge,
-  Background,
-  Controls,
-  MiniMap,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Connection,
-  MarkerType,
-} from "reactflow";
-import "reactflow/dist/style.css";
+import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import {
-  Workflow,
-  Plus,
-  Play,
-  Save,
-  Download,
-  Upload,
-  Zap,
   GitBranch,
-  CheckCircle2,
-  AlertCircle,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { brikkColors } from "@/lib/palette";
-import { toast } from "sonner";
-import { useLocation } from "wouter";
-import { useApi } from "@/hooks/useApi";
-
-// Initial BrikkFlow nodes for demonstration
-const initialNodes: Node[] = [
-  {
-    id: "trigger-1",
-    type: "input",
-    position: { x: 250, y: 50 },
-    data: {
-      label: (
-        <div className="flex items-center gap-2">
-          <Zap className="h-4 w-4" style={{ color: brikkColors.lime }} />
-          <span>Trigger: New Order</span>
-        </div>
-      ),
-    },
-    style: {
-      background: brikkColors.lime + "20",
-      border: `2px solid ${brikkColors.lime}`,
-      borderRadius: "12px",
-      padding: "12px 16px",
-      fontSize: "13px",
-      fontWeight: 500,
-      minWidth: "180px",
-    },
-  },
-  {
-    id: "condition-1",
-    type: "default",
-    position: { x: 250, y: 150 },
-    data: {
-      label: (
-        <div className="flex items-center gap-2">
-          <GitBranch className="h-4 w-4" style={{ color: brikkColors.cyan }} />
-          <span>Condition: Amount {'>'} $100</span>
-        </div>
-      ),
-    },
-    style: {
-      background: brikkColors.cyan + "20",
-      border: `2px solid ${brikkColors.cyan}`,
-      borderRadius: "12px",
-      padding: "12px 16px",
-      fontSize: "13px",
-      fontWeight: 500,
-      minWidth: "200px",
-    },
-  },
-  {
-    id: "action-1",
-    type: "output",
-    position: { x: 100, y: 280 },
-    data: {
-      label: (
-        <div className="flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4" style={{ color: brikkColors.blue }} />
-          <span>Action: Send to Agent A</span>
-        </div>
-      ),
-    },
-    style: {
-      background: brikkColors.blue + "20",
-      border: `2px solid ${brikkColors.blue}`,
-      borderRadius: "12px",
-      padding: "12px 16px",
-      fontSize: "13px",
-      fontWeight: 500,
-      minWidth: "190px",
-    },
-  },
-  {
-    id: "action-2",
-    type: "output",
-    position: { x: 400, y: 280 },
-    data: {
-      label: (
-        <div className="flex items-center gap-2">
-          <AlertCircle className="h-4 w-4" style={{ color: brikkColors.violet }} />
-          <span>Action: Send to Agent B</span>
-        </div>
-      ),
-    },
-    style: {
-      background: brikkColors.violet + "20",
-      border: `2px solid ${brikkColors.violet}`,
-      borderRadius: "12px",
-      padding: "12px 16px",
-      fontSize: "13px",
-      fontWeight: 500,
-      minWidth: "190px",
-    },
-  },
-];
-
-const initialEdges: Edge[] = [
-  {
-    id: "e-trigger-condition",
-    source: "trigger-1",
-    target: "condition-1",
-    animated: true,
-    style: { stroke: brikkColors.lime, strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: brikkColors.lime },
-  },
-  {
-    id: "e-condition-action1",
-    source: "condition-1",
-    target: "action-1",
-    animated: false,
-    style: { stroke: brikkColors.blue, strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: brikkColors.blue },
-    label: "Yes",
-    labelStyle: { fontSize: 11, fontWeight: 600 },
-  },
-  {
-    id: "e-condition-action2",
-    source: "condition-1",
-    target: "action-2",
-    animated: false,
-    style: { stroke: brikkColors.violet, strokeWidth: 2 },
-    markerEnd: { type: MarkerType.ArrowClosed, color: brikkColors.violet },
-    label: "No",
-    labelStyle: { fontSize: 11, fontWeight: 600 },
-  },
-];
+  Plus,
+  Search,
+  Play,
+  Pause,
+  Edit,
+  Copy,
+  Trash2,
+  RefreshCw,
+  AlertTriangle,
+  MoreVertical,
+} from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useApi } from '@/hooks/useApi';
+import { useDemoMode } from '@/contexts/DemoModeContext';
+import { toast } from 'sonner';
+import type { Flow } from '@/types/api';
 
 export default function BrikkFlows() {
   const api = useApi();
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [workflowName, setWorkflowName] = useState("Untitled Workflow");
-  const [, setLocation] = useLocation();
-  const [isSaving, setIsSaving] = useState(false);
-  const [isTesting, setIsTesting] = useState(false);
-  const [flowId, setFlowId] = useState<string | null>(null);
+  const { isDemoMode } = useDemoMode();
+  const [workflows, setWorkflows] = useState<Flow[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleImport = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = (e: any) => {
-      const file = e.target.files[0];
-      if (file) {
-        toast.success(`Importing ${file.name}...`);
-        // TODO: Implement import logic
-      }
-    };
-    input.click();
-  };
+  const loadWorkflows = async () => {
+    setLoading(true);
+    setError(null);
 
-  const handleExport = () => {
-    const data = { nodes, edges, name: workflowName };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${workflowName.replace(/\s+/g, '-').toLowerCase()}.json`;
-    a.click();
-    toast.success('BrikkFlow exported successfully!');
-  };
-
-  const handleSave = async () => {
-    setIsSaving(true);
     try {
-      const flowData = {
-        name: workflowName,
-        definition: { nodes, edges },
-        status: 'draft' as const,
-      };
-
-      if (flowId) {
-        // Update existing flow
-        await api.updateFlow(flowId, flowData);
-        toast.success('BrikkFlow updated successfully!');
-      } else {
-        // Create new flow
-        const newFlow = await api.createFlow(flowData);
-        setFlowId(newFlow.id);
-        toast.success('BrikkFlow created successfully!');
+      const response = await api.getFlows({ limit: 50 });
+      setWorkflows(response.data || []);
+    } catch (err: any) {
+      console.error('Failed to load workflows:', err);
+      setError(err.message || 'Failed to load workflows');
+      
+      // Set demo data if in demo mode
+      if (isDemoMode) {
+        setWorkflows([
+          {
+            id: 'wf-1',
+            name: 'Customer Onboarding',
+            published: true,
+            graph: {
+              nodes: [
+                { id: 'n1', type: 'trigger', label: 'New Customer' },
+                { id: 'n2', type: 'action', label: 'Send Welcome Email' },
+                { id: 'n3', type: 'action', label: 'Create Account' },
+              ],
+              edges: [
+                { id: 'e1', from: 'n1', to: 'n2' },
+                { id: 'e2', from: 'n2', to: 'n3' },
+              ],
+            },
+          },
+          {
+            id: 'wf-2',
+            name: 'Lead Qualification',
+            published: true,
+            graph: {
+              nodes: [
+                { id: 'n1', type: 'trigger', label: 'New Lead' },
+                { id: 'n2', type: 'condition', label: 'Score > 80' },
+                { id: 'n3', type: 'action', label: 'Assign to Sales' },
+              ],
+              edges: [
+                { id: 'e1', from: 'n1', to: 'n2' },
+                { id: 'e2', from: 'n2', to: 'n3' },
+              ],
+            },
+          },
+          {
+            id: 'wf-3',
+            name: 'Data Processing Pipeline',
+            published: false,
+            graph: {
+              nodes: [
+                { id: 'n1', type: 'trigger', label: 'New Data' },
+                { id: 'n2', type: 'action', label: 'Clean Data' },
+                { id: 'n3', type: 'action', label: 'Store in DB' },
+              ],
+              edges: [
+                { id: 'e1', from: 'n1', to: 'n2' },
+                { id: 'e2', from: 'n2', to: 'n3' },
+              ],
+            },
+          },
+        ]);
       }
-    } catch (error) {
-      console.error('Save error:', error);
-      toast.error('Failed to save BrikkFlow');
     } finally {
-      setIsSaving(false);
+      setLoading(false);
     }
   };
 
-  const handleTest = async () => {
-    setIsTesting(true);
-    try {
-      // TODO: Call API to test BrikkFlow
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      toast.success('BrikkFlow test completed successfully!');
-      setLocation('/simulation');
-    } catch (error) {
-      toast.error('BrikkFlow test failed');
-    } finally {
-      setIsTesting(false);
-    }
-  };
+  useEffect(() => {
+    loadWorkflows();
+  }, []);
 
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
+  const filteredWorkflows = workflows.filter(wf =>
+    wf.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const publishedCount = workflows.filter(w => w.published).length;
+  const draftCount = workflows.filter(w => !w.published).length;
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="container mx-auto py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <RefreshCw className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+              <p className="text-muted-foreground">Loading workflows...</p>
+            </div>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error && !isDemoMode) {
+    return (
+      <DashboardLayout>
+        <div className="container mx-auto py-8">
+          <Card className="p-8 text-center">
+            <AlertTriangle className="w-12 h-12 text-destructive mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">Failed to Load Workflows</h3>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={loadWorkflows}>
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Retry
+            </Button>
+          </Card>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="container mx-auto py-8 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">BrikkFlows Builder</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#0057FF] to-[#00C2FF] bg-clip-text text-transparent">
+              BrikkFlows
+            </h1>
             <p className="text-muted-foreground mt-1">
-              Visual BrikkFlow automation with drag-and-drop
+              Orchestrate AI agents with visual workflows
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleImport}>
-              <Upload className="h-4 w-4 mr-2" />
-              Import
+          <div className="flex items-center gap-3">
+            <Button onClick={loadWorkflows} variant="outline">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh
             </Button>
-            <Button variant="outline" size="sm" onClick={handleExport}>
-              <Download className="h-4 w-4 mr-2" />
-              Export
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving}>
-              <Save className="h-4 w-4 mr-2" />
-              {isSaving ? 'Saving...' : 'Save Draft'}
-            </Button>
-            <Button className="btn-primary" onClick={handleTest} disabled={isTesting}>
-              <Play className="h-4 w-4" />
-              {isTesting ? 'Testing...' : 'Test BrikkFlow'}
-            </Button>
+            <Link href="/workflows/builder">
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Create Workflow
+              </Button>
+            </Link>
           </div>
         </div>
 
-        {/* Workflow Name */}
-        <div className="brikk-card">
-          <div className="flex items-center gap-4">
-            <Workflow className="h-5 w-5 text-muted-foreground" />
-            <input
-              type="text"
-              value={workflowName}
-              onChange={(e) => setWorkflowName(e.target.value)}
-              className="flex-1 bg-transparent border-none outline-none text-lg font-semibold"
-              placeholder="Workflow Name"
-            />
-            <span className="text-sm text-muted-foreground">
-              Last saved: Never
-            </span>
-          </div>
-        </div>
-
-        {/* Canvas */}
-        <div className="brikk-card" style={{ height: "600px" }}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            fitView
-            attributionPosition="bottom-left"
-          >
-            <Background color="var(--border)" gap={16} />
-            <Controls />
-            <MiniMap
-              nodeColor={(node) => {
-                const style = node.style as any;
-                return style?.border?.split(" ")[2] || brikkColors.blue;
-              }}
-              maskColor="rgba(0, 0, 0, 0.1)"
-              style={{
-                backgroundColor: "var(--surface)",
-                border: "1px solid var(--border)",
-              }}
-            />
-          </ReactFlow>
-        </div>
-
-        {/* Node Palette */}
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="brikk-card">
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-lg"
-                style={{ backgroundColor: `${brikkColors.lime}20` }}
-              >
-                <Zap className="h-5 w-5" style={{ color: brikkColors.lime }} />
-              </div>
-              <div>
-                <h4 className="font-semibold">Triggers</h4>
-                <p className="text-xs text-muted-foreground">Start BrikkFlows</p>
-              </div>
-            </div>
-            <Button variant="outline" size="sm" className="w-full" disabled>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Trigger
-            </Button>
-          </div>
-
-          <div className="brikk-card">
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-lg"
-                style={{ backgroundColor: `${brikkColors.cyan}20` }}
-              >
-                <GitBranch className="h-5 w-5" style={{ color: brikkColors.cyan }} />
-              </div>
-              <div>
-                <h4 className="font-semibold">Conditions</h4>
-                <p className="text-xs text-muted-foreground">Logic branches</p>
-              </div>
-            </div>
-            <Button variant="outline" size="sm" className="w-full" disabled>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Condition
-            </Button>
-          </div>
-
-          <div className="brikk-card">
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-lg"
-                style={{ backgroundColor: `${brikkColors.blue}20` }}
-              >
-                <CheckCircle2 className="h-5 w-5" style={{ color: brikkColors.blue }} />
-              </div>
-              <div>
-                <h4 className="font-semibold">Actions</h4>
-                <p className="text-xs text-muted-foreground">Execute tasks</p>
-              </div>
-            </div>
-            <Button variant="outline" size="sm" className="w-full" disabled>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Action
-            </Button>
-          </div>
-        </div>
-
-        {/* Info Notice */}
-        <div className="brikk-card border-2 border-dashed">
-          <div className="flex items-start gap-4">
-            <div
-              className="flex h-10 w-10 items-center justify-center rounded-lg flex-shrink-0"
-              style={{ backgroundColor: `${brikkColors.violet}20` }}
-            >
-              <AlertCircle className="h-5 w-5" style={{ color: brikkColors.violet }} />
-            </div>
-            <div className="flex-1">
-              <h4 className="font-semibold mb-2">Visual BrikkFlow Builder Ready</h4>
-              <p className="text-sm text-muted-foreground mb-3">
-                The BrikkFlow canvas is ready for drag-and-drop BrikkFlow creation. This example shows a basic BrikkFlow structure. Once API endpoints are configured, you'll be able to save, load, and execute real BrikkFlows.
+        {/* Demo Mode Banner */}
+        {isDemoMode && (
+          <Card className="p-4 bg-amber-500/10 border-amber-500/20">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              <p className="text-sm font-medium">
+                Demo Mode Active - Showing sample workflows
               </p>
-              <div className="text-sm space-y-1">
-                <p className="font-medium">✅ Features Ready:</p>
-                <ul className="list-disc list-inside text-muted-foreground ml-2 space-y-1">
-                  <li>Drag-and-drop node positioning</li>
-                  <li>Connection drawing between nodes</li>
-                  <li>Zoom, pan, and minimap controls</li>
-                  <li>Trigger → Condition → Action flow</li>
-                </ul>
+            </div>
+          </Card>
+        )}
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-lg bg-primary/10">
+                <GitBranch className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Total Workflows</p>
+                <p className="text-2xl font-bold">{workflows.length}</p>
               </div>
             </div>
-          </div>
+          </Card>
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-lg bg-green-500/10">
+                <Play className="w-6 h-6 text-green-500" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Published</p>
+                <p className="text-2xl font-bold">{publishedCount}</p>
+              </div>
+            </div>
+          </Card>
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-lg bg-amber-500/10">
+                <Edit className="w-6 h-6 text-amber-500" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Drafts</p>
+                <p className="text-2xl font-bold">{draftCount}</p>
+              </div>
+            </div>
+          </Card>
         </div>
+
+        {/* Search */}
+        <Card className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search workflows..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </Card>
+
+        {/* Workflows List */}
+        <div className="space-y-4">
+          {filteredWorkflows.length === 0 ? (
+            <Card className="p-12 text-center">
+              <GitBranch className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No Workflows Yet</h3>
+              <p className="text-muted-foreground mb-4">
+                Create your first workflow to automate agent coordination
+              </p>
+              <Link href="/workflows/builder">
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Workflow
+                </Button>
+              </Link>
+            </Card>
+          ) : (
+            filteredWorkflows.map((workflow) => (
+              <Card key={workflow.id} className="p-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4 flex-1">
+                    <div className="p-3 rounded-lg bg-primary/10">
+                      <GitBranch className="w-6 h-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-lg font-semibold">{workflow.name}</h3>
+                        <Badge variant={workflow.published ? 'default' : 'secondary'}>
+                          {workflow.published ? 'Published' : 'Draft'}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span>{workflow.graph.nodes.length} nodes</span>
+                        <span>•</span>
+                        <span>{workflow.graph.edges.length} connections</span>
+                        <span>•</span>
+                        <span>ID: {workflow.id}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Link href={`/workflows/builder?id=${workflow.id}`}>
+                      <Button variant="outline" size="sm">
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </Button>
+                    </Link>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => toast.info('Duplicate feature coming soon')}>
+                          <Copy className="w-4 h-4 mr-2" />
+                          Duplicate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => toast.info('Delete feature coming soon')}>
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              </Card>
+            ))
+          )}
+        </div>
+
+        {/* Quick Actions */}
+        <Card className="p-6">
+          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link href="/workflows/builder">
+              <Button variant="outline" className="w-full justify-start">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Workflow
+              </Button>
+            </Link>
+            <Link href="/workflows/templates">
+              <Button variant="outline" className="w-full justify-start">
+                <Copy className="w-4 h-4 mr-2" />
+                Browse Templates
+              </Button>
+            </Link>
+            <Link href="/analytics">
+              <Button variant="outline" className="w-full justify-start">
+                <GitBranch className="w-4 h-4 mr-2" />
+                View Analytics
+              </Button>
+            </Link>
+          </div>
+        </Card>
       </div>
     </DashboardLayout>
   );
 }
-
