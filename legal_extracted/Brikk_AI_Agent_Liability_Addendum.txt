@@ -1,0 +1,17 @@
+AI Agent Liability Addendum
+
+1. Scope
+
+This Addendum allocates responsibilities for AI outputs...
+
+2. Customer Responsibilities
+
+Customer must validate outputs before action...
+
+3. Brikk Responsibilities
+
+Brikk provides guardrails but cannot guarantee correctness...
+
+4. Indemnity
+
+Customer indemnifies Brikk for misuse...

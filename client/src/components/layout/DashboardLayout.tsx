@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/contexts/ThemeContext";
+import Footer from "@/components/Footer";
 
 interface NavItem {
   label: string;
@@ -265,9 +266,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <main
         className={`pt-16 transition-all duration-300 ${
           sidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
-        }`}
+        } flex flex-col min-h-screen`}
       >
-        <div className="p-6">{children}</div>
+        <div className="p-6 flex-1">{children}</div>
+        <Footer />
       </main>
 
       {/* Mobile Menu Overlay */}

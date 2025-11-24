@@ -1,0 +1,21 @@
+Brikk Privacy Policy
+
+1. Overview
+
+This Privacy Policy explains how Brikk collects, processes, stores data...
+
+2. Data Categories
+
+- Account information
+
+- Usage logs
+
+- Agent interaction metadata
+
+3. Data Rights
+
+Users may request access, correction, deletion...
+
+4. Security Measures
+
+Encryption at rest, in transit...

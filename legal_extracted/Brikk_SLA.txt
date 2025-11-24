@@ -1,0 +1,19 @@
+Brikk Service Level Agreement
+
+1. Uptime Commitment
+
+99.95% monthly uptime...
+
+2. Response Times
+
+- Critical: 1 hour
+
+- High: 4 hours
+
+3. Exclusions
+
+Planned maintenance...
+
+4. Remedies
+
+Service credits...

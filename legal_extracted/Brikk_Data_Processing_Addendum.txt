@@ -1,0 +1,17 @@
+Data Processing Addendum (DPA)
+
+1. Compliance Frameworks
+
+GDPR, CCPA...
+
+2. Roles
+
+Customer = Controller; Brikk = Processor...
+
+3. Subprocessors
+
+List available at brikk.com/subprocessors...
+
+4. Security Controls
+
+Encryption, access controls, logging...

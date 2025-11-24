@@ -1,0 +1,17 @@
+Security & Compliance Addendum
+
+1. Security Standards
+
+SOC 2 Type II, encryption...
+
+2. Customer Responsibilities
+
+Secure endpoints, key rotation...
+
+3. Incident Response
+
+Brikk will notify Customer...
+
+4. Audit Rights
+
+Customer may request audit reports...

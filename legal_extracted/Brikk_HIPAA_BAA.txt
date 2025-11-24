@@ -1,0 +1,17 @@
+HIPAA Business Associate Agreement
+
+1. Purpose
+
+Enables processing of PHI under HIPAA...
+
+2. Safeguards
+
+Brikk maintains administrative, physical, technical safeguards...
+
+3. Breach Notification
+
+Notice within required timelines...
+
+4. Permitted Uses & Disclosures
+
+As required to provide services...

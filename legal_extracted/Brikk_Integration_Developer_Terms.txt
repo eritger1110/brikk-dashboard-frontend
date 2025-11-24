@@ -1,0 +1,13 @@
+Integration Developer Terms
+
+1. Licensing
+
+Brikk grants integrators a limited license...
+
+2. API Usage Limits
+
+Developers must follow rate limits...
+
+3. Security Obligations
+
+Integrations must protect credentials...
