@@ -15,6 +15,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import WorkflowNode, { NodeData } from '@/components/workflow/WorkflowNode';
+import NodeConfigPanel from '@/components/workflow/NodeConfigPanel';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -335,29 +336,18 @@ export default function FlowBuilder() {
             </div>
           </Card>
 
-          {/* Selected Node Actions */}
-          <Card className="p-4">
-            <h3 className="text-sm font-semibold mb-3">Selected Node</h3>
-            {selectedNode ? (
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm font-medium">{selectedNode.data.label}</p>
-                  <p className="text-xs text-muted-foreground">Type: {selectedNode.data.type}</p>
-                </div>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={deleteSelectedNode}
-                  className="w-full"
-                >
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete Node
-                </Button>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">Click a node to select it</p>
-            )}
-          </Card>
+          {/* Node Configuration Panel */}
+          <NodeConfigPanel
+            node={selectedNode}
+            onUpdate={(nodeId, data) => {
+              setNodes((nds) =>
+                nds.map((n) => (n.id === nodeId ? { ...n, data: { ...n.data, ...data } } : n))
+              );
+              toast.success('Node configuration saved');
+            }}
+            onDelete={deleteSelectedNode}
+            onClose={() => setSelectedNode(null)}
+          />
         </div>
 
         {/* Stats */}

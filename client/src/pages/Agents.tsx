@@ -213,7 +213,7 @@ export default function Agents() {
                 Status: {statusFilter}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent align="end" className="z-50">
               <DropdownMenuItem onClick={() => setStatusFilter("all")}>
                 All
               </DropdownMenuItem>

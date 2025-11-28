@@ -22,9 +22,11 @@ import { brikkColors } from "@/lib/palette";
 import type { MarketplaceAgent } from "@/types/api";
 import { toast } from "sonner";
 import { useApi } from "@/hooks/useApi";
+import { useDemoMode } from "@/contexts/DemoModeContext";
 
 export default function Marketplace() {
   const api = useApi();
+  const { isDemoMode } = useDemoMode();
   const [agents, setAgents] = useState<MarketplaceAgent[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,6 +54,20 @@ export default function Marketplace() {
 
   async function handleInstall(agentId: string) {
     setInstallingIds((prev) => new Set(prev).add(agentId));
+    
+    // Demo mode: Show success without API call
+    if (isDemoMode) {
+      setTimeout(() => {
+        toast.success("Agent installed successfully! (Demo Mode)");
+        setInstallingIds((prev) => {
+          const next = new Set(prev);
+          next.delete(agentId);
+          return next;
+        });
+      }, 1000);
+      return;
+    }
+    
     try {
       await api.installMarketplaceAgent(agentId);
       toast.success("Agent installed successfully!");

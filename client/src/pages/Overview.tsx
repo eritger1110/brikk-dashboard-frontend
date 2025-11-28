@@ -21,6 +21,8 @@ import {
 import { useApi } from '@/hooks/useApi';
 import { useDemoMode } from '@/contexts/DemoModeContext';
 import type { Agent, Flow } from '@/types/api';
+import SkeletonLoader from '@/components/SkeletonLoader';
+import EmptyState from '@/components/EmptyState';
 
 interface DashboardStats {
   totalAgents: number;
@@ -193,10 +195,13 @@ export default function Overview() {
     return (
       <DashboardLayout>
         <div className="container mx-auto py-8">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <RefreshCw className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
-              <p className="text-muted-foreground">Loading dashboard...</p>
+          {/* Loading State - Premium Skeleton Loaders */}
+          <div className="space-y-6" role="status" aria-live="polite">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <SkeletonLoader type="metric" count={4} />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SkeletonLoader type="card" count={2} />
             </div>
           </div>
         </div>
@@ -224,7 +229,11 @@ export default function Overview() {
 
   return (
     <DashboardLayout>
-      <div className="container mx-auto py-8 space-y-8">
+      {/* Skip to main content link for accessibility */}
+      <a href="#main-content" className="skip-to-main">
+        Skip to main content
+      </a>
+      <div id="main-content" className="container mx-auto py-8 space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>

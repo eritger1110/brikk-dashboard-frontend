@@ -117,6 +117,53 @@ export default function BrikkFlows() {
   const publishedCount = workflows.filter(w => w.published).length;
   const draftCount = workflows.filter(w => !w.published).length;
 
+  const handleDuplicate = async (workflow: Flow) => {
+    try {
+      const duplicatedFlow = {
+        name: `${workflow.name} (Copy)`,
+        graph: workflow.graph,
+        published: false,
+      };
+      
+      if (isDemoMode) {
+        toast.success('Workflow duplicated! (Demo Mode)');
+        // Add to local state in demo mode
+        const newFlow = {
+          ...duplicatedFlow,
+          id: `wf-${Date.now()}`,
+        };
+        setWorkflows([...workflows, newFlow]);
+      } else {
+        await api.createFlow(duplicatedFlow);
+        toast.success('Workflow duplicated successfully');
+        loadWorkflows();
+      }
+    } catch (err) {
+      console.error('Failed to duplicate workflow:', err);
+      toast.error('Failed to duplicate workflow');
+    }
+  };
+
+  const handleDelete = async (workflowId: string) => {
+    if (!confirm('Are you sure you want to delete this workflow? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      if (isDemoMode) {
+        toast.success('Workflow deleted! (Demo Mode)');
+        setWorkflows(workflows.filter(w => w.id !== workflowId));
+      } else {
+        await api.deleteFlow(workflowId);
+        toast.success('Workflow deleted successfully');
+        loadWorkflows();
+      }
+    } catch (err) {
+      console.error('Failed to delete workflow:', err);
+      toast.error('Failed to delete workflow');
+    }
+  };
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -293,11 +340,14 @@ export default function BrikkFlows() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => toast.info('Duplicate feature coming soon')}>
+                        <DropdownMenuItem onClick={() => handleDuplicate(workflow)}>
                           <Copy className="w-4 h-4 mr-2" />
                           Duplicate
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => toast.info('Delete feature coming soon')}>
+                        <DropdownMenuItem 
+                          onClick={() => handleDelete(workflow.id)}
+                          className="text-destructive focus:text-destructive"
+                        >
                           <Trash2 className="w-4 h-4 mr-2" />
                           Delete
                         </DropdownMenuItem>
