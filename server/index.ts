@@ -2,6 +2,14 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  securityHeaders,
+  rateLimit,
+  auditLogger,
+  sanitizeInput,
+  corsConfig,
+  requestSizeLimit,
+} from "./middleware/security.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,6 +17,22 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  // Apply security middleware
+  app.use(corsConfig);
+  app.use(securityHeaders);
+  app.use(auditLogger);
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+  app.use(sanitizeInput);
+  app.use(requestSizeLimit(10 * 1024 * 1024)); // 10MB limit
+  
+  // Rate limiting: 100 requests per minute per IP
+  app.use(rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    maxRequests: 100,
+    message: 'Too many requests from this IP, please try again later.',
+  }));
 
   // Serve static files from dist/public in production
   const staticPath =
