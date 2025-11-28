@@ -54,6 +54,14 @@ function Router() {
       <Sidebar />
       <main className="flex-1 overflow-auto">
         <Switch>
+      {/* Root redirect */}
+      <Route path="/">
+        {() => {
+          window.location.href = "/dashboard";
+          return null;
+        }}
+      </Route>
+      
       {/* Dashboard */}
       <Route path="/dashboard" component={Overview} />
       <Route path="/agents" component={Agents} />
