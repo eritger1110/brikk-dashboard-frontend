@@ -1,0 +1,16 @@
+{
+  "query": "SELECT schema_name FROM information_schema.schemata;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3w9dtx9m8tYFV9t.55ad1e5a0e61 --database iK7JNLfzTCKSVF8dTmd4tz --execute SELECT schema_name FROM information_schema.schemata;",
+  "rows": [
+    {
+      "schema_name": "iK7JNLfzTCKSVF8dTmd4tz"
+    },
+    {
+      "schema_name": "INFORMATION_SCHEMA"
+    }
+  ],
+  "messages": [],
+  "stdout": "schema_name\niK7JNLfzTCKSVF8dTmd4tz\nINFORMATION_SCHEMA\n",
+  "stderr": "",
+  "execution_time_ms": 167
+}

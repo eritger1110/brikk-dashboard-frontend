@@ -47,6 +47,7 @@ import OnboardingTutorial from "./components/OnboardingTutorial";
 import GlobalSearch from "./components/GlobalSearch";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <div className="flex">
       <GlobalSearch />

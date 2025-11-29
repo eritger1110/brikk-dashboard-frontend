@@ -30,3 +30,6 @@ Thumbs.db
 
 # Legal extracted files (temporary)
 legal_extracted/
+.env.production
+.env.local
+.env*.local

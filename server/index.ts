@@ -1,5 +1,8 @@
 import express from "express";
 import { createServer } from "http";
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { appRouter } from "./routers/index.js";
+import { createContext } from "./_core/trpc.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import {
@@ -39,6 +42,15 @@ async function startServer() {
     process.env.NODE_ENV === "production"
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
+
+  // tRPC API endpoint
+  app.use(
+    "/api/trpc",
+    createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  );
 
   app.use(express.static(staticPath));
 
